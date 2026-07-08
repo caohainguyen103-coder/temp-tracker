@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Polymarket vs Mô hình thời tiết — Theo dõi độ chính xác Tmax</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+  :root{--bg:#0f1420;--card:#1a2233;--txt:#e8ecf4;--mut:#8b96ab;--acc:#4da3ff;--good:#3ecf8e;--bad:#ff6b6b;}
+  *{box-sizing:border-box} body{margin:0;font-family:system-ui,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--txt);padding:24px}
+  h1{font-size:22px;margin:0 0 4px} .sub{color:var(--mut);font-size:13px;margin-bottom:20px}
+  .cards{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+  .card{background:var(--card);border-radius:10px;padding:14px 18px;min-width:150px}
+  .card b{font-size:24px;display:block} .card span{color:var(--mut);font-size:12px}
+  .panel{background:var(--card);border-radius:10px;padding:16px;margin-bottom:20px}
+  h2{font-size:15px;margin:0 0 10px;color:var(--acc)}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{padding:6px 8px;text-align:left;border-bottom:1px solid #2a3550}
+  th{color:var(--mut);font-weight:600;cursor:default}
+  .pos{color:var(--bad)} .neg{color:#6fb3ff} .hit{color:var(--good)} .miss{color:var(--bad)}
+  select{background:#101828;color:var(--txt);border:1px solid #2a3550;border-radius:6px;padding:4px 8px}
+  .foot{color:var(--mut);font-size:11px;margin-top:24px;line-height:1.6}
+  .foot a{color:var(--acc)}
+  canvas{max-height:280px}
+  .warn{background:#3a2a12;border:1px solid #7a5a20;border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:16px}
+</style>
+</head>
+<body>
+<h1>🌡️ Polymarket vs Mô hình thời tiết — Nhiệt độ cao nhất trong ngày</h1>
+<div class="sub">Tất cả nhiệt độ hiển thị bằng °C. Snapshot lấy trước ngày mục tiêu (lead ≥ 1 ngày) mới được tính vào bảng xếp hạng.</div>
+
+<div class="warn" id="warn" style="display:none"></div>
+
+<div class="cards">
+  <div class="card"><b id="c-days">–</b><span>ngày đã thu thập</span></div>
+  <div class="card"><b id="c-events">–</b><span>event đã theo dõi</span></div>
+  <div class="card"><b id="c-resolved">–</b><span>event đã có kết quả</span></div>
+  <div class="card"><b id="c-cities">–</b><span>thành phố</span></div>
+</div>
+
+<div class="panel">
+  <h2>Bảng xếp hạng độ chính xác
+    <span style="float:right;font-weight:normal;font-size:12px;color:var(--mut)">
+      Lead: <select id="leadSel"><option value="1">1 ngày trước</option><option value="2">2 ngày trước</option><option value="0">trong ngày (tham khảo)</option></select>
+    </span>
+  </h2>
+  <table id="leader"><thead><tr>
+    <th>Nguồn</th><th>n</th><th>MAE (°C)</th><th>Bias (°C)</th><th>Trúng bucket</th>
+  </tr></thead><tbody></tbody></table>
+  <div style="color:var(--mut);font-size:11px;margin-top:6px">
+    MAE = sai số tuyệt đối trung bình. Bias dương = dự đoán CAO hơn thực tế.
+    "Trúng bucket" = chọn đúng khoảng nhiệt độ mà thị trường phân giải.
+  </div>
+</div>
+
+<div class="panel">
+  <h2>Bias của Polymarket theo thành phố (EV − thực đo, °C)</h2>
+  <canvas id="biasChart"></canvas>
+</div>
+
+<div class="panel">
+  <h2>Kết quả gần nhất</h2>
+  <table id="recent"><thead><tr>
+    <th>Ngày</th><th>Thành phố</th><th>Bucket phân giải</th><th>Thực đo</th>
+    <th>PM dự đoán (top)</th><th>PM EV</th><th>ECMWF</th><th>GFS</th><th>ICON</th><th>UKMO</th>
+  </tr></thead><tbody></tbody></table>
+</div>
+
+<div class="foot">
+  Dữ liệu thị trường: <a href="https://polymarket.com">Polymarket</a> (Gamma API) ·
+  Dự báo: <a href="https://open-meteo.com/">Weather data by Open-Meteo.com</a> (CC BY 4.0) ·
+  Thực đo trạm: <a href="https://mesonet.agron.iastate.edu/">IEM</a> / <a href="https://www.hko.gov.hk/">HKO</a>.<br>
+  Trang này chỉ phục vụ nghiên cứu thống kê, không phải lời khuyên đầu tư.
+</div>
+
+<script>
+// ---------- CSV parser nhỏ (xử lý đúng dấu ngoặc kép) ----------
+function parseCSV(text){
+  const rows=[];let row=[],cur='',q=false;
+  for(let i=0;i<text.length;i++){const ch=text[i];
+    if(q){ if(ch==='"'){ if(text[i+1]==='"'){cur+='"';i++;} else q=false; } else cur+=ch; }
+    else if(ch==='"')q=true;
+    else if(ch===','){row.push(cur);cur='';}
+    else if(ch==='\n'||ch==='\r'){ if(cur!==''||row.length){row.push(cur);rows.push(row);row=[];cur='';} if(ch==='\r'&&text[i+1]==='\n')i++; }
+    else cur+=ch; }
+  if(cur!==''||row.length){row.push(cur);rows.push(row);}
+  if(!rows.length)return[];
+  const head=rows[0];
+  return rows.slice(1).map(r=>Object.fromEntries(head.map((h,i)=>[h,r[i]??''])));
+}
+const num=s=>{const v=parseFloat(s);return isNaN(v)?null:v;};
+
+const MODELS=[
+  ['Polymarket (EV)','pm_ev_c'],['ECMWF IFS','fc_ecmwf_ifs025_c'],
+  ['NOAA GFS','fc_gfs_seamless_c'],['DWD ICON','fc_icon_seamless_c'],
+  ['UK MetOffice','fc_ukmo_seamless_c'],['OM best_match','fc_best_match_c']];
+
+// bucket helpers (đồng bộ logic với common.py)
+function parseBucket(t){
+  t=(t||'').trim();let kind='eq';
+  if(t.startsWith('<=')){kind='le';t=t.slice(2);}else if(t.startsWith('>=')){kind='ge';t=t.slice(2);}
+  const m=t.match(/^(-?\d+)(?:-(-?\d+))?°([CF])$/);if(!m)return null;
+  return{lo:+m[1],hi:m[2]?+m[2]:+m[1],unit:m[3],kind};
+}
+function bucketContains(b,vNative,precision){
+  if(!b||vNative==null)return null;
+  if(precision==='decimal'){
+    if(b.kind==='le')return vNative<b.hi+1;
+    if(b.kind==='ge')return vNative>=b.lo;
+    return b.lo<=vNative&&vNative<b.hi+1;
+  }
+  const v=Math.round(vNative);
+  if(b.kind==='le')return v<=b.hi;
+  if(b.kind==='ge')return v>=b.lo;
+  return b.lo<=v&&v<=b.hi;
+}
+const c2f=c=>c*9/5+32;
+
+let SNAPS=[],RES={},chart=null;
+
+async function load(){
+  let sTxt='',rTxt='';
+  try{ sTxt=await (await fetch('data/snapshots.csv',{cache:'no-store'})).text(); }catch(e){}
+  try{ rTxt=await (await fetch('data/results.csv',{cache:'no-store'})).text(); }catch(e){}
+  SNAPS=sTxt.includes('event_slug')?parseCSV(sTxt):[];
+  const res=rTxt.includes('event_slug')?parseCSV(rTxt):[];
+  RES={};res.forEach(r=>{if(r.actual_c!==''||r.resolved_bucket)RES[r.event_slug]=r;});
+
+  if(!SNAPS.length){
+    const w=document.getElementById('warn');w.style.display='block';
+    w.textContent='Chưa có dữ liệu — hệ thống sẽ tự ghi dữ liệu sau lần chạy GitHub Actions đầu tiên (xem README).';
+  }
+  document.getElementById('c-days').textContent=new Set(SNAPS.map(s=>s.snapshot_utc.slice(0,10))).size;
+  document.getElementById('c-events').textContent=new Set(SNAPS.map(s=>s.event_slug)).size;
+  document.getElementById('c-resolved').textContent=Object.keys(RES).length;
+  document.getElementById('c-cities').textContent=new Set(SNAPS.map(s=>s.city)).size;
+  render();
+}
+
+function joined(lead){
+  // mỗi event: snapshot đúng lead yêu cầu (nếu nhiều lần chạy/ngày, lấy muộn nhất)
+  const by={};
+  SNAPS.forEach(s=>{
+    if(+s.lead_days!==lead)return;
+    const r=RES[s.event_slug];if(!r||r.actual_c==='')return;
+    if(!by[s.event_slug]||s.snapshot_utc>by[s.event_slug][0].snapshot_utc)by[s.event_slug]=[s,r];
+  });
+  return Object.values(by);
+}
+
+function render(){
+  const lead=+document.getElementById('leadSel').value;
+  const pairs=joined(lead);
+  // leaderboard
+  const tb=document.querySelector('#leader tbody');tb.innerHTML='';
+  const rows=[];
+  MODELS.forEach(([name,col])=>{
+    let errs=[],hits=0,nh=0;
+    pairs.forEach(([s,r])=>{
+      const v=num(s[col]);const a=num(r.actual_c);if(v==null||a==null)return;
+      errs.push(v-a);
+      const b=parseBucket(r.resolved_bucket);
+      if(b){const native=s.unit==='F'?c2f(v):v;
+        const h=bucketContains(b,native,s.precision||'whole');
+        if(h!=null){nh++;if(h)hits++;}}
+    });
+    if(!errs.length)return;
+    const mae=errs.reduce((x,e)=>x+Math.abs(e),0)/errs.length;
+    const bias=errs.reduce((x,e)=>x+e,0)/errs.length;
+    rows.push({name,n:errs.length,mae,bias,hit:nh?hits/nh:null});
+  });
+  // PM top-bucket hit
+  {let hits=0,nh=0;
+   pairs.forEach(([s,r])=>{if(s.pm_top_bucket&&r.resolved_bucket){nh++;if(s.pm_top_bucket===r.resolved_bucket)hits++;}});
+   if(nh)rows.push({name:'Polymarket (bucket đỉnh)',n:nh,mae:null,bias:null,hit:hits/nh});}
+  rows.sort((a,b)=>(a.mae??99)-(b.mae??99));
+  rows.forEach(r=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${r.name}</td><td>${r.n}</td><td>${r.mae==null?'–':r.mae.toFixed(2)}</td>
+      <td class="${r.bias>0?'pos':'neg'}">${r.bias==null?'–':(r.bias>0?'+':'')+r.bias.toFixed(2)}</td>
+      <td>${r.hit==null?'–':(100*r.hit).toFixed(0)+'%'}</td>`;
+    tb.appendChild(tr);
+  });
+
+  // bias chart theo thành phố (Polymarket EV)
+  const byCity={};
+  pairs.forEach(([s,r])=>{
+    const v=num(s.pm_ev_c),a=num(r.actual_c);if(v==null||a==null)return;
+    (byCity[s.city]=byCity[s.city]||[]).push(v-a);
+  });
+  const cities=Object.keys(byCity).sort();
+  const biases=cities.map(c=>byCity[c].reduce((x,e)=>x+e,0)/byCity[c].length);
+  if(chart)chart.destroy();
+  chart=new Chart(document.getElementById('biasChart'),{
+    type:'bar',
+    data:{labels:cities.map((c,i)=>`${c} (n=${byCity[c].length})`),
+      datasets:[{label:'Bias trung bình (°C)',data:biases,
+        backgroundColor:biases.map(b=>b>0?'rgba(255,107,107,.7)':'rgba(77,163,255,.7)')}]},
+    options:{plugins:{legend:{display:false}},scales:{
+      y:{grid:{color:'#2a3550'},ticks:{color:'#8b96ab'},title:{display:true,text:'°C (dương = PM đoán cao hơn thực tế)',color:'#8b96ab'}},
+      x:{grid:{display:false},ticks:{color:'#8b96ab'}}}}
+  });
+
+  // recent results
+  const rt=document.querySelector('#recent tbody');rt.innerHTML='';
+  const latest={};
+  SNAPS.forEach(s=>{const k=s.event_slug;
+    if(RES[k]&&(+s.lead_days===1)&&(!latest[k]||s.snapshot_utc>latest[k].snapshot_utc))latest[k]=s;});
+  Object.values(latest).sort((a,b)=>b.target_date.localeCompare(a.target_date)).slice(0,30).forEach(s=>{
+    const r=RES[s.event_slug];
+    const hitCls=s.pm_top_bucket===r.resolved_bucket?'hit':'miss';
+    const cell=v=>v===''||v==null?'–':(+v).toFixed(1);
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${s.target_date}</td><td>${s.city}</td>
+      <td>${r.resolved_bucket||'–'}</td><td>${cell(r.actual_c)}°C</td>
+      <td class="${hitCls}">${s.pm_top_bucket}</td><td>${cell(s.pm_ev_c)}</td>
+      <td>${cell(s.fc_ecmwf_ifs025_c)}</td><td>${cell(s.fc_gfs_seamless_c)}</td>
+      <td>${cell(s.fc_icon_seamless_c)}</td><td>${cell(s.fc_ukmo_seamless_c)}</td>`;
+    rt.appendChild(tr);
+  });
+}
+
+document.getElementById('leadSel').addEventListener('change',render);
+load();
+</script>
+</body>
+</html>
