@@ -1,0 +1,47 @@
+# Chạy tự động hàng ngày trên GitHub Actions — không cần máy tính bật.
+# 12:10 UTC = 19:10 giờ Việt Nam. Với các thành phố châu Á (Seoul, HK,
+# Trung Quốc), thời điểm này là buổi tối NGÀY HÔM TRƯỚC ngày mục tiêu xa nhất
+# => snapshot có lead 1-2 ngày, đúng thứ cần cho phân tích.
+# Chạy thêm lúc 00:10 UTC để verify sớm các ngày vừa kết thúc.
+name: Thu thap du lieu nhiet do hang ngay
+
+on:
+  schedule:
+    - cron: "10 12 * * *"
+    - cron: "10 0 * * *"
+  workflow_dispatch: {}   # cho phép bấm nút chạy tay để thử
+
+permissions:
+  contents: write
+
+concurrency:
+  group: daily-collect
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Lay code
+        uses: actions/checkout@v4
+
+      - name: Cai Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Không cần cài thư viện gì — script chỉ dùng thư viện chuẩn Python.
+
+      - name: Thu thap snapshot thi truong + du bao
+        run: python collect.py
+
+      - name: Doi chieu ket qua ngay da qua
+        run: python verify.py
+
+      - name: Luu du lieu vao repo
+        run: |
+          git config user.name "temp-tracker-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/
+          git diff --cached --quiet || git commit -m "du lieu $(date -u +%Y-%m-%dT%H:%M)"
+          git push
