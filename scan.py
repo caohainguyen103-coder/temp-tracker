@@ -1,25 +1,24 @@
 # -*- coding: utf-8 -*-
 """
-scan.py — Bot quét cơ hội trên Polymarket (chạy tự động mỗi 4 giờ).
-CHỈ QUÉT VÀ BÁO CÁO — không tự đặt lệnh. Kết quả ghi vào data/opportunities.csv.
+scan.py — Bot quét cơ hội trên Polymarket (chạy tự động mỗi giờ).
+CHỈ QUÉT VÀ BÁO CÁO — không tự đặt lệnh. Kết quả: data/opportunities.csv.
+
+PHIÊN BẢN 2 — TÍNH LÃI RÒNG SAU PHÍ (đã kiểm chứng công thức phí chính thức
+tại docs.polymarket.com/trading/fees: phí taker = C × rate × p × (1−p);
+Weather/Economics/Culture rate 0.05, Crypto 0.07, Sports 0.03,
+Geopolitics MIỄN PHÍ. Maker không mất phí.)
 
 Ngách 1 — ARBITRAGE TỔNG XÁC SUẤT (neg-risk):
-  Event nhiều kết cục loại trừ nhau (negRisk=true) phải có tổng xác suất = 100%.
-  Nếu tổng giá MUA (best ask) của tất cả các ô < $1: mua mỗi ô 1 cổ phần
-  -> chắc chắn nhận về $1 dù kết quả thế nào. Lãi = 1 − tổng giá mua − phí.
-  Ngưỡng báo: tổng ask <= 0.97 (chừa chỗ cho phí + trượt giá).
-  Chiều ngược (tổng bid >= 1.03) cũng báo, nhưng bán cần sẵn cổ phần/split.
+  Mua đủ mọi ô của event loại trừ nhau -> chắc chắn nhận $1.
+  edge_ròng = 1 − Σask − Σ(rate×ask×(1−ask)). Chỉ báo khi edge_ròng >= 1%.
+  Bài học thực tế 09/07: Wellington tổng ask 0.96 nhìn như lãi 4%,
+  nhưng phí thời tiết ăn 3.95% -> ròng ~0. Thị trường MIỄN PHÍ (geopolitics)
+  mới là nơi ngách này thực sự sống.
 
 Ngách 2 — CRYPTO vs THỊ TRƯỜNG QUYỀN CHỌN (Deribit):
-  Thị trường "Bitcoin/Ethereum above $X on [ngày]" phân giải bằng nến Binance
-  16:00 UTC (đã kiểm chứng mô tả event). Xác suất "chuyên nghiệp" của cùng
-  sự kiện tính từ Deribit: P(S_T > K) = N(d2) với spot = index Deribit,
-  sigma = chỉ số DVOL (vol kỳ vọng 30 ngày, %/năm), T = thời gian đến 16:00 UTC.
-  Xấp xỉ này BỎ QUA skew/term-structure -> chỉ báo khi lệch >= 8 điểm %.
-  Đây là tín hiệu để BẠN xem xét, không phải lệnh tự động.
-
-Chỉ dùng thư viện chuẩn Python. Nguồn: gamma-api.polymarket.com,
-www.deribit.com/api/v2/public (đều công khai, không cần key).
+  P(S_T > K) = N(d2), sigma = DVOL, spot = index Deribit.
+  edge_ròng = |P_model − giá| − phí taker. Chỉ báo khi >= 8 điểm %.
+  (Xấp xỉ bỏ qua skew — tự thẩm định trước khi vào lệnh.)
 """
 import json
 import math
@@ -37,14 +36,27 @@ OPP_FIELDS = [
     "volume24hr", "liquidity", "note",
 ]
 
-SUM_ASK_MAX = 0.97      # ngưỡng báo arb mua toàn bộ
-SUM_BID_MIN = 1.03      # ngưỡng báo chiều bán
-CRYPTO_EDGE_MIN = 0.08  # 8 điểm % lệch mới báo (vì mô hình bỏ qua skew)
-MIN_LIQUIDITY = 1000    # bỏ qua event thanh khoản quá mỏng
+NET_EDGE_MIN = 0.01     # lãi ròng >= 1%/bộ mới báo
+SUM_BID_MIN = 1.04      # chiều bán (tham khảo)
+CRYPTO_EDGE_MIN = 0.08  # 8 điểm % ròng
+MIN_LIQUIDITY = 1000
 
 
-# ---------------------------------------------------------------------------
-# Ngách 1: quét neg-risk sum
+def market_fee_rate(mk):
+    """Phí taker của market: feeSchedule.rate nếu feesEnabled, ngược lại 0.
+    (Đã kiểm chứng field trên response thật: feesEnabled, feeSchedule.rate.)"""
+    if not mk.get("feesEnabled"):
+        return 0.0
+    try:
+        return float((mk.get("feeSchedule") or {}).get("rate") or 0.05)
+    except (TypeError, ValueError):
+        return 0.05
+
+
+def taker_fee(rate, price):
+    return rate * price * (1.0 - price)
+
+
 # ---------------------------------------------------------------------------
 def fetch_active_events(max_pages=6):
     events, offset = [], 0
@@ -70,35 +82,40 @@ def scan_negrisk(events, now):
             continue
         if (ev.get("liquidity") or 0) < MIN_LIQUIDITY:
             continue
-        asks, bids, n_active = [], [], 0
+        asks, bids, fees, n_active = [], [], [], 0
         for mk in ev.get("markets", []):
             if mk.get("closed") or not mk.get("acceptingOrders"):
                 continue
             n_active += 1
             a, b = mk.get("bestAsk"), mk.get("bestBid")
             if a is None or b is None:
-                asks, bids = [], []
-                break  # thiếu báo giá 1 ô -> tổng không còn ý nghĩa
-            asks.append(float(a))
-            bids.append(float(b))
+                asks = []
+                break
+            a, b = float(a), float(b)
+            asks.append(a)
+            bids.append(b)
+            fees.append(taker_fee(market_fee_rate(mk), a))
         if not asks or n_active < 2:
             continue
-        s_ask, s_bid = sum(asks), sum(bids)
-        if s_ask <= SUM_ASK_MAX:
+        s_ask, s_bid, s_fee = sum(asks), sum(bids), sum(fees)
+        net = 1.0 - s_ask - s_fee
+        if net >= NET_EDGE_MIN:
             rows.append({
                 "scan_utc": now, "kind": "negrisk_buy_all",
                 "event_slug": ev.get("slug", ""),
-                "detail": f"{n_active} o, mua het = {s_ask:.3f}, tra ve 1.000",
-                "edge": round(1 - s_ask, 4), "sum_ask": round(s_ask, 4),
+                "detail": (f"{n_active} o | tong mua {s_ask:.3f} + phi {s_fee:.3f} "
+                           f"= {s_ask+s_fee:.3f} | nhan 1.000 | RONG {net:+.3f}"),
+                "edge": round(net, 4), "sum_ask": round(s_ask, 4),
                 "sum_bid": round(s_bid, 4), "market_prob": "", "model_prob": "",
                 "volume24hr": ev.get("volume24hr"), "liquidity": ev.get("liquidity"),
-                "note": "kiem tra do sau so lenh truoc khi vao; phi lam giam lai",
+                "note": ("MIEN PHI (geopolitics)" if s_fee == 0 else
+                         "da tru phi taker") + "; kiem tra do sau so lenh + gia con hieu luc",
             })
         elif s_bid >= SUM_BID_MIN:
             rows.append({
                 "scan_utc": now, "kind": "negrisk_sell_all",
                 "event_slug": ev.get("slug", ""),
-                "detail": f"{n_active} o, ban het = {s_bid:.3f} > 1.000",
+                "detail": f"{n_active} o, tong bid {s_bid:.3f} > 1 (chua tru phi)",
                 "edge": round(s_bid - 1, 4), "sum_ask": round(s_ask, 4),
                 "sum_bid": round(s_bid, 4), "market_prob": "", "model_prob": "",
                 "volume24hr": ev.get("volume24hr"), "liquidity": ev.get("liquidity"),
@@ -107,8 +124,6 @@ def scan_negrisk(events, now):
     return rows
 
 
-# ---------------------------------------------------------------------------
-# Ngách 2: crypto vs Deribit
 # ---------------------------------------------------------------------------
 CRYPTO_RE = re.compile(r"^(bitcoin|ethereum)-above-on-", re.I)
 STRIKE_RE = re.compile(r"above \$?([\d,]+(?:\.\d+)?)", re.I)
@@ -132,7 +147,7 @@ def deribit_spot_and_vol(ccy):
         "start_timestamp": now_ms - 6 * 3600 * 1000, "end_timestamp": now_ms,
     })
     try:
-        sigma = float(vol["result"]["data"][-1][4]) / 100.0  # close, %/nam
+        sigma = float(vol["result"]["data"][-1][4]) / 100.0
     except (TypeError, KeyError, IndexError):
         return spot, None
     return spot, sigma
@@ -153,7 +168,7 @@ def scan_crypto(events, now):
         if not m:
             continue
         ccy = CCY[m.group(1).lower()]
-        end = ev.get("endDate")  # da kiem chung: 16:00:00Z ngay muc tieu
+        end = ev.get("endDate")
         try:
             t_end = datetime.fromisoformat(end.replace("Z", "+00:00"))
         except (AttributeError, ValueError):
@@ -178,18 +193,20 @@ def scan_crypto(events, now):
             if p_model is None:
                 continue
             ask, bid = float(a), float(b)
-            edge_buy_yes = p_model - ask   # model noi xac suat cao hon gia mua Yes
-            edge_buy_no = bid - p_model    # model noi xac suat thap hon gia ban Yes
-            edge, action = ((edge_buy_yes, f"mua YES @{ask:.3f}")
-                            if edge_buy_yes >= edge_buy_no
-                            else (edge_buy_no, f"mua NO @{1-bid:.3f}"))
-            if edge >= CRYPTO_EDGE_MIN:
+            rate = market_fee_rate(mk)
+            # mua YES tai ask / mua NO tai (1-bid), tru phi taker tuong ung
+            net_yes = p_model - ask - taker_fee(rate, ask)
+            q = 1.0 - bid
+            net_no = bid - p_model - taker_fee(rate, q)
+            net, action = ((net_yes, f"mua YES @{ask:.3f}")
+                           if net_yes >= net_no else (net_no, f"mua NO @{q:.3f}"))
+            if net >= CRYPTO_EDGE_MIN:
                 rows.append({
                     "scan_utc": now, "kind": f"crypto_{ccy.lower()}",
                     "event_slug": mk.get("slug", ""),
-                    "detail": f"{ccy} > ${strike:,.0f} luc {end}; spot ${spot:,.0f}, "
-                              f"DVOL {sigma*100:.0f}%; {action}",
-                    "edge": round(edge, 4), "sum_ask": "", "sum_bid": "",
+                    "detail": (f"{ccy} > ${strike:,.0f} luc {end}; spot ${spot:,.0f}, "
+                               f"DVOL {sigma*100:.0f}%; {action}; RONG {net:+.3f} sau phi"),
+                    "edge": round(net, 4), "sum_ask": "", "sum_bid": "",
                     "market_prob": round((ask + bid) / 2, 4),
                     "model_prob": round(p_model, 4),
                     "volume24hr": mk.get("volume24hr"), "liquidity": mk.get("liquidityNum"),
@@ -208,13 +225,13 @@ def main():
 
     if rows:
         C.append_csv(OPP_CSV, OPP_FIELDS, rows)
-        print(f"\n=== TIM THAY {len(rows)} co hoi (xem data/opportunities.csv) ===")
+        print(f"\n=== TIM THAY {len(rows)} co hoi LAI RONG DUONG ===")
         for r in rows[:15]:
-            print(f"  [{r['kind']}] edge={r['edge']:+.3f} {r['event_slug']}")
+            print(f"  [{r['kind']}] rong={r['edge']:+.3f} {r['event_slug']}")
             print(f"      {r['detail']}")
     else:
-        print("Khong co co hoi nao vuot nguong o lan quet nay (binh thuong —"
-              " cac lech gia ro rang thuong bi bot chuyen nghiep hot trong vai giay).")
+        print("Khong co co hoi nao co lai RONG (sau phi) o lan quet nay."
+              " Day la binh thuong - bot tiep tuc quet moi gio.")
 
 
 if __name__ == "__main__":
