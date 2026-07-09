@@ -1,203 +1,288 @@
 # -*- coding: utf-8 -*-
 """
-collect.py — Chạy hàng ngày (GitHub Actions): chụp "snapshot" mọi thị trường
-"Highest temperature in <thành phố> on <ngày>?" đang mở trên Polymarket,
-kèm dự báo Tmax cùng ngày từ 5 mô hình thời tiết qua Open-Meteo.
+common.py — Hàm dùng chung cho hệ thống theo dõi thị trường nhiệt độ Polymarket.
 
-Mỗi lần chạy ghi thêm:
-  data/snapshots.csv        — 1 dòng / event / lần chạy (dữ liệu phẳng, dễ phân tích)
-  data/snapshots_full.jsonl — toàn bộ vector xác suất bucket (chi tiết đầy đủ)
-
-Thiết kế quan trọng:
-- Khám phá event qua tag "Highest temperature" (id 104596) + lưới an toàn là
-  lọc tiêu đề bằng regex, nên khi Polymarket thêm thành phố mới thì tự bắt được.
-- Dự báo lấy tại TỌA ĐỘ TRẠM PHÂN GIẢI (sân bay/HKO), không phải trung tâm
-  thành phố — vì thị trường phân giải bằng số đo của trạm đó.
-- lead_days = ngày mục tiêu − ngày hiện tại tại trạm (theo múi giờ trạm).
-  Phân tích pattern chủ yếu dùng lead_days >= 1 (dự báo trước ít nhất 1 ngày).
+Toàn bộ chỉ dùng thư viện chuẩn của Python (không cần pip install gì).
+Mọi cấu trúc dữ liệu ở đây được viết dựa trên response THẬT đã kiểm chứng
+ngày 2026-07-09 từ:
+  - gamma-api.polymarket.com  (events, markets, tags)
+  - api.open-meteo.com        (daily=temperature_2m_max, models=...)
+  - mesonet.agron.iastate.edu (IEM - dữ liệu METAR trạm, nguồn tương đương Wunderground)
+  - data.weather.gov.hk       (HKO CLMMAXT - nguồn phân giải của thị trường Hong Kong)
 """
+import csv
 import json
-from datetime import datetime, timezone
+import os
+import re
+import time
+import urllib.parse
+import urllib.request
+from datetime import date, datetime, timezone
 
-try:
-    from zoneinfo import ZoneInfo
-except ImportError:  # Python < 3.9
-    ZoneInfo = None
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, "data")
+SNAPSHOTS_CSV = os.path.join(DATA_DIR, "snapshots.csv")
+SNAPSHOTS_JSONL = os.path.join(DATA_DIR, "snapshots_full.jsonl")
+RESULTS_CSV = os.path.join(DATA_DIR, "results.csv")
+STATIONS_JSON = os.path.join(DATA_DIR, "stations.json")
 
-import common as C
+GAMMA = "https://gamma-api.polymarket.com"
+OPEN_METEO = "https://api.open-meteo.com/v1/forecast"
+OPEN_METEO_ARCHIVE = "https://archive-api.open-meteo.com/v1/archive"
+IEM = "https://mesonet.agron.iastate.edu/api/1"
+HKO = "https://data.weather.gov.hk/weatherAPI/opendata/opendata.php"
+GEOCODE = "https://geocoding-api.open-meteo.com/v1/search"
 
-SNAPSHOT_FIELDS = [
-    "snapshot_utc", "event_slug", "city", "target_date", "lead_days",
-    "unit", "precision", "station_kind", "station_id", "lat", "lon", "tz",
-    "n_buckets", "pm_top_bucket", "pm_top_prob", "pm_top_bid", "pm_top_ask",
-    "pm_ev_c", "volume24hr", "liquidity",
-    "fc_ecmwf_ifs025_c", "fc_gfs_seamless_c", "fc_icon_seamless_c",
-    "fc_ukmo_seamless_c", "fc_best_match_c",
+# Tag id "Highest temperature" trên Polymarket (kiểm chứng 2026-07-09).
+# Nếu tag đổi, collect.py còn lớp dự phòng lọc theo tiêu đề event.
+TAG_HIGHEST_TEMPERATURE = "104596"
+TAG_DAILY_TEMPERATURE = "103040"
+
+# Các mô hình dự báo lấy từ Open-Meteo (đã kiểm chứng tên biến trả về:
+# daily.temperature_2m_max_<model>). best_match = mô hình tốt nhất
+# Open-Meteo tự chọn cho từng vị trí.
+FORECAST_MODELS = [
+    "ecmwf_ifs025",   # ECMWF IFS (châu Âu) - thường chính xác nhất thế giới
+    "gfs_seamless",   # NOAA GFS (Mỹ)
+    "icon_seamless",  # DWD ICON (Đức)
+    "ukmo_seamless",  # UK Met Office (Anh)
+    "best_match",     # Open-Meteo tự chọn mô hình tốt nhất cho vị trí
 ]
 
-TITLE_RE = "Highest temperature in"
+UA = "polymarket-temp-tracker/1.0 (nghien cuu do chinh xac du bao; lien he qua GitHub)"
 
 
-def fetch_temperature_events():
-    """Lấy toàn bộ event nhiệt độ đang mở, phân trang đầy đủ."""
-    events, seen = [], set()
-    for tag in (C.TAG_HIGHEST_TEMPERATURE, C.TAG_DAILY_TEMPERATURE):
-        offset = 0
-        while True:
-            page = C.http_get_json(f"{C.GAMMA}/events", {
-                "tag_id": tag, "closed": "false", "active": "true",
-                "limit": 100, "offset": offset,
-            })
-            if not page:
-                break
-            for ev in page:
-                if ev.get("slug") in seen:
-                    continue
-                if TITLE_RE.lower() in (ev.get("title") or "").lower():
-                    seen.add(ev["slug"])
-                    events.append(ev)
-            if len(page) < 100:
-                break
-            offset += 100
-    return events
-
-
-def parse_markets(event):
-    """Trích bucket + xác suất từ các market con. outcomePrices là chuỗi JSON
-    (đã kiểm chứng): '["0.0005", "0.9995"]' với index 0 = Yes."""
-    buckets = []
-    for mk in event.get("markets", []):
-        b = C.parse_bucket(mk.get("groupItemTitle"))
-        if b is None:
-            continue
+def http_get_json(url, params=None, retries=3, timeout=30):
+    """GET JSON với retry + backoff. Trả về None nếu thất bại hẳn."""
+    if params:
+        url = url + ("&" if "?" in url else "?") + urllib.parse.urlencode(params)
+    last_err = None
+    for attempt in range(retries):
         try:
-            prices = json.loads(mk.get("outcomePrices") or "[]")
-            p_yes = float(prices[0])
-        except (ValueError, IndexError, TypeError):
-            p_yes = None
-        buckets.append({
-            "bucket": b,
-            "label": C.bucket_label(b),
-            "p_yes": p_yes,
-            "bid": mk.get("bestBid"),
-            "ask": mk.get("bestAsk"),
-            "volume": mk.get("volumeNum"),
-            "slug": mk.get("slug"),
-        })
-    return buckets
+            req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/json"})
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                return json.loads(resp.read().decode("utf-8"))
+        except Exception as e:  # noqa: BLE001
+            last_err = e
+            time.sleep(2 ** attempt)
+    print(f"  [LOI] GET {url} -> {last_err}")
+    return None
 
 
-def get_forecasts(lat, lon, target_date):
-    """Tmax (°C) cho target_date từ 5 mô hình. Đã kiểm chứng cấu trúc:
-    daily.time + daily.temperature_2m_max_<model>."""
-    j = C.http_get_json(C.OPEN_METEO, {
-        "latitude": round(lat, 4), "longitude": round(lon, 4),
-        "daily": "temperature_2m_max",
-        "models": ",".join(C.FORECAST_MODELS),
-        "timezone": "auto", "forecast_days": 8,
-    })
-    out = {m: None for m in C.FORECAST_MODELS}
-    try:
-        times = j["daily"]["time"]
-        idx = times.index(target_date)
-    except (TypeError, KeyError, ValueError):
-        return out
-    for m in C.FORECAST_MODELS:
-        key = f"temperature_2m_max_{m}"
-        if key not in j["daily"] and len(C.FORECAST_MODELS) == 1:
-            key = "temperature_2m_max"
-        vals = j["daily"].get(key)
-        if vals and idx < len(vals) and vals[idx] is not None:
-            out[m] = round(float(vals[idx]), 1)
-    return out
+def f_to_c(f):
+    return (f - 32.0) * 5.0 / 9.0
 
 
-def local_today(tzname):
-    if ZoneInfo and tzname:
+def c_to_f(c):
+    return c * 9.0 / 5.0 + 32.0
+
+
+# ---------------------------------------------------------------------------
+# Parse bucket nhiệt độ từ groupItemTitle của market.
+# Các dạng đã thấy trên thị trường thật: "24°C", "23°C or below", "33°C or higher",
+# "14°C or below", "35°C or higher". Dạng °F (thị trường Mỹ trước đây):
+# "84°F", "82°F or below", "84-85°F", "86°F or higher", "86°F+".
+# ---------------------------------------------------------------------------
+BUCKET_RE = re.compile(
+    r"^\s*(-?\d+)\s*(?:[-–]\s*(-?\d+)\s*)?°\s*([CF])\s*(or below|or lower|or higher|or above|\+)?\s*$",
+    re.IGNORECASE,
+)
+
+
+def parse_bucket(title):
+    """Trả về dict {'lo','hi','unit','kind'} hoặc None.
+    kind: 'le' (<=), 'ge' (>=), 'eq' (đúng 1 độ), 'range' (khoảng)."""
+    if not title:
+        return None
+    m = BUCKET_RE.match(title.strip())
+    if not m:
+        return None
+    v1 = int(m.group(1))
+    v2 = int(m.group(2)) if m.group(2) else None
+    unit = m.group(3).upper()
+    suffix = (m.group(4) or "").lower()
+    if suffix in ("or below", "or lower"):
+        return {"lo": None, "hi": v1, "unit": unit, "kind": "le"}
+    if suffix in ("or higher", "or above", "+"):
+        return {"lo": v1, "hi": None, "unit": unit, "kind": "ge"}
+    if v2 is not None:
+        return {"lo": v1, "hi": v2, "unit": unit, "kind": "range"}
+    return {"lo": v1, "hi": v1, "unit": unit, "kind": "eq"}
+
+
+def bucket_contains(bucket, value_native, precision="whole"):
+    """value_native: nhiệt độ thực đo theo ĐƠN VỊ GỐC của thị trường.
+    precision: 'whole' (làm tròn nguyên độ - Seoul/°F) hay 'decimal'
+    (1 chữ số thập phân, bucket N chứa [N, N+1) - Hong Kong)."""
+    if value_native is None or bucket is None:
+        return None
+    if precision == "decimal":
+        v = value_native
+        if bucket["kind"] == "le":
+            return v < bucket["hi"] + 1
+        if bucket["kind"] == "ge":
+            return v >= bucket["lo"]
+        return bucket["lo"] <= v < bucket["hi"] + 1
+    # whole: giá trị phân giải là số nguyên
+    v = round(value_native)
+    if bucket["kind"] == "le":
+        return v <= bucket["hi"]
+    if bucket["kind"] == "ge":
+        return v >= bucket["lo"]
+    return bucket["lo"] <= v <= bucket["hi"]
+
+
+def bucket_mid_c(bucket, precision="whole"):
+    """Điểm giữa bucket, đổi về °C — dùng tính kỳ vọng (EV) của thị trường.
+    Bucket mở ('or below'/'or higher') lấy mép ± 0.5 độ (quy ước, có ghi chú)."""
+    if bucket is None:
+        return None
+    if bucket["kind"] == "le":
+        mid = bucket["hi"] - 0.5
+    elif bucket["kind"] == "ge":
+        mid = bucket["lo"] + 0.5
+    else:
+        mid = (bucket["lo"] + bucket["hi"]) / 2.0
+        if precision == "decimal":  # bucket N = [N, N+1)
+            mid += 0.5
+    return f_to_c(mid) if bucket["unit"] == "F" else mid
+
+
+def bucket_label(bucket):
+    if bucket is None:
+        return ""
+    u = "°" + bucket["unit"]
+    if bucket["kind"] == "le":
+        return f"<={bucket['hi']}{u}"
+    if bucket["kind"] == "ge":
+        return f">={bucket['lo']}{u}"
+    if bucket["kind"] == "range":
+        return f"{bucket['lo']}-{bucket['hi']}{u}"
+    return f"{bucket['lo']}{u}"
+
+
+# ---------------------------------------------------------------------------
+# Xác định trạm quan trắc từ resolutionSource của event.
+# Đã kiểm chứng 2 loại nguồn phân giải:
+#  1) Wunderground: https://www.wunderground.com/history/daily/kr/incheon/RKSI
+#     -> mã ICAO ở cuối URL; dữ liệu gốc là METAR của trạm — IEM cung cấp
+#     đúng dữ liệu này miễn phí (max_tmpf theo °F).
+#  2) Hong Kong Observatory: https://www.weather.gov.hk/en/cis/climat.htm
+#     -> trạm HKO (22.302N 114.174E), "Absolute Daily Max" 1 chữ số thập phân.
+# ---------------------------------------------------------------------------
+def resolve_station(event, station_cache):
+    src = (event.get("resolutionSource") or "").strip()
+    desc = event.get("description") or ""
+
+    if "weather.gov.hk" in src or "Hong Kong Observatory" in desc:
+        return {
+            "kind": "hko", "id": "HKO", "network": "",
+            "lat": 22.302, "lon": 114.174, "tz": "Asia/Hong_Kong",
+            "precision": "decimal",
+        }
+
+    # Mã trạm ICAO là ĐOẠN CUỐI của URL Wunderground, đúng 4 ký tự in hoa.
+    # (URL Mỹ có dạng .../daily/us/ny/new-york-city/KLGA — nếu lấy đoạn giữa
+    # sẽ dính tên thành phố; đã sửa sau khi phát hiện NYC bị gán nhầm trạm.)
+    icao = None
+    if "wunderground.com/history/daily/" in src:
+        path = src.split("wunderground.com/history/daily/", 1)[1]
+        segs = [s for s in re.split(r"[/?#]", path) if s]
+        last = segs[-1] if segs else ""
+        if re.fullmatch(r"[A-Z0-9]{4}", last):
+            icao = last
+    if icao:
+        meta = station_cache.get(icao)
+        if not meta:
+            j = http_get_json(f"{IEM}/station/{icao}.json")
+            try:
+                row = j["data"][0]
+                meta = {
+                    "kind": "metar", "id": icao, "network": row["network"],
+                    "lat": row["latitude"], "lon": row["longitude"],
+                    "tz": row["tzname"],
+                }
+            except (TypeError, KeyError, IndexError):
+                meta = None
+            if meta:
+                station_cache[icao] = meta
+        if meta:
+            out = dict(meta)
+            out["precision"] = "decimal" if "one decimal" in desc else "whole"
+            return out
+
+    # Dự phòng: geocode theo tên thành phố trong ticker
+    city = city_from_ticker(event.get("ticker") or event.get("slug") or "")
+    if city:
+        j = http_get_json(GEOCODE, {"name": city.replace("-", " "), "count": 1})
         try:
-            return datetime.now(ZoneInfo(tzname)).date()
-        except Exception:  # noqa: BLE001
+            r = j["results"][0]
+            return {
+                "kind": "geocode", "id": city, "network": "",
+                "lat": r["latitude"], "lon": r["longitude"], "tz": r["timezone"],
+                "precision": "decimal" if "one decimal" in desc else "whole",
+            }
+        except (TypeError, KeyError, IndexError):
             pass
-    return C.today_utc()
+    return None
 
 
-def main():
-    now_utc = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    station_cache = C.load_station_cache()
-    events = fetch_temperature_events()
-    print(f"Tim thay {len(events)} event nhiet do dang mo.")
-
-    # chống ghi trùng: mỗi event chỉ 1 snapshot / ngày UTC
-    existing = {(r["event_slug"], r["snapshot_utc"][:10]) for r in C.read_csv(C.SNAPSHOTS_CSV)}
-
-    rows, full_rows = [], []
-    for ev in events:
-        slug = ev.get("slug", "")
-        target = C.date_from_event(ev)
-        city = C.city_from_ticker(ev.get("ticker") or slug) or ""
-        if not target or (slug, now_utc[:10]) in existing:
-            continue
-        station = C.resolve_station(ev, station_cache)
-        if not station:
-            print(f"  [BO QUA] khong xac dinh duoc tram: {slug}")
-            continue
-        # Bỏ qua event "rác" còn sót: ngày mục tiêu đã qua từ trước khi ta theo dõi
-        if (C.parse_iso_date(target) - local_today(station["tz"])).days < 0:
-            continue
-        buckets = parse_markets(ev)
-        if not buckets:
-            print(f"  [BO QUA] khong parse duoc bucket: {slug}")
-            continue
-
-        unit = buckets[0]["bucket"]["unit"]
-        precision = station["precision"]
-        lead = (C.parse_iso_date(target) - local_today(station["tz"])).days
-
-        # EV = trung bình có trọng số xác suất của điểm giữa các bucket (°C)
-        wsum = sum(b["p_yes"] for b in buckets if b["p_yes"] is not None)
-        ev_c = None
-        if wsum and wsum > 0.5:  # bỏ qua nếu giá quá thiếu (thị trường mới mở)
-            ev_c = round(sum(
-                (b["p_yes"] or 0) * C.bucket_mid_c(b["bucket"], precision)
-                for b in buckets if b["p_yes"] is not None) / wsum, 2)
-
-        top = max(buckets, key=lambda b: (b["p_yes"] or 0))
-        fc = get_forecasts(station["lat"], station["lon"], target)
-
-        rows.append({
-            "snapshot_utc": now_utc, "event_slug": slug, "city": city,
-            "target_date": target, "lead_days": lead,
-            "unit": unit, "precision": precision,
-            "station_kind": station["kind"], "station_id": station["id"],
-            "lat": station["lat"], "lon": station["lon"], "tz": station["tz"],
-            "n_buckets": len(buckets),
-            "pm_top_bucket": top["label"], "pm_top_prob": top["p_yes"],
-            "pm_top_bid": top["bid"], "pm_top_ask": top["ask"],
-            "pm_ev_c": ev_c,
-            "volume24hr": ev.get("volume24hr"), "liquidity": ev.get("liquidity"),
-            "fc_ecmwf_ifs025_c": fc["ecmwf_ifs025"],
-            "fc_gfs_seamless_c": fc["gfs_seamless"],
-            "fc_icon_seamless_c": fc["icon_seamless"],
-            "fc_ukmo_seamless_c": fc["ukmo_seamless"],
-            "fc_best_match_c": fc["best_match"],
-        })
-        full_rows.append({
-            "snapshot_utc": now_utc, "event_slug": slug, "target_date": target,
-            "buckets": [{"label": b["label"], "p": b["p_yes"],
-                         "bid": b["bid"], "ask": b["ask"], "vol": b["volume"]}
-                        for b in buckets],
-            "forecasts_c": fc,
-        })
-        print(f"  OK {slug} (lead {lead}d, top {top['label']} @ {top['p_yes']})")
-
-    if rows:
-        C.append_csv(C.SNAPSHOTS_CSV, SNAPSHOT_FIELDS, rows)
-        with open(C.SNAPSHOTS_JSONL, "a", encoding="utf-8") as f:
-            for r in full_rows:
-                f.write(json.dumps(r, ensure_ascii=False) + "\n")
-    C.save_station_cache(station_cache)
-    print(f"Da ghi {len(rows)} snapshot.")
+TICKER_RE = re.compile(r"highest-temperature-in-(.+?)-on-([a-z]+)-(\d{1,2})-(\d{4})")
+MONTHS = {m: i + 1 for i, m in enumerate(
+    ["january", "february", "march", "april", "may", "june", "july",
+     "august", "september", "october", "november", "december"])}
 
 
-if __name__ == "__main__":
-    main()
+def city_from_ticker(ticker):
+    m = TICKER_RE.match(ticker or "")
+    return m.group(1) if m else None
+
+
+def date_from_event(event):
+    """Ngày mục tiêu của thị trường (theo giờ địa phương thành phố)."""
+    if event.get("eventDate"):
+        return event["eventDate"]  # đã kiểm chứng: "2026-07-09"
+    m = TICKER_RE.match(event.get("ticker") or event.get("slug") or "")
+    if m:
+        mon = MONTHS.get(m.group(2))
+        if mon:
+            return f"{int(m.group(4)):04d}-{mon:02d}-{int(m.group(3)):02d}"
+    return None
+
+
+def load_station_cache():
+    if os.path.exists(STATIONS_JSON):
+        with open(STATIONS_JSON, encoding="utf-8") as f:
+            return json.load(f)
+    return {}
+
+
+def save_station_cache(cache):
+    os.makedirs(DATA_DIR, exist_ok=True)
+    with open(STATIONS_JSON, "w", encoding="utf-8") as f:
+        json.dump(cache, f, ensure_ascii=False, indent=1)
+
+
+def append_csv(path, fieldnames, rows):
+    os.makedirs(DATA_DIR, exist_ok=True)
+    exists = os.path.exists(path)
+    with open(path, "a", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
+        if not exists:
+            w.writeheader()
+        w.writerows(rows)
+
+
+def read_csv(path):
+    if not os.path.exists(path):
+        return []
+    with open(path, newline="", encoding="utf-8") as f:
+        return list(csv.DictReader(f))
+
+
+def today_utc():
+    return datetime.now(timezone.utc).date()
+
+
+def parse_iso_date(s):
+    return date.fromisoformat(s)
