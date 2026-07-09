@@ -38,10 +38,14 @@ jobs:
       - name: Doi chieu ket qua ngay da qua
         run: python verify.py
 
+      - name: Gia lap giao dich 200 do (tien ao)
+        run: python paper_trade.py
+
       - name: Luu du lieu vao repo
         run: |
           git config user.name "temp-tracker-bot"
           git config user.email "actions@users.noreply.github.com"
+          git pull --rebase || true
           git add data/
           git diff --cached --quiet || git commit -m "du lieu $(date -u +%Y-%m-%dT%H:%M)"
           git push
