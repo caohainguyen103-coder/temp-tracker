@@ -251,10 +251,12 @@ def date_from_event(event):
 
 
 def load_station_cache():
-    if os.path.exists(STATIONS_JSON):
+    try:
         with open(STATIONS_JSON, encoding="utf-8") as f:
             return json.load(f)
-    return {}
+    except (OSError, ValueError):
+        # file chưa có hoặc rỗng/hỏng -> bắt đầu cache mới
+        return {}
 
 
 def save_station_cache(cache):
@@ -265,7 +267,8 @@ def save_station_cache(cache):
 
 def append_csv(path, fieldnames, rows):
     os.makedirs(DATA_DIR, exist_ok=True)
-    exists = os.path.exists(path)
+    # coi file rỗng (0 byte) như chưa tồn tại để vẫn ghi dòng tiêu đề
+    exists = os.path.exists(path) and os.path.getsize(path) > 0
     with open(path, "a", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
         if not exists:
