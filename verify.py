@@ -6,18 +6,18 @@ rồi ghi vào data/results.csv.
 
 Nguồn "nhiệt độ thực đo" — theo thứ tự ưu tiên, có ghi rõ nguồn:
  1. resolved_bucket: bucket mà thị trường đã phân giải (outcomePrices -> 1.0).
-    Đây là chân lý tuyệt đối về mặt "thị trường trả tiền cho ai".
- 2. actual_c:
-    a) Trạm METAR qua IEM (mesonet.agron.iastate.edu) — cùng dữ liệu gốc với
-       Wunderground mà Polymarket dùng phân giải. (kind=metar)
-    b) HKO CLMMAXT — nguồn phân giải chính thức của Hong Kong, nhưng công bố
-       chậm; nếu chưa có thì dùng METAR sân bay VHHH làm proxy (ghi rõ).
-    c) Open-Meteo past_days/archive (phân tích lưới mô hình) — CHỈ là phương án
-       cuối, vì đã kiểm chứng nó có thể lệch trạm thật vài °C (Incheon 7/7:
-       lưới 24.8°C vs trạm 30.0°C).
-Kiểm chứng thực tế 2026-07-09: các endpoint và cấu trúc field đều đúng như code.
+ 2. actual_c: trạm METAR qua IEM (cùng dữ liệu gốc với Wunderground);
+    HKO cho Hong Kong; lưới Open-Meteo chỉ là phương án cuối (ghi rõ nguồn).
+
+Ghi chú vận hành (rút ra từ dữ liệu thật ngày đầu):
+ - Thị trường thường phân giải sau khi nguồn công bố datapoint đầu tiên của
+   ngày hôm sau -> ta CHỜ tối đa RESOLVE_WAIT_DAYS ngày cho đến khi có bucket
+   thắng cuộc rồi mới ghi, tránh ghi sớm bị trống cột resolved_bucket.
+ - Trạm Mỹ trong IEM dùng mã 3 ký tự + network theo bang (LGA/NY_ASOS),
+   không phải ICAO 4 ký tự (KLGA) -> có bước thử lại bỏ chữ K đầu.
 """
 import json
+import re
 from datetime import datetime, timedelta, timezone
 
 import common as C
@@ -29,7 +29,8 @@ RESULT_FIELDS = [
     "verify_utc",
 ]
 
-MAX_WAIT_DAYS = 12  # sau chừng này ngày mà không phân giải được thì ghi nhận unresolved
+RESOLVE_WAIT_DAYS = 4   # chờ thị trường phân giải tối đa chừng này ngày
+MAX_WAIT_DAYS = 12      # quá hạn này thì ghi nhận UNRESOLVED
 
 
 def get_resolved_bucket(slug):
@@ -54,27 +55,45 @@ def get_resolved_bucket(slug):
     return None, closed
 
 
+def iem_lookup_network(sid):
+    j = C.http_get_json(f"{C.IEM}/station/{sid}.json")
+    try:
+        return j["data"][0]["network"]
+    except (TypeError, KeyError, IndexError):
+        return None
+
+
 def actual_from_iem(station_id, network, target_date):
-    """IEM daily summary: max_tmpf (°F) tính từ METAR, ngày theo giờ địa phương trạm.
+    """IEM daily summary: max_tmpf (°F) tính từ METAR, ngày theo giờ địa
+    phương trạm. Trạm Mỹ: thử thêm mã bỏ chữ K (KLGA -> LGA, network NY_ASOS).
     Trả về (°C, °F)."""
     d = C.parse_iso_date(target_date)
-    j = C.http_get_json(f"{C.IEM}/daily.json", {
-        "station": station_id, "network": network,
-        "year": d.year, "month": d.month,
-    })
-    try:
-        for row in j["data"]:
-            if row["date"] == target_date and row["max_tmpf"] is not None:
-                f = float(row["max_tmpf"])
-                return round(C.f_to_c(f), 1), round(f, 1)
-    except (TypeError, KeyError):
-        pass
+    candidates = [(station_id, network)]
+    if re.fullmatch(r"K[A-Z0-9]{3}", station_id or ""):
+        sid2 = station_id[1:]
+        net2 = iem_lookup_network(sid2)
+        if net2:
+            candidates.append((sid2, net2))
+    for sid, net in candidates:
+        if not net:
+            continue
+        j = C.http_get_json(f"{C.IEM}/daily.json", {
+            "station": sid, "network": net,
+            "year": d.year, "month": d.month,
+        })
+        try:
+            for row in j["data"]:
+                if row["date"] == target_date and row["max_tmpf"] is not None:
+                    f = float(row["max_tmpf"])
+                    return round(C.f_to_c(f), 1), round(f, 1)
+        except (TypeError, KeyError):
+            pass
     return None, None
 
 
 def actual_from_hko(target_date):
-    """HKO CLMMAXT (°C, 1 chữ số thập phân) — nguồn phân giải chính thức của HK.
-    Lưu ý: bộ dữ liệu này công bố chậm; thường trả rỗng cho tháng hiện tại."""
+    """HKO CLMMAXT (°C, 1 chữ số thập phân) — nguồn phân giải chính thức của
+    HK; công bố chậm, thường rỗng cho tháng hiện tại."""
     d = C.parse_iso_date(target_date)
     j = C.http_get_json(C.HKO, {
         "dataType": "CLMMAXT", "rformat": "json", "station": "HKO",
@@ -91,8 +110,7 @@ def actual_from_hko(target_date):
 
 
 def actual_from_openmeteo(lat, lon, target_date, unit):
-    """Phương án cuối: phân tích lưới của Open-Meteo (best_match).
-    <=6 ngày trước: forecast API + past_days; cũ hơn: archive API (ERA5)."""
+    """Phương án cuối: phân tích lưới Open-Meteo (best_match)."""
     days_ago = (C.today_utc() - C.parse_iso_date(target_date)).days
     if days_ago <= 6:
         j = C.http_get_json(C.OPEN_METEO, {
@@ -119,19 +137,12 @@ def actual_from_openmeteo(lat, lon, target_date, unit):
 
 
 def station_network(snapshot_row):
-    """Network IEM được cache trong stations.json khi collect; nếu thiếu cache
-    thì hỏi thẳng IEM (đã kiểm chứng endpoint /api/1/station/{id}.json)."""
     sid = snapshot_row["station_id"]
     cache = C.load_station_cache()
     meta = cache.get(sid)
     if meta and meta.get("network"):
         return meta["network"]
-    j = C.http_get_json(f"{C.IEM}/station/{sid}.json")
-    try:
-        return j["data"][0]["network"]
-    except (TypeError, KeyError, IndexError):
-        # đoán cuối cùng theo 2 ký tự đầu mã ICAO (KR, CN, ...)
-        return sid[:2] + "__ASOS"
+    return iem_lookup_network(sid) or (sid[:2] + "__ASOS")
 
 
 def main():
@@ -139,7 +150,6 @@ def main():
     done = {r["event_slug"] for r in C.read_csv(C.RESULTS_CSV)}
     today = C.today_utc()
 
-    # mỗi event 1 lần verify; chỉ xét ngày mục tiêu đã qua ít nhất 1 ngày
     pending = {}
     for r in snaps:
         if r["event_slug"] in done:
@@ -154,20 +164,25 @@ def main():
         resolved, closed = get_resolved_bucket(slug)
         age = (today - C.parse_iso_date(r["target_date"])).days
 
+        # Chưa phân giải và còn trong hạn chờ -> để mai verify lại,
+        # tránh ghi sớm làm trống cột resolved_bucket vĩnh viễn.
+        if resolved is None and age < RESOLVE_WAIT_DAYS:
+            print(f"  [CHO] {slug}: thi truong chua phan giai (thu lai sau)")
+            continue
+
         actual_c = actual_native = None
         source = ""
         kind = r["station_kind"]
         if kind == "metar":
             actual_c, actual_f = actual_from_iem(
                 r["station_id"], station_network(r), r["target_date"])
-            # actual_native = giá trị theo đơn vị gốc của thị trường
             actual_native = actual_f if r["unit"] == "F" else actual_c
             source = "iem_metar" if actual_c is not None else ""
         elif kind == "hko":
             actual_c, actual_native = actual_from_hko(r["target_date"])
             source = "hko_official" if actual_c is not None else ""
             if actual_c is None:
-                actual_c, actual_f = actual_from_iem("VHHH", "HK__ASOS", r["target_date"])
+                actual_c, _f = actual_from_iem("VHHH", "HK__ASOS", r["target_date"])
                 actual_native = actual_c
                 source = "iem_vhhh_proxy" if actual_c is not None else ""
         if actual_c is None:
@@ -176,7 +191,7 @@ def main():
             source = "openmeteo_grid" if actual_c is not None else ""
 
         if resolved is None and actual_c is None and age < MAX_WAIT_DAYS:
-            print(f"  [CHO] {slug}: chua co ket qua (thu lai ngay mai)")
+            print(f"  [CHO] {slug}: chua co so lieu thuc do (thu lai sau)")
             continue
         if resolved is None and age >= MAX_WAIT_DAYS and actual_c is None:
             resolved = "UNRESOLVED"
