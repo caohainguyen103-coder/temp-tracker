@@ -141,6 +141,9 @@ def main():
         if not station:
             print(f"  [BO QUA] khong xac dinh duoc tram: {slug}")
             continue
+        # Bỏ qua event "rác" còn sót: ngày mục tiêu đã qua từ trước khi ta theo dõi
+        if (C.parse_iso_date(target) - local_today(station["tz"])).days < 0:
+            continue
         buckets = parse_markets(ev)
         if not buckets:
             print(f"  [BO QUA] khong parse duoc bucket: {slug}")
