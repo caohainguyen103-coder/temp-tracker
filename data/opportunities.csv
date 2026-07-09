@@ -1,0 +1,2 @@
+scan_utc,kind,event_slug,detail,edge,sum_ask,sum_bid,market_prob,model_prob,volume24hr,liquidity,note
+2026-07-09T04:41:05Z,negrisk_buy_all,highest-temperature-in-wellington-on-july-10-2026,"11 o, mua het = 0.960, tra ve 1.000",0.04,0.96,0.896,,,20271.903384999998,97555.53206,kiem tra do sau so lenh truoc khi vao; phi lam giam lai
