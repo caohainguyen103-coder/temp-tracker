@@ -1,0 +1,38 @@
+# Bot quét cơ hội Polymarket — chạy mỗi 4 giờ, chỉ quét và báo cáo.
+name: Quet co hoi Polymarket
+
+on:
+  schedule:
+    - cron: "25 */4 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: scan
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Lay code
+        uses: actions/checkout@v4
+
+      - name: Cai Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Quet co hoi
+        run: python scan.py
+
+      - name: Luu bao cao
+        run: |
+          git config user.name "temp-tracker-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git pull --rebase || true
+          git add data/
+          git diff --cached --quiet || git commit -m "quet co hoi $(date -u +%Y-%m-%dT%H:%M)"
+          git push
