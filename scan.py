@@ -215,6 +215,69 @@ def scan_crypto(events, now):
     return rows
 
 
+# ---------------------------------------------------------------------------
+# GIẢ LẬP ARBITRAGE $200 (tiền ảo): mỗi khi thấy negrisk_buy_all lãi ròng
+# dương, "mua trọn bộ" ảo — tối đa $50/cơ hội và 25 bộ (giả định khiêm tốn
+# về độ sâu sổ lệnh). Tiền về khi event kết thúc (endDate).
+# ---------------------------------------------------------------------------
+ARB_CSV = C.DATA_DIR + "/arb_trades.csv"
+ARB_FIELDS = ["entry_utc", "event_slug", "end_date", "sets", "cost_per_set",
+              "total_cost", "payout_per_set", "locked_profit", "status", "settle_utc"]
+ARB_BUDGET = 200.0
+ARB_MAX_PER_OP = 50.0
+ARB_MAX_SETS = 25
+
+
+def paper_arb(rows, events, now):
+    import csv as _csv
+    trades = C.read_csv(ARB_CSV)
+    # 1) giải phóng vốn: event đã kết thúc -> settled
+    for t in trades:
+        if t["status"] == "open" and t["end_date"] and t["end_date"] < now:
+            t["status"], t["settle_utc"] = "settled", now
+    # 2) tiền khả dụng
+    cash = ARB_BUDGET
+    for t in trades:
+        if t["status"] == "open":
+            cash -= float(t["total_cost"])
+        else:
+            cash += float(t["locked_profit"])
+    ends = {ev.get("slug"): ev.get("endDate", "") for ev in events}
+    held = {t["event_slug"] for t in trades if t["status"] == "open"}
+    n_new = 0
+    for r in rows:
+        if r["kind"] != "negrisk_buy_all" or r["event_slug"] in held:
+            continue
+        cost_per_set = 1.0 - float(r["edge"])  # = sum_ask + phí
+        alloc = min(ARB_MAX_PER_OP, cash)
+        sets = min(int(alloc // cost_per_set), ARB_MAX_SETS)
+        if sets < 1:
+            continue
+        total = round(sets * cost_per_set, 2)
+        trades.append({
+            "entry_utc": now, "event_slug": r["event_slug"],
+            "end_date": ends.get(r["event_slug"], ""), "sets": sets,
+            "cost_per_set": round(cost_per_set, 4), "total_cost": total,
+            "payout_per_set": 1.0,
+            "locked_profit": round(sets * float(r["edge"]), 2),
+            "status": "open", "settle_utc": "",
+        })
+        cash -= total
+        held.add(r["event_slug"])
+        n_new += 1
+        print(f"  [ARB AO] mua {sets} bo '{r['event_slug']}' @ {cost_per_set:.3f} "
+              f"-> loi khoa chat {sets * float(r['edge']):.2f} USD")
+    import os as _os
+    _os.makedirs(C.DATA_DIR, exist_ok=True)
+    with open(ARB_CSV, "w", newline="", encoding="utf-8") as f:
+        w = _csv.DictWriter(f, fieldnames=ARB_FIELDS, extrasaction="ignore")
+        w.writeheader()
+        w.writerows(trades)
+    realized = sum(float(t["locked_profit"]) for t in trades if t["status"] != "open")
+    locked = sum(float(t["locked_profit"]) for t in trades if t["status"] == "open")
+    print(f"  [ARB AO] vi the moi: {n_new} | loi da ve: {realized:+.2f} | dang khoa: {locked:+.2f}")
+
+
 def main():
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     events = fetch_active_events()
@@ -222,6 +285,8 @@ def main():
 
     rows = scan_negrisk(events, now) + scan_crypto(events, now)
     rows.sort(key=lambda r: -(r["edge"] or 0))
+
+    paper_arb(rows, events, now)
 
     if rows:
         C.append_csv(OPP_CSV, OPP_FIELDS, rows)

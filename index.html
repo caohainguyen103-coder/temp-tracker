@@ -67,6 +67,11 @@
     "Mua trọn bộ" = tổng giá mua mọi kết cục &lt; $1 → mua hết mọi ô là chắc chắn nhận $1, lãi = phần chênh (chưa trừ phí ~5% và trượt giá — kiểm tra sổ lệnh trước khi vào).
     Cơ hội thường biến mất nhanh; dòng cũ chỉ để thống kê tần suất.
   </div>
+  <div class="cards" style="margin-top:14px">
+    <div class="card"><b id="a-profit">–</b><span>arbitrage ảo $200: lợi nhuận tích lũy</span></div>
+    <div class="card"><b id="a-open">–</b><span>vị thế đang mở</span></div>
+    <div class="card"><b id="a-count">–</b><span>tổng lần "mua trọn bộ" ảo</span></div>
+  </div>
 </div>
 
 <div class="panel">
@@ -165,7 +170,26 @@ async function load(){
   document.getElementById('c-cities').textContent=new Set(SNAPS.map(s=>s.city)).size;
   loadOpps();
   loadPaper();
+  loadArb();
   render();
+}
+
+async function loadArb(){
+  let txt='';
+  try{ txt=await (await fetch('data/arb_trades.csv',{cache:'no-store'})).text(); }catch(e){}
+  if(!txt.includes('event_slug')){
+    document.getElementById('a-profit').textContent='$0.00';
+    document.getElementById('a-open').textContent='0';
+    document.getElementById('a-count').textContent='0';
+    return;
+  }
+  const rows=parseCSV(txt);
+  let profit=0,open=0;
+  rows.forEach(r=>{ profit+=num(r.locked_profit)||0; if(r.status==='open')open++; });
+  document.getElementById('a-profit').textContent='+$'+profit.toFixed(2);
+  document.getElementById('a-profit').style.color='var(--good)';
+  document.getElementById('a-open').textContent=open;
+  document.getElementById('a-count').textContent=rows.length;
 }
 
 async function loadPaper(){
