@@ -204,6 +204,9 @@ def scan_crypto(events, now):
                 rows.append({
                     "scan_utc": now, "kind": f"crypto_{ccy.lower()}",
                     "event_slug": mk.get("slug", ""),
+                    "side": "YES" if net is net_yes else "NO",
+                    "price": round(ask if net is net_yes else q, 4),
+                    "end_date": end, "ccy": ccy,
                     "detail": (f"{ccy} > ${strike:,.0f} luc {end}; spot ${spot:,.0f}, "
                                f"DVOL {sigma*100:.0f}%; {action}; RONG {net:+.3f} sau phi"),
                     "edge": round(net, 4), "sum_ask": "", "sum_bid": "",
@@ -278,6 +281,90 @@ def paper_arb(rows, events, now):
     print(f"  [ARB AO] vi the moi: {n_new} | loi da ve: {realized:+.2f} | dang khoa: {locked:+.2f}")
 
 
+# ---------------------------------------------------------------------------
+# GIẢ LẬP CRYPTO $200 (tiền ảo): mỗi tín hiệu lệch >= 8 điểm % so với Deribit
+# (sau phí) -> mua ảo $10 đúng phía bot chỉ. Chốt khi thị trường phân giải.
+# ---------------------------------------------------------------------------
+CRYPTO_TRADES_CSV = C.DATA_DIR + "/crypto_trades.csv"
+CT_FIELDS = ["entry_utc", "market_slug", "ccy", "side", "price", "shares",
+             "stake", "fee", "model_prob", "edge", "end_date",
+             "status", "payout", "pnl", "settle_utc"]
+CT_BUDGET = 200.0
+CT_STAKE = 10.0
+CT_MAX_PER_SCAN = 5
+
+
+def crypto_resolved_side(slug):
+    j = C.http_get_json(f"{C.GAMMA}/markets", {"slug": slug})
+    try:
+        mk = j[0]
+        prices = json.loads(mk.get("outcomePrices") or "[]")
+        y = float(prices[0])
+        if mk.get("closed") and y >= 0.99:
+            return "YES"
+        if mk.get("closed") and y <= 0.01:
+            return "NO"
+    except (TypeError, KeyError, IndexError, ValueError):
+        pass
+    return None
+
+
+def paper_crypto(rows, now):
+    import csv as _csv, os as _os
+    trades = C.read_csv(CRYPTO_TRADES_CSV)
+    for t in trades:
+        if t["status"] != "open" or not t["end_date"] or t["end_date"] >= now:
+            continue
+        winner = crypto_resolved_side(t["market_slug"])
+        if winner is None:
+            continue
+        stake, fee, shares = float(t["stake"]), float(t["fee"]), float(t["shares"])
+        if winner == t["side"]:
+            t["status"], t["payout"] = "won", round(shares, 2)
+            t["pnl"] = round(shares - stake - fee, 2)
+        else:
+            t["status"], t["payout"] = "lost", 0.0
+            t["pnl"] = round(-(stake + fee), 2)
+        t["settle_utc"] = now
+    cash = CT_BUDGET
+    for t in trades:
+        if t["status"] == "open":
+            cash -= float(t["stake"]) + float(t["fee"])
+        else:
+            cash += float(t["pnl"] or 0)
+    held = {t["market_slug"] for t in trades}
+    n = 0
+    for r in rows:
+        if not r["kind"].startswith("crypto_") or r["event_slug"] in held:
+            continue
+        if n >= CT_MAX_PER_SCAN:
+            break
+        price = float(r["price"])
+        shares = round(CT_STAKE / price, 2)
+        fee = round(0.07 * price * (1 - price) * shares, 4)
+        if cash < CT_STAKE + fee:
+            break
+        trades.append({
+            "entry_utc": now, "market_slug": r["event_slug"], "ccy": r.get("ccy", ""),
+            "side": r["side"], "price": price, "shares": shares,
+            "stake": CT_STAKE, "fee": fee,
+            "model_prob": r.get("model_prob", ""), "edge": r["edge"],
+            "end_date": r.get("end_date", ""),
+            "status": "open", "payout": "", "pnl": "", "settle_utc": "",
+        })
+        cash -= CT_STAKE + fee
+        held.add(r["event_slug"])
+        n += 1
+        print(f"  [CRYPTO AO] {r['side']} {r['event_slug']} @{price} x{shares}")
+    _os.makedirs(C.DATA_DIR, exist_ok=True)
+    with open(CRYPTO_TRADES_CSV, "w", newline="", encoding="utf-8") as f:
+        w = _csv.DictWriter(f, fieldnames=CT_FIELDS, extrasaction="ignore")
+        w.writeheader()
+        w.writerows(trades)
+    realized = sum(float(t["pnl"] or 0) for t in trades if t["status"] not in ("open",))
+    print(f"  [CRYPTO AO] vao moi {n} | lai/lo da chot: {realized:+.2f} USD")
+
+
 def main():
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     events = fetch_active_events()
@@ -287,6 +374,7 @@ def main():
     rows.sort(key=lambda r: -(r["edge"] or 0))
 
     paper_arb(rows, events, now)
+    paper_crypto(rows, now)
 
     if rows:
         C.append_csv(OPP_CSV, OPP_FIELDS, rows)

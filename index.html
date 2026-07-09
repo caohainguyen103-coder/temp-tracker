@@ -3,80 +3,113 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Polymarket vs Mô hình thời tiết — Theo dõi độ chính xác Tmax</title>
+<title>Polymarket Lab — Trạm nghiên cứu giao dịch</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
 <style>
-  :root{--bg:#0f1420;--card:#1a2233;--txt:#e8ecf4;--mut:#8b96ab;--acc:#4da3ff;--good:#3ecf8e;--bad:#ff6b6b;}
-  *{box-sizing:border-box} body{margin:0;font-family:system-ui,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--txt);padding:24px}
-  h1{font-size:22px;margin:0 0 4px} .sub{color:var(--mut);font-size:13px;margin-bottom:20px}
-  .cards{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
-  .card{background:var(--card);border-radius:10px;padding:14px 18px;min-width:150px}
-  .card b{font-size:24px;display:block} .card span{color:var(--mut);font-size:12px}
-  .panel{background:var(--card);border-radius:10px;padding:16px;margin-bottom:20px}
-  h2{font-size:15px;margin:0 0 10px;color:var(--acc)}
+  :root{
+    --bg:#0a0e1a; --card:#12182b; --card2:#161e35; --line:#232d4d;
+    --txt:#eef2fb; --mut:#8a94b0; --acc:#6ea8ff; --acc2:#8b5cf6;
+    --good:#34d399; --bad:#fb7185; --gold:#fbbf24;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Inter',system-ui,sans-serif;background:
+    radial-gradient(1200px 500px at 20% -10%, #17224a 0%, transparent 60%),
+    radial-gradient(900px 400px at 90% 0%, #241a4a 0%, transparent 55%), var(--bg);
+    color:var(--txt);padding:28px 20px 60px;line-height:1.5}
+  .wrap{max-width:1180px;margin:0 auto}
+  header{margin-bottom:26px}
+  .brand{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  h1{font-size:26px;font-weight:800;margin:0;letter-spacing:-.5px;
+     background:linear-gradient(90deg,#8ec5ff,#c4b5fd);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .live{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--good);
+    border:1px solid rgba(52,211,153,.35);background:rgba(52,211,153,.08);padding:4px 10px;border-radius:99px}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--good);animation:p 1.6s infinite}
+  @keyframes p{0%,100%{opacity:1}50%{opacity:.3}}
+  .sub{color:var(--mut);font-size:13px;margin-top:8px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+  .card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);
+    border-radius:14px;padding:14px 16px}
+  .card b{font-size:24px;font-weight:800;display:block;letter-spacing:-.5px}
+  .card span{color:var(--mut);font-size:12px}
+  .panel{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);
+    border-radius:16px;padding:20px;margin:18px 0}
+  .ptitle{display:flex;align-items:center;gap:10px;margin:0 0 4px;font-size:16px;font-weight:600}
+  .chip{font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px}
+  .chip.safe{background:rgba(52,211,153,.12);color:var(--good);border:1px solid rgba(52,211,153,.3)}
+  .chip.risk{background:rgba(251,191,36,.12);color:var(--gold);border:1px solid rgba(251,191,36,.3)}
+  .pdesc{color:var(--mut);font-size:12.5px;margin:0 0 14px}
   table{width:100%;border-collapse:collapse;font-size:13px}
-  th,td{padding:6px 8px;text-align:left;border-bottom:1px solid #2a3550}
-  th{color:var(--mut);font-weight:600;cursor:default}
-  .pos{color:var(--bad)} .neg{color:#6fb3ff} .hit{color:var(--good)} .miss{color:var(--bad)}
-  select{background:#101828;color:var(--txt);border:1px solid #2a3550;border-radius:6px;padding:4px 8px}
-  .foot{color:var(--mut);font-size:11px;margin-top:24px;line-height:1.6}
-  .foot a{color:var(--acc)}
+  th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line)}
+  th{color:var(--mut);font-weight:500;font-size:11.5px;text-transform:uppercase;letter-spacing:.4px}
+  tbody tr:hover{background:rgba(110,168,255,.05)}
+  .pos{color:var(--bad)} .neg{color:var(--acc)} .hit{color:var(--good);font-weight:600} .miss{color:var(--bad)}
+  .badge{font-size:11px;font-weight:600;padding:2px 9px;border-radius:99px}
+  .b-open{background:rgba(110,168,255,.12);color:var(--acc)}
+  .b-won{background:rgba(52,211,153,.15);color:var(--good)}
+  .b-lost{background:rgba(251,113,133,.12);color:var(--bad)}
+  .b-void{background:rgba(138,148,176,.15);color:var(--mut)}
+  select{background:#0d1327;color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:5px 10px;font-family:inherit}
+  a{color:var(--acc);text-decoration:none} a:hover{text-decoration:underline}
+  .foot{color:var(--mut);font-size:11px;margin-top:28px;line-height:1.8;text-align:center}
   canvas{max-height:280px}
-  .warn{background:#3a2a12;border:1px solid #7a5a20;border-radius:8px;padding:10px 14px;font-size:13px;margin-bottom:16px}
+  .note{color:var(--mut);font-size:11.5px;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:900px){.grid2{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<h1>🌡️ Polymarket vs Mô hình thời tiết — Nhiệt độ cao nhất trong ngày</h1>
-<div class="sub">Tất cả nhiệt độ hiển thị bằng °C. Snapshot lấy trước ngày mục tiêu (lead ≥ 1 ngày) mới được tính vào bảng xếp hạng.</div>
+<div class="wrap">
 
-<div class="warn" id="warn" style="display:none"></div>
+<header>
+  <div class="brand">
+    <h1>Polymarket Lab</h1>
+    <span class="live"><span class="dot"></span>tự chạy mỗi giờ</span>
+  </div>
+  <div class="sub">Trạm nghiên cứu: đo độ chính xác thị trường thời tiết · săn arbitrage · so crypto với quyền chọn — toàn bộ giao dịch là <b>tiền ảo</b>, không phải lời khuyên đầu tư.</div>
+</header>
 
 <div class="cards">
-  <div class="card"><b id="c-days">–</b><span>ngày đã thu thập</span></div>
-  <div class="card"><b id="c-events">–</b><span>event đã theo dõi</span></div>
-  <div class="card"><b id="c-resolved">–</b><span>event đã có kết quả</span></div>
+  <div class="card"><b id="c-days">–</b><span>ngày thu thập dữ liệu</span></div>
+  <div class="card"><b id="c-events">–</b><span>thị trường theo dõi</span></div>
+  <div class="card"><b id="c-resolved">–</b><span>đã có kết quả</span></div>
   <div class="card"><b id="c-cities">–</b><span>thành phố</span></div>
 </div>
 
 <div class="panel">
-  <h2>Bảng xếp hạng độ chính xác
-    <span style="float:right;font-weight:normal;font-size:12px;color:var(--mut)">
-      Lead: <select id="leadSel"><option value="1">1 ngày trước</option><option value="2">2 ngày trước</option><option value="0">trong ngày (tham khảo)</option></select>
-    </span>
-  </h2>
-  <table id="leader"><thead><tr>
-    <th>Nguồn</th><th>n</th><th>MAE (°C)</th><th>Bias (°C)</th><th>Trúng bucket</th>
-  </tr></thead><tbody></tbody></table>
-  <div style="color:var(--mut);font-size:11px;margin-top:6px">
-    MAE = sai số tuyệt đối trung bình. Bias dương = dự đoán CAO hơn thực tế.
-    "Trúng bucket" = chọn đúng khoảng nhiệt độ mà thị trường phân giải.
-  </div>
-</div>
-
-<div class="panel">
-  <h2>Bias của Polymarket theo thành phố (EV − thực đo, °C)</h2>
-  <canvas id="biasChart"></canvas>
-</div>
-
-<div class="panel">
-  <h2>💰 Cơ hội bot vừa quét thấy (tự chạy mỗi giờ — KHÔNG phải lệnh tự động)</h2>
-  <table id="opps"><thead><tr>
-    <th>Lúc (UTC)</th><th>Loại</th><th>Thị trường</th><th>Lãi thô</th><th>Giải thích</th>
-  </tr></thead><tbody></tbody></table>
-  <div style="color:var(--mut);font-size:11px;margin-top:6px">
-    "Mua trọn bộ" = tổng giá mua mọi kết cục &lt; $1 → mua hết mọi ô là chắc chắn nhận $1, lãi = phần chênh (chưa trừ phí ~5% và trượt giá — kiểm tra sổ lệnh trước khi vào).
-    Cơ hội thường biến mất nhanh; dòng cũ chỉ để thống kê tần suất.
-  </div>
-  <div class="cards" style="margin-top:14px">
-    <div class="card"><b id="a-profit">–</b><span>arbitrage ảo $200: lợi nhuận tích lũy</span></div>
+  <div class="ptitle">💰 Chiến dịch 1 — Arbitrage "mua trọn bộ" <span class="chip safe">gần như không rủi ro · $200 ảo</span></div>
+  <p class="pdesc">Bot quét 600 chợ mỗi giờ. Khi tổng giá mua MỌI kết cục &lt; $1 (sau phí), mua hết → chắc chắn nhận $1/bộ. Lợi nhuận khóa chặt ngay lúc mua.</p>
+  <div class="cards" style="margin-bottom:14px">
+    <div class="card"><b id="a-profit" style="color:var(--good)">–</b><span>lợi nhuận tích lũy (ảo)</span></div>
     <div class="card"><b id="a-open">–</b><span>vị thế đang mở</span></div>
-    <div class="card"><b id="a-count">–</b><span>tổng lần "mua trọn bộ" ảo</span></div>
+    <div class="card"><b id="a-count">–</b><span>tổng lần bắt được</span></div>
   </div>
+  <table id="opps"><thead><tr>
+    <th>Lúc (UTC)</th><th>Loại</th><th>Thị trường</th><th>Lãi ròng</th><th>Chi tiết</th>
+  </tr></thead><tbody></tbody></table>
+  <div class="note">Giá là đầu sổ lệnh — khớp thật có thể kém hơn. Cơ hội sống vài phút→vài giờ; muốn làm tay chỉ theo dòng &lt; 1 giờ tuổi và tự cộng lại giá.</div>
 </div>
 
 <div class="panel">
-  <h2>🧪 Giả lập giao dịch $200 TIỀN ẢO (chiến lược: nghe mô hình khi nó cãi thị trường)</h2>
-  <div class="cards" style="margin-bottom:12px">
+  <div class="ptitle">🪙 Chiến dịch 2 — BTC/ETH vs thị trường quyền chọn <span class="chip risk">rủi ro vừa · $200 ảo</span></div>
+  <p class="pdesc">Xác suất "Bitcoin trên $X" được tính từ sàn quyền chọn Deribit (nơi chuyên nghiệp định giá). Khi Polymarket lệch ≥ 8 điểm % sau phí → mua ảo $10 đúng phía chênh lệch.</p>
+  <div class="cards" style="margin-bottom:14px">
+    <div class="card"><b id="k-balance">–</b><span>số dư khả dụng (ảo)</span></div>
+    <div class="card"><b id="k-pnl">–</b><span>lãi/lỗ đã chốt</span></div>
+    <div class="card"><b id="k-record">–</b><span>thắng / thua</span></div>
+    <div class="card"><b id="k-open">–</b><span>lệnh đang mở</span></div>
+  </div>
+  <table id="crypto"><thead><tr>
+    <th>Vào lệnh</th><th>Coin</th><th>Phía</th><th>Giá</th><th>Deribit nói</th><th>Lệch</th><th>Trạng thái</th><th>Lãi/lỗ</th>
+  </tr></thead><tbody></tbody></table>
+  <div class="note">Mô hình bỏ qua skew quyền chọn nên chỉ bắt lệch rất lớn — có thể nhiều ngày không có lệnh nào. Không có lệnh = không có cơ hội đạt chuẩn, đó là thông tin tốt.</div>
+</div>
+
+<div class="panel">
+  <div class="ptitle">🌡️ Chiến dịch 3 — Mô hình thời tiết cãi thị trường <span class="chip risk">rủi ro vừa · $200 ảo</span></div>
+  <p class="pdesc">Khi trung vị 5 mô hình (ECMWF, GFS, ICON, UKMO, best-match) chỉ vào ô nhiệt độ KHÁC ô đám đông tin, và giá ô đó ≤ 30¢ → mua ảo $5. Thua nhiều lần nhỏ, thắng ít lần to — câu hỏi là tổng có dương không.</p>
+  <div class="cards" style="margin-bottom:14px">
     <div class="card"><b id="p-balance">–</b><span>số dư khả dụng (ảo)</span></div>
     <div class="card"><b id="p-pnl">–</b><span>lãi/lỗ đã chốt</span></div>
     <div class="card"><b id="p-record">–</b><span>thắng / thua</span></div>
@@ -86,29 +119,41 @@
     <th>Vào lệnh</th><th>Thành phố</th><th>Ngày</th><th>Mua ô</th><th>Giá</th>
     <th>Mô hình nói</th><th>Chợ tin</th><th>Trạng thái</th><th>Lãi/lỗ</th>
   </tr></thead><tbody></tbody></table>
-  <div style="color:var(--mut);font-size:11px;margin-top:6px">
-    Tiền ảo 100% — không một xu thật nào được đặt. Mỗi lệnh cược $5 ảo, phí 5% tính như thật.
-    Đây là bằng chứng khách quan chiến lược lời hay lỗ, tích lũy tự động mỗi ngày.
+</div>
+
+<div class="grid2">
+  <div class="panel" style="margin:0">
+    <div class="ptitle">🏆 Ai dự báo giỏi nhất?
+      <span style="margin-left:auto;font-weight:400;font-size:12px;color:var(--mut)">
+        Lead <select id="leadSel"><option value="1">1 ngày</option><option value="2">2 ngày</option><option value="0">trong ngày</option></select>
+      </span>
+    </div>
+    <table id="leader"><thead><tr>
+      <th>Nguồn</th><th>n</th><th>MAE °C</th><th>Bias °C</th><th>Trúng ô</th>
+    </tr></thead><tbody></tbody></table>
+    <div class="note">MAE = sai số trung bình. Bias dương = đoán nóng hơn thực tế. "Trúng ô" = chọn đúng khoảng nhiệt độ thắng cuộc.</div>
+  </div>
+  <div class="panel" style="margin:0">
+    <div class="ptitle">📊 Polymarket lệch theo thành phố (°C)</div>
+    <canvas id="biasChart"></canvas>
   </div>
 </div>
 
 <div class="panel">
-  <h2>Kết quả gần nhất</h2>
+  <div class="ptitle">🗓️ Kết quả thời tiết gần nhất</div>
   <table id="recent"><thead><tr>
-    <th>Ngày</th><th>Thành phố</th><th>Bucket phân giải</th><th>Thực đo</th>
-    <th>PM dự đoán (top)</th><th>PM EV</th><th>ECMWF</th><th>GFS</th><th>ICON</th><th>UKMO</th>
+    <th>Ngày</th><th>Thành phố</th><th>Ô thắng</th><th>Thực đo</th>
+    <th>Chợ đoán</th><th>Chợ EV</th><th>ECMWF</th><th>GFS</th><th>ICON</th><th>UKMO</th>
   </tr></thead><tbody></tbody></table>
 </div>
 
 <div class="foot">
-  Dữ liệu thị trường: <a href="https://polymarket.com">Polymarket</a> (Gamma API) ·
-  Dự báo: <a href="https://open-meteo.com/">Weather data by Open-Meteo.com</a> (CC BY 4.0) ·
-  Thực đo trạm: <a href="https://mesonet.agron.iastate.edu/">IEM</a> / <a href="https://www.hko.gov.hk/">HKO</a>.<br>
-  Trang này chỉ phục vụ nghiên cứu thống kê, không phải lời khuyên đầu tư.
+  Dữ liệu: <a href="https://polymarket.com">Polymarket</a> · <a href="https://open-meteo.com/">Weather data by Open-Meteo.com</a> (CC BY 4.0) · <a href="https://mesonet.agron.iastate.edu/">IEM</a> · <a href="https://www.hko.gov.hk/">HKO</a> · <a href="https://www.deribit.com/">Deribit</a><br>
+  Trang nghiên cứu thống kê với tiền ảo 100%. Không phải lời khuyên đầu tư. Giao dịch thật có thể mất toàn bộ vốn.
 </div>
 
+</div>
 <script>
-// ---------- CSV parser nhỏ (xử lý đúng dấu ngoặc kép) ----------
 function parseCSV(text){
   const rows=[];let row=[],cur='',q=false;
   for(let i=0;i<text.length;i++){const ch=text[i];
@@ -123,32 +168,31 @@ function parseCSV(text){
   return rows.slice(1).map(r=>Object.fromEntries(head.map((h,i)=>[h,r[i]??''])));
 }
 const num=s=>{const v=parseFloat(s);return isNaN(v)?null:v;};
-
 const MODELS=[
   ['Polymarket (EV)','pm_ev_c'],['ECMWF IFS','fc_ecmwf_ifs025_c'],
   ['NOAA GFS','fc_gfs_seamless_c'],['DWD ICON','fc_icon_seamless_c'],
   ['UK MetOffice','fc_ukmo_seamless_c'],['OM best_match','fc_best_match_c']];
-
-// bucket helpers (đồng bộ logic với common.py)
 function parseBucket(t){
   t=(t||'').trim();let kind='eq';
   if(t.startsWith('<=')){kind='le';t=t.slice(2);}else if(t.startsWith('>=')){kind='ge';t=t.slice(2);}
   const m=t.match(/^(-?\d+)(?:-(-?\d+))?°([CF])$/);if(!m)return null;
   return{lo:+m[1],hi:m[2]?+m[2]:+m[1],unit:m[3],kind};
 }
-function bucketContains(b,vNative,precision){
-  if(!b||vNative==null)return null;
+function bucketContains(b,v,precision){
+  if(!b||v==null)return null;
   if(precision==='decimal'){
-    if(b.kind==='le')return vNative<b.hi+1;
-    if(b.kind==='ge')return vNative>=b.lo;
-    return b.lo<=vNative&&vNative<b.hi+1;
+    if(b.kind==='le')return v<b.hi+1;
+    if(b.kind==='ge')return v>=b.lo;
+    return b.lo<=v&&v<b.hi+1;
   }
-  const v=Math.round(vNative);
-  if(b.kind==='le')return v<=b.hi;
-  if(b.kind==='ge')return v>=b.lo;
-  return b.lo<=v&&v<=b.hi;
+  const r=Math.round(v);
+  if(b.kind==='le')return r<=b.hi;
+  if(b.kind==='ge')return r>=b.lo;
+  return b.lo<=r&&r<=b.hi;
 }
 const c2f=c=>c*9/5+32;
+const badge=s=>{const m={open:['b-open','đang mở'],won:['b-won','THẮNG'],lost:['b-lost','thua'],void:['b-void','hủy'],settled:['b-won','đã chốt']};
+  const x=m[s]||['b-void',s];return `<span class="badge ${x[0]}">${x[1]}</span>`;};
 
 let SNAPS=[],RES={},chart=null;
 
@@ -159,37 +203,84 @@ async function load(){
   SNAPS=sTxt.includes('event_slug')?parseCSV(sTxt):[];
   const res=rTxt.includes('event_slug')?parseCSV(rTxt):[];
   RES={};res.forEach(r=>{if(r.actual_c!==''||r.resolved_bucket)RES[r.event_slug]=r;});
-
-  if(!SNAPS.length){
-    const w=document.getElementById('warn');w.style.display='block';
-    w.textContent='Chưa có dữ liệu — hệ thống sẽ tự ghi dữ liệu sau lần chạy GitHub Actions đầu tiên (xem README).';
-  }
   document.getElementById('c-days').textContent=new Set(SNAPS.map(s=>s.snapshot_utc.slice(0,10))).size;
   document.getElementById('c-events').textContent=new Set(SNAPS.map(s=>s.event_slug)).size;
   document.getElementById('c-resolved').textContent=Object.keys(RES).length;
   document.getElementById('c-cities').textContent=new Set(SNAPS.map(s=>s.city)).size;
-  loadOpps();
-  loadPaper();
-  loadArb();
-  render();
+  loadOpps(); loadPaper(); loadArb(); loadCrypto(); render();
+}
+
+async function loadOpps(){
+  let txt='';
+  try{ txt=await (await fetch('data/opportunities.csv',{cache:'no-store'})).text(); }catch(e){}
+  const tb=document.querySelector('#opps tbody');tb.innerHTML='';
+  if(!txt.includes('event_slug')){
+    tb.innerHTML='<tr><td colspan="5" style="color:var(--mut)">Chưa bắt được cơ hội nào có lãi ròng — bot quét tiếp mỗi giờ.</td></tr>';
+    return;
+  }
+  const kindVN={negrisk_buy_all:'Mua trọn bộ',negrisk_sell_all:'Bán trọn bộ',
+    crypto_btc:'BTC lệch giá',crypto_eth:'ETH lệch giá'};
+  parseCSV(txt).reverse().slice(0,15).forEach(r=>{
+    const slug=(r.event_slug||'').replace(/-\d+c(orbelow|orhigher)?$/,'');
+    const e=num(r.edge);
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${(r.scan_utc||'').slice(5,16).replace('T',' ')}</td>
+      <td>${kindVN[r.kind]||r.kind}</td>
+      <td><a target="_blank" href="https://polymarket.com/event/${slug}">${slug.slice(0,48)}</a></td>
+      <td class="hit">${e==null?'–':'+'+(100*e).toFixed(1)+'%'}</td>
+      <td style="color:var(--mut)">${r.detail||''}</td>`;
+    tb.appendChild(tr);
+  });
 }
 
 async function loadArb(){
   let txt='';
   try{ txt=await (await fetch('data/arb_trades.csv',{cache:'no-store'})).text(); }catch(e){}
-  if(!txt.includes('event_slug')){
-    document.getElementById('a-profit').textContent='$0.00';
-    document.getElementById('a-open').textContent='0';
-    document.getElementById('a-count').textContent='0';
+  let profit=0,open=0,count=0;
+  if(txt.includes('event_slug')){
+    const rows=parseCSV(txt);count=rows.length;
+    rows.forEach(r=>{ profit+=num(r.locked_profit)||0; if(r.status==='open')open++; });
+  }
+  document.getElementById('a-profit').textContent='+$'+profit.toFixed(2);
+  document.getElementById('a-open').textContent=open;
+  document.getElementById('a-count').textContent=count;
+}
+
+async function loadCrypto(){
+  let txt='';
+  try{ txt=await (await fetch('data/crypto_trades.csv',{cache:'no-store'})).text(); }catch(e){}
+  const tb=document.querySelector('#crypto tbody');tb.innerHTML='';
+  if(!txt.includes('market_slug')){
+    tb.innerHTML='<tr><td colspan="8" style="color:var(--mut)">Chưa có lệnh — Polymarket đang định giá sát Deribit (lệch < 8%). Bot canh tiếp mỗi giờ.</td></tr>';
+    document.getElementById('k-balance').textContent='$200.00';
+    document.getElementById('k-pnl').textContent='+0.00 $';
+    document.getElementById('k-record').textContent='0 / 0';
+    document.getElementById('k-open').textContent='0';
     return;
   }
   const rows=parseCSV(txt);
-  let profit=0,open=0;
-  rows.forEach(r=>{ profit+=num(r.locked_profit)||0; if(r.status==='open')open++; });
-  document.getElementById('a-profit').textContent='+$'+profit.toFixed(2);
-  document.getElementById('a-profit').style.color='var(--good)';
-  document.getElementById('a-open').textContent=open;
-  document.getElementById('a-count').textContent=rows.length;
+  let realized=0,openCost=0,won=0,lost=0,open=0;
+  rows.forEach(r=>{
+    if(r.status==='open'){open++;openCost+=(num(r.stake)||0)+(num(r.fee)||0);}
+    else{realized+=num(r.pnl)||0;if(r.status==='won')won++;if(r.status==='lost')lost++;}
+  });
+  document.getElementById('k-balance').textContent='$'+(200+realized-openCost).toFixed(2);
+  const kp=document.getElementById('k-pnl');
+  kp.textContent=(realized>=0?'+':'')+realized.toFixed(2)+' $';
+  kp.style.color=realized>=0?'var(--good)':'var(--bad)';
+  document.getElementById('k-record').textContent=won+' / '+lost;
+  document.getElementById('k-open').textContent=open;
+  rows.slice(-15).reverse().forEach(r=>{
+    const cls=r.status==='won'?'hit':(r.status==='lost'?'miss':'');
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${(r.entry_utc||'').slice(5,16).replace('T',' ')}</td>
+      <td>${r.ccy}</td><td>${r.side}</td><td>${r.price}</td>
+      <td>${r.model_prob?(100*num(r.model_prob)).toFixed(0)+'%':'–'}</td>
+      <td>+${(100*(num(r.edge)||0)).toFixed(0)}%</td>
+      <td>${badge(r.status)}</td>
+      <td class="${cls}">${r.pnl?((+r.pnl>=0?'+':'')+(+r.pnl).toFixed(2)+' $'):'–'}</td>`;
+    tb.appendChild(tr);
+  });
 }
 
 async function loadPaper(){
@@ -197,7 +288,7 @@ async function loadPaper(){
   try{ txt=await (await fetch('data/trades.csv',{cache:'no-store'})).text(); }catch(e){}
   const tb=document.querySelector('#paper tbody');tb.innerHTML='';
   if(!txt.includes('event_slug')){
-    tb.innerHTML='<tr><td colspan="9" style="color:var(--mut)">Chưa có lệnh ảo nào — hệ thống vào lệnh mỗi ngày lúc 19:10 giờ VN khi có ca đạt chuẩn.</td></tr>';
+    tb.innerHTML='<tr><td colspan="9" style="color:var(--mut)">Chưa có lệnh — hệ thống vào lệnh mỗi ngày ~19:10 giờ VN khi có ca đạt chuẩn.</td></tr>';
     return;
   }
   const rows=parseCSV(txt);
@@ -207,11 +298,11 @@ async function loadPaper(){
     else{realized+=num(r.pnl)||0;if(r.status==='won')won++;if(r.status==='lost')lost++;}
   });
   document.getElementById('p-balance').textContent='$'+(200+realized-openCost).toFixed(2);
-  document.getElementById('p-pnl').textContent=(realized>=0?'+':'')+realized.toFixed(2)+' $';
-  document.getElementById('p-pnl').style.color=realized>=0?'var(--good)':'var(--bad)';
+  const pp=document.getElementById('p-pnl');
+  pp.textContent=(realized>=0?'+':'')+realized.toFixed(2)+' $';
+  pp.style.color=realized>=0?'var(--good)':'var(--bad)';
   document.getElementById('p-record').textContent=won+' / '+lost;
   document.getElementById('p-open').textContent=open;
-  const stVN={open:'đang mở',won:'THẮNG',lost:'thua',void:'hủy'};
   rows.slice(-20).reverse().forEach(r=>{
     const cls=r.status==='won'?'hit':(r.status==='lost'?'miss':'');
     const tr=document.createElement('tr');
@@ -219,38 +310,13 @@ async function loadPaper(){
       <td>${r.city}</td><td>${(r.target_date||'').slice(5)}</td>
       <td>${r.bucket}</td><td>${r.ask}</td>
       <td>${r.model_median_c}°C</td><td>${r.pm_top_bucket}</td>
-      <td class="${cls}">${stVN[r.status]||r.status}</td>
+      <td>${badge(r.status)}</td>
       <td class="${cls}">${r.pnl?((+r.pnl>=0?'+':'')+(+r.pnl).toFixed(2)+' $'):'–'}</td>`;
     tb.appendChild(tr);
   });
 }
 
-async function loadOpps(){
-  let txt='';
-  try{ txt=await (await fetch('data/opportunities.csv',{cache:'no-store'})).text(); }catch(e){}
-  const tb=document.querySelector('#opps tbody');tb.innerHTML='';
-  if(!txt.includes('event_slug')){
-    tb.innerHTML='<tr><td colspan="5" style="color:var(--mut)">Chưa có cơ hội nào được ghi nhận — bot quét mỗi giờ, quay lại sau.</td></tr>';
-    return;
-  }
-  const rows=parseCSV(txt).reverse().slice(0,25);
-  const kindVN={negrisk_buy_all:'Mua trọn bộ',negrisk_sell_all:'Bán trọn bộ',
-    crypto_btc:'BTC vs quyền chọn',crypto_eth:'ETH vs quyền chọn'};
-  rows.forEach(r=>{
-    const eventSlug=(r.event_slug||'').replace(/-\d+c(orbelow|orhigher)?$/,'');
-    const tr=document.createElement('tr');
-    const edge=num(r.edge);
-    tr.innerHTML=`<td>${(r.scan_utc||'').replace('T',' ').replace('Z','')}</td>
-      <td>${kindVN[r.kind]||r.kind}</td>
-      <td><a style="color:var(--acc)" target="_blank" href="https://polymarket.com/event/${eventSlug}">${eventSlug}</a></td>
-      <td class="hit">${edge==null?'–':'+'+(100*edge).toFixed(1)+'%'}</td>
-      <td style="color:var(--mut)">${r.detail||''}</td>`;
-    tb.appendChild(tr);
-  });
-}
-
 function joined(lead){
-  // mỗi event: snapshot đúng lead yêu cầu (nếu nhiều lần chạy/ngày, lấy muộn nhất)
   const by={};
   SNAPS.forEach(s=>{
     if(+s.lead_days!==lead)return;
@@ -263,7 +329,6 @@ function joined(lead){
 function render(){
   const lead=+document.getElementById('leadSel').value;
   const pairs=joined(lead);
-  // leaderboard
   const tb=document.querySelector('#leader tbody');tb.innerHTML='';
   const rows=[];
   MODELS.forEach(([name,col])=>{
@@ -272,20 +337,21 @@ function render(){
       const v=num(s[col]);const a=num(r.actual_c);if(v==null||a==null)return;
       errs.push(v-a);
       const b=parseBucket(r.resolved_bucket);
-      if(b){const native=s.unit==='F'?c2f(v):v;
-        const h=bucketContains(b,native,s.precision||'whole');
+      if(b){const nat=s.unit==='F'?c2f(v):v;
+        const h=bucketContains(b,nat,s.precision||'whole');
         if(h!=null){nh++;if(h)hits++;}}
     });
     if(!errs.length)return;
-    const mae=errs.reduce((x,e)=>x+Math.abs(e),0)/errs.length;
-    const bias=errs.reduce((x,e)=>x+e,0)/errs.length;
-    rows.push({name,n:errs.length,mae,bias,hit:nh?hits/nh:null});
+    rows.push({name,n:errs.length,
+      mae:errs.reduce((x,e)=>x+Math.abs(e),0)/errs.length,
+      bias:errs.reduce((x,e)=>x+e,0)/errs.length,
+      hit:nh?hits/nh:null});
   });
-  // PM top-bucket hit
   {let hits=0,nh=0;
    pairs.forEach(([s,r])=>{if(s.pm_top_bucket&&r.resolved_bucket){nh++;if(s.pm_top_bucket===r.resolved_bucket)hits++;}});
-   if(nh)rows.push({name:'Polymarket (bucket đỉnh)',n:nh,mae:null,bias:null,hit:hits/nh});}
+   if(nh)rows.push({name:'Polymarket (ô đỉnh)',n:nh,mae:null,bias:null,hit:hits/nh});}
   rows.sort((a,b)=>(a.mae??99)-(b.mae??99));
+  if(!rows.length)tb.innerHTML='<tr><td colspan="5" style="color:var(--mut)">Cần vài ngày dữ liệu nữa — bảng tự điền khi các thị trường phân giải.</td></tr>';
   rows.forEach(r=>{
     const tr=document.createElement('tr');
     tr.innerHTML=`<td>${r.name}</td><td>${r.n}</td><td>${r.mae==null?'–':r.mae.toFixed(2)}</td>
@@ -294,7 +360,6 @@ function render(){
     tb.appendChild(tr);
   });
 
-  // bias chart theo thành phố (Polymarket EV)
   const byCity={};
   pairs.forEach(([s,r])=>{
     const v=num(s.pm_ev_c),a=num(r.actual_c);if(v==null||a==null)return;
@@ -305,20 +370,21 @@ function render(){
   if(chart)chart.destroy();
   chart=new Chart(document.getElementById('biasChart'),{
     type:'bar',
-    data:{labels:cities.map((c,i)=>`${c} (n=${byCity[c].length})`),
-      datasets:[{label:'Bias trung bình (°C)',data:biases,
-        backgroundColor:biases.map(b=>b>0?'rgba(255,107,107,.7)':'rgba(77,163,255,.7)')}]},
+    data:{labels:cities.map(c=>`${c} (${byCity[c].length})`),
+      datasets:[{label:'Bias °C',data:biases,borderRadius:4,
+        backgroundColor:biases.map(b=>b>0?'rgba(251,113,133,.75)':'rgba(110,168,255,.75)')}]},
     options:{plugins:{legend:{display:false}},scales:{
-      y:{grid:{color:'#2a3550'},ticks:{color:'#8b96ab'},title:{display:true,text:'°C (dương = PM đoán cao hơn thực tế)',color:'#8b96ab'}},
-      x:{grid:{display:false},ticks:{color:'#8b96ab'}}}}
+      y:{grid:{color:'#232d4d'},ticks:{color:'#8a94b0'}},
+      x:{grid:{display:false},ticks:{color:'#8a94b0'}}}}
   });
 
-  // recent results
   const rt=document.querySelector('#recent tbody');rt.innerHTML='';
   const latest={};
   SNAPS.forEach(s=>{const k=s.event_slug;
     if(RES[k]&&(+s.lead_days===1)&&(!latest[k]||s.snapshot_utc>latest[k].snapshot_utc))latest[k]=s;});
-  Object.values(latest).sort((a,b)=>b.target_date.localeCompare(a.target_date)).slice(0,30).forEach(s=>{
+  const arr=Object.values(latest).sort((a,b)=>b.target_date.localeCompare(a.target_date)).slice(0,30);
+  if(!arr.length)rt.innerHTML='<tr><td colspan="10" style="color:var(--mut)">Chờ các thị trường đầu tiên phân giải (1–2 ngày).</td></tr>';
+  arr.forEach(s=>{
     const r=RES[s.event_slug];
     const hitCls=s.pm_top_bucket===r.resolved_bucket?'hit':'miss';
     const cell=v=>v===''||v==null?'–':(+v).toFixed(1);
