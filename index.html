@@ -59,6 +59,17 @@
 </div>
 
 <div class="panel">
+  <h2>💰 Cơ hội bot vừa quét thấy (tự chạy mỗi giờ — KHÔNG phải lệnh tự động)</h2>
+  <table id="opps"><thead><tr>
+    <th>Lúc (UTC)</th><th>Loại</th><th>Thị trường</th><th>Lãi thô</th><th>Giải thích</th>
+  </tr></thead><tbody></tbody></table>
+  <div style="color:var(--mut);font-size:11px;margin-top:6px">
+    "Mua trọn bộ" = tổng giá mua mọi kết cục &lt; $1 → mua hết mọi ô là chắc chắn nhận $1, lãi = phần chênh (chưa trừ phí ~5% và trượt giá — kiểm tra sổ lệnh trước khi vào).
+    Cơ hội thường biến mất nhanh; dòng cũ chỉ để thống kê tần suất.
+  </div>
+</div>
+
+<div class="panel">
   <h2>Kết quả gần nhất</h2>
   <table id="recent"><thead><tr>
     <th>Ngày</th><th>Thành phố</th><th>Bucket phân giải</th><th>Thực đo</th>
@@ -134,7 +145,32 @@ async function load(){
   document.getElementById('c-events').textContent=new Set(SNAPS.map(s=>s.event_slug)).size;
   document.getElementById('c-resolved').textContent=Object.keys(RES).length;
   document.getElementById('c-cities').textContent=new Set(SNAPS.map(s=>s.city)).size;
+  loadOpps();
   render();
+}
+
+async function loadOpps(){
+  let txt='';
+  try{ txt=await (await fetch('data/opportunities.csv',{cache:'no-store'})).text(); }catch(e){}
+  const tb=document.querySelector('#opps tbody');tb.innerHTML='';
+  if(!txt.includes('event_slug')){
+    tb.innerHTML='<tr><td colspan="5" style="color:var(--mut)">Chưa có cơ hội nào được ghi nhận — bot quét mỗi giờ, quay lại sau.</td></tr>';
+    return;
+  }
+  const rows=parseCSV(txt).reverse().slice(0,25);
+  const kindVN={negrisk_buy_all:'Mua trọn bộ',negrisk_sell_all:'Bán trọn bộ',
+    crypto_btc:'BTC vs quyền chọn',crypto_eth:'ETH vs quyền chọn'};
+  rows.forEach(r=>{
+    const eventSlug=(r.event_slug||'').replace(/-\d+c(orbelow|orhigher)?$/,'');
+    const tr=document.createElement('tr');
+    const edge=num(r.edge);
+    tr.innerHTML=`<td>${(r.scan_utc||'').replace('T',' ').replace('Z','')}</td>
+      <td>${kindVN[r.kind]||r.kind}</td>
+      <td><a style="color:var(--acc)" target="_blank" href="https://polymarket.com/event/${eventSlug}">${eventSlug}</a></td>
+      <td class="hit">${edge==null?'–':'+'+(100*edge).toFixed(1)+'%'}</td>
+      <td style="color:var(--mut)">${r.detail||''}</td>`;
+    tb.appendChild(tr);
+  });
 }
 
 function joined(lead){
