@@ -70,6 +70,24 @@
 </div>
 
 <div class="panel">
+  <h2>🧪 Giả lập giao dịch $200 TIỀN ẢO (chiến lược: nghe mô hình khi nó cãi thị trường)</h2>
+  <div class="cards" style="margin-bottom:12px">
+    <div class="card"><b id="p-balance">–</b><span>số dư khả dụng (ảo)</span></div>
+    <div class="card"><b id="p-pnl">–</b><span>lãi/lỗ đã chốt</span></div>
+    <div class="card"><b id="p-record">–</b><span>thắng / thua</span></div>
+    <div class="card"><b id="p-open">–</b><span>lệnh đang mở</span></div>
+  </div>
+  <table id="paper"><thead><tr>
+    <th>Vào lệnh</th><th>Thành phố</th><th>Ngày</th><th>Mua ô</th><th>Giá</th>
+    <th>Mô hình nói</th><th>Chợ tin</th><th>Trạng thái</th><th>Lãi/lỗ</th>
+  </tr></thead><tbody></tbody></table>
+  <div style="color:var(--mut);font-size:11px;margin-top:6px">
+    Tiền ảo 100% — không một xu thật nào được đặt. Mỗi lệnh cược $5 ảo, phí 5% tính như thật.
+    Đây là bằng chứng khách quan chiến lược lời hay lỗ, tích lũy tự động mỗi ngày.
+  </div>
+</div>
+
+<div class="panel">
   <h2>Kết quả gần nhất</h2>
   <table id="recent"><thead><tr>
     <th>Ngày</th><th>Thành phố</th><th>Bucket phân giải</th><th>Thực đo</th>
@@ -146,7 +164,41 @@ async function load(){
   document.getElementById('c-resolved').textContent=Object.keys(RES).length;
   document.getElementById('c-cities').textContent=new Set(SNAPS.map(s=>s.city)).size;
   loadOpps();
+  loadPaper();
   render();
+}
+
+async function loadPaper(){
+  let txt='';
+  try{ txt=await (await fetch('data/trades.csv',{cache:'no-store'})).text(); }catch(e){}
+  const tb=document.querySelector('#paper tbody');tb.innerHTML='';
+  if(!txt.includes('event_slug')){
+    tb.innerHTML='<tr><td colspan="9" style="color:var(--mut)">Chưa có lệnh ảo nào — hệ thống vào lệnh mỗi ngày lúc 19:10 giờ VN khi có ca đạt chuẩn.</td></tr>';
+    return;
+  }
+  const rows=parseCSV(txt);
+  let realized=0,openCost=0,won=0,lost=0,open=0;
+  rows.forEach(r=>{
+    if(r.status==='open'){open++;openCost+=(num(r.stake)||0)+(num(r.fee)||0);}
+    else{realized+=num(r.pnl)||0;if(r.status==='won')won++;if(r.status==='lost')lost++;}
+  });
+  document.getElementById('p-balance').textContent='$'+(200+realized-openCost).toFixed(2);
+  document.getElementById('p-pnl').textContent=(realized>=0?'+':'')+realized.toFixed(2)+' $';
+  document.getElementById('p-pnl').style.color=realized>=0?'var(--good)':'var(--bad)';
+  document.getElementById('p-record').textContent=won+' / '+lost;
+  document.getElementById('p-open').textContent=open;
+  const stVN={open:'đang mở',won:'THẮNG',lost:'thua',void:'hủy'};
+  rows.slice(-20).reverse().forEach(r=>{
+    const cls=r.status==='won'?'hit':(r.status==='lost'?'miss':'');
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${(r.entry_utc||'').slice(5,16).replace('T',' ')}</td>
+      <td>${r.city}</td><td>${(r.target_date||'').slice(5)}</td>
+      <td>${r.bucket}</td><td>${r.ask}</td>
+      <td>${r.model_median_c}°C</td><td>${r.pm_top_bucket}</td>
+      <td class="${cls}">${stVN[r.status]||r.status}</td>
+      <td class="${cls}">${r.pnl?((+r.pnl>=0?'+':'')+(+r.pnl).toFixed(2)+' $'):'–'}</td>`;
+    tb.appendChild(tr);
+  });
 }
 
 async function loadOpps(){
