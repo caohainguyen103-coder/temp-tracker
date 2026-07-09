@@ -3,7 +3,7 @@ name: Quet co hoi Polymarket
 
 on:
   schedule:
-    - cron: "25 */4 * * *"
+    - cron: "25 * * * *"   # mỗi giờ, phút 25
   workflow_dispatch: {}
 
 permissions:
