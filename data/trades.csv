@@ -1,0 +1,11 @@
+entry_utc,event_slug,city,target_date,lead_days,bucket,ask,shares,stake,fee,model_median_c,pm_top_bucket,status,payout,pnl,settle_utc
+2026-07-09T09:02:23Z,highest-temperature-in-qingdao-on-july-10-2026,qingdao,2026-07-10,1,28°C,0.02,250.0,5.0,0.245,27.8,31°C,open,,,
+2026-07-09T09:02:23Z,highest-temperature-in-hong-kong-on-july-10-2026,hong-kong,2026-07-10,1,30°C,0.027,185.19,5.0,0.2433,30.9,33°C,open,,,
+2026-07-09T09:02:23Z,highest-temperature-in-seoul-on-july-11-2026,seoul,2026-07-11,2,27°C,0.05,100.0,5.0,0.2375,27.4,31°C,open,,,
+2026-07-09T09:02:23Z,highest-temperature-in-guangzhou-on-july-10-2026,guangzhou,2026-07-10,1,33°C,0.072,69.44,5.0,0.232,33.4,35°C,open,,,
+2026-07-09T09:02:23Z,highest-temperature-in-kuala-lumpur-on-july-10-2026,kuala-lumpur,2026-07-10,1,31°C,0.078,64.1,5.0,0.2305,31.1,33°C,open,,,
+2026-07-09T09:02:23Z,highest-temperature-in-qingdao-on-july-11-2026,qingdao,2026-07-11,2,28°C,0.08,62.5,5.0,0.23,27.9,30°C,open,,,
+2026-07-09T09:02:23Z,highest-temperature-in-munich-on-july-11-2026,munich,2026-07-11,2,28°C,0.09,55.56,5.0,0.2275,28.3,30°C,open,,,
+2026-07-09T09:02:23Z,highest-temperature-in-seoul-on-july-10-2026,seoul,2026-07-10,1,26°C,0.1,50.0,5.0,0.225,25.5,28°C,open,,,
+2026-07-09T09:02:23Z,highest-temperature-in-singapore-on-july-10-2026,singapore,2026-07-10,1,30°C,0.12,41.67,5.0,0.22,30.5,31°C,open,,,
+2026-07-09T09:02:23Z,highest-temperature-in-san-francisco-on-july-10-2026,san-francisco,2026-07-10,2,70-71°F,0.12,41.67,5.0,0.22,21.1,66-67°F,open,,,
