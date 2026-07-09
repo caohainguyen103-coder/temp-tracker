@@ -180,7 +180,8 @@ def enter(trades, snaps, full, now):
 def main():
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     snaps = C.read_csv(C.SNAPSHOTS_CSV)
-    results = {r["event_slug"]: r for r in C.read_csv(C.RESULTS_CSV)}
+    results = {r.get("event_slug"): r for r in C.read_csv(C.RESULTS_CSV)
+               if r.get("event_slug")}
     trades = C.read_csv(TRADES_CSV)
     for t in trades:  # chuẩn hóa kiểu
         t.setdefault("status", "open")
