@@ -1,5 +1,0 @@
-target_date,event_slug,city,unit,precision,station_kind,station_id,resolved_bucket,actual_c,actual_native,actual_source,verify_utc
-2026-05-20,highest-temperature-in-jinan-on-may-20-2026,jinan,C,whole,metar,ZSJN,,19.9,19.9,openmeteo_grid,2026-07-08T18:26:48Z
-2026-05-21,highest-temperature-in-jinan-on-may-21-2026,jinan,C,whole,metar,ZSJN,,25.3,25.3,openmeteo_grid,2026-07-08T18:26:48Z
-2026-05-20,highest-temperature-in-zhengzhou-on-may-20-2026,zhengzhou,C,whole,metar,ZHCC,,24.0,24.0,iem_metar,2026-07-08T18:26:48Z
-2026-05-21,highest-temperature-in-zhengzhou-on-may-21-2026,zhengzhou,C,whole,metar,ZHCC,,26.0,26.0,iem_metar,2026-07-08T18:26:48Z
