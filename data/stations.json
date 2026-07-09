@@ -1,0 +1,362 @@
+{
+ "ZSJN": {
+  "kind": "metar",
+  "id": "ZSJN",
+  "network": "CN__ASOS",
+  "lat": 36.8555,
+  "lon": 117.206,
+  "tz": "Asia/Shanghai"
+ },
+ "ZHCC": {
+  "kind": "metar",
+  "id": "ZHCC",
+  "network": "CN__ASOS",
+  "lat": 34.7166666667,
+  "lon": 113.65,
+  "tz": "Asia/Shanghai"
+ },
+ "CYYZ": {
+  "kind": "metar",
+  "id": "CYYZ",
+  "network": "CA_ON_ASOS",
+  "lat": 43.67722,
+  "lon": -79.63056,
+  "tz": "America/Toronto"
+ },
+ "KSEA": {
+  "kind": "metar",
+  "id": "KSEA",
+  "network": "NWSCLI",
+  "lat": 47.44469,
+  "lon": -122.31437,
+  "tz": "America/Los_Angeles"
+ },
+ "KLGA": {
+  "kind": "metar",
+  "id": "KLGA",
+  "network": "NWSCLI",
+  "lat": 40.77945,
+  "lon": -73.88028,
+  "tz": "America/New_York"
+ },
+ "KATL": {
+  "kind": "metar",
+  "id": "KATL",
+  "network": "RAOB",
+  "lat": 33.65,
+  "lon": -84.4,
+  "tz": "America/New_York"
+ },
+ "KMIA": {
+  "kind": "metar",
+  "id": "KMIA",
+  "network": "RAOB",
+  "lat": 25.82,
+  "lon": -80.2,
+  "tz": "America/New_York"
+ },
+ "KORD": {
+  "kind": "metar",
+  "id": "KORD",
+  "network": "NWSCLI",
+  "lat": 41.98769949,
+  "lon": -87.92879718,
+  "tz": "America/Chicago"
+ },
+ "KAUS": {
+  "kind": "metar",
+  "id": "KAUS",
+  "network": "NWSCLI",
+  "lat": 30.1945278,
+  "lon": -97.6698889,
+  "tz": "America/Chicago"
+ },
+ "KHOU": {
+  "kind": "metar",
+  "id": "KHOU",
+  "network": "NWSCLI",
+  "lat": 29.63747,
+  "lon": -95.28245,
+  "tz": "America/Chicago"
+ },
+ "KLAX": {
+  "kind": "metar",
+  "id": "KLAX",
+  "network": "NWSCLI",
+  "lat": 33.93816,
+  "lon": -118.38653,
+  "tz": "America/Los_Angeles"
+ },
+ "KSFO": {
+  "kind": "metar",
+  "id": "KSFO",
+  "network": "NWSCLI",
+  "lat": 37.61897,
+  "lon": -122.37489,
+  "tz": "America/Los_Angeles"
+ },
+ "MMMX": {
+  "kind": "metar",
+  "id": "MMMX",
+  "network": "MX__ASOS",
+  "lat": 19.4363,
+  "lon": -99.0721,
+  "tz": "America/Mexico_City"
+ },
+ "MPMG": {
+  "kind": "metar",
+  "id": "MPMG",
+  "network": "PA__ASOS",
+  "lat": 8.9833333333,
+  "lon": -79.5166666667,
+  "tz": "America/Panama"
+ },
+ "EGLC": {
+  "kind": "metar",
+  "id": "EGLC",
+  "network": "GB__ASOS",
+  "lat": 51.50528,
+  "lon": 0.05528,
+  "tz": "Europe/London"
+ },
+ "LFPB": {
+  "kind": "metar",
+  "id": "LFPB",
+  "network": "FR__ASOS",
+  "lat": 48.96722,
+  "lon": 2.42722,
+  "tz": "Europe/Paris"
+ },
+ "RKSI": {
+  "kind": "metar",
+  "id": "RKSI",
+  "network": "KR__ASOS",
+  "lat": 37.4666666667,
+  "lon": 126.45,
+  "tz": "Asia/Seoul"
+ },
+ "LTAC": {
+  "kind": "metar",
+  "id": "LTAC",
+  "network": "TR__ASOS",
+  "lat": 40.12808,
+  "lon": 32.99508,
+  "tz": "Europe/Istanbul"
+ },
+ "NZWN": {
+  "kind": "metar",
+  "id": "NZWN",
+  "network": "NF__ASOS",
+  "lat": -41.3272,
+  "lon": 174.8053,
+  "tz": "Pacific/Auckland"
+ },
+ "EDDM": {
+  "kind": "metar",
+  "id": "EDDM",
+  "network": "DE__ASOS",
+  "lat": 48.35833,
+  "lon": 11.80917,
+  "tz": "Europe/Berlin"
+ },
+ "RJTT": {
+  "kind": "metar",
+  "id": "RJTT",
+  "network": "JP__ASOS",
+  "lat": 35.55333,
+  "lon": 139.78111,
+  "tz": "Asia/Tokyo"
+ },
+ "ZSPD": {
+  "kind": "metar",
+  "id": "ZSPD",
+  "network": "CN__ASOS",
+  "lat": 31.1166666667,
+  "lon": 121.766666667,
+  "tz": "Asia/Shanghai"
+ },
+ "WSSS": {
+  "kind": "metar",
+  "id": "WSSS",
+  "network": "SG__ASOS",
+  "lat": 1.36667,
+  "lon": 103.98333,
+  "tz": "Asia/Singapore"
+ },
+ "LIMC": {
+  "kind": "metar",
+  "id": "LIMC",
+  "network": "IT__ASOS",
+  "lat": 45.63,
+  "lon": 8.72306,
+  "tz": "Europe/Rome"
+ },
+ "LEMD": {
+  "kind": "metar",
+  "id": "LEMD",
+  "network": "ES__ASOS",
+  "lat": 40.46667,
+  "lon": -3.55556,
+  "tz": "Europe/Madrid"
+ },
+ "EPWA": {
+  "kind": "metar",
+  "id": "EPWA",
+  "network": "PL__ASOS",
+  "lat": 52.16278,
+  "lon": 20.96111,
+  "tz": "Europe/Warsaw"
+ },
+ "RCSS": {
+  "kind": "metar",
+  "id": "RCSS",
+  "network": "TW__ASOS",
+  "lat": 25.06944,
+  "lon": 121.55167,
+  "tz": "Asia/Taipei"
+ },
+ "ZUCK": {
+  "kind": "metar",
+  "id": "ZUCK",
+  "network": "CN__ASOS",
+  "lat": 29.52,
+  "lon": 106.48,
+  "tz": "Asia/Chongqing"
+ },
+ "ZBAA": {
+  "kind": "metar",
+  "id": "ZBAA",
+  "network": "CN__ASOS",
+  "lat": 40.07413,
+  "lon": 116.587,
+  "tz": "Asia/Shanghai"
+ },
+ "ZHHH": {
+  "kind": "metar",
+  "id": "ZHHH",
+  "network": "CN__ASOS",
+  "lat": 30.62,
+  "lon": 114.13,
+  "tz": "Asia/Shanghai"
+ },
+ "ZUUU": {
+  "kind": "metar",
+  "id": "ZUUU",
+  "network": "CN__ASOS",
+  "lat": 30.6666666667,
+  "lon": 104.016666667,
+  "tz": "Asia/Chongqing"
+ },
+ "ZGSZ": {
+  "kind": "metar",
+  "id": "ZGSZ",
+  "network": "CN__ASOS",
+  "lat": 22.55,
+  "lon": 114.1,
+  "tz": "Asia/Shanghai"
+ },
+ "RKPK": {
+  "kind": "metar",
+  "id": "RKPK",
+  "network": "KR__ASOS",
+  "lat": 35.17953,
+  "lon": 128.93822,
+  "tz": "Asia/Seoul"
+ },
+ "EHAM": {
+  "kind": "metar",
+  "id": "EHAM",
+  "network": "NL__ASOS",
+  "lat": 52.31541,
+  "lon": 4.79016,
+  "tz": "Europe/Amsterdam"
+ },
+ "EFHK": {
+  "kind": "metar",
+  "id": "EFHK",
+  "network": "FI__ASOS",
+  "lat": 60.31722,
+  "lon": 24.96333,
+  "tz": "Europe/Helsinki"
+ },
+ "WMKK": {
+  "kind": "metar",
+  "id": "WMKK",
+  "network": "MY__ASOS",
+  "lat": 2.71667,
+  "lon": 101.7,
+  "tz": "Asia/Kuala_Lumpur"
+ },
+ "OEJN": {
+  "kind": "metar",
+  "id": "OEJN",
+  "network": "SA__ASOS",
+  "lat": 21.65983127,
+  "lon": 39.12220782,
+  "tz": "Asia/Riyadh"
+ },
+ "ZGGG": {
+  "kind": "metar",
+  "id": "ZGGG",
+  "network": "CN__ASOS",
+  "lat": 23.39639,
+  "lon": 113.30083,
+  "tz": "Asia/Shanghai"
+ },
+ "ZSQD": {
+  "kind": "metar",
+  "id": "ZSQD",
+  "network": "CN__ASOS",
+  "lat": 36.06667,
+  "lon": 120.33333,
+  "tz": "Asia/Shanghai"
+ },
+ "RPLL": {
+  "kind": "metar",
+  "id": "RPLL",
+  "network": "PH__ASOS",
+  "lat": 14.5069,
+  "lon": 121.0042,
+  "tz": "Asia/Manila"
+ },
+ "VILK": {
+  "kind": "metar",
+  "id": "VILK",
+  "network": "IN__ASOS",
+  "lat": 26.76059,
+  "lon": 80.88934,
+  "tz": "Asia/Kolkata"
+ },
+ "FACT": {
+  "kind": "metar",
+  "id": "FACT",
+  "network": "ZA__ASOS",
+  "lat": -33.9666666667,
+  "lon": 18.6,
+  "tz": "Africa/Johannesburg"
+ },
+ "OPKC": {
+  "kind": "metar",
+  "id": "OPKC",
+  "network": "PK__ASOS",
+  "lat": 24.84558,
+  "lon": 67.16137,
+  "tz": "Asia/Karachi"
+ },
+ "SBGR": {
+  "kind": "metar",
+  "id": "SBGR",
+  "network": "BR__ASOS",
+  "lat": -23.43208,
+  "lon": -46.46951,
+  "tz": "America/Sao_Paulo"
+ },
+ "SAEZ": {
+  "kind": "metar",
+  "id": "SAEZ",
+  "network": "AR__ASOS",
+  "lat": -34.82222,
+  "lon": -58.53583,
+  "tz": "America/Argentina/Buenos_Aires"
+ }
+}

@@ -1,0 +1,15 @@
+target_date,event_slug,city,unit,precision,station_kind,station_id,resolved_bucket,actual_c,actual_native,actual_source,verify_utc
+2026-07-08,highest-temperature-in-atlanta-on-july-8-2026,atlanta,F,whole,metar,KATL,,33.2,91.8,openmeteo_grid,2026-07-09T03:45:48Z
+2026-07-08,highest-temperature-in-austin-on-july-8-2026,austin,F,whole,metar,KAUS,,36.5,97.7,openmeteo_grid,2026-07-09T03:45:48Z
+2026-07-08,highest-temperature-in-chicago-on-july-8-2026,chicago,F,whole,metar,KORD,,31.9,89.4,openmeteo_grid,2026-07-09T03:45:48Z
+2026-07-08,highest-temperature-in-dallas-on-july-8-2026,dallas,F,whole,geocode,dallas,,38.7,101.7,openmeteo_grid,2026-07-09T03:45:48Z
+2026-07-08,highest-temperature-in-denver-on-july-8-2026,denver,F,whole,geocode,denver,,34.2,93.6,openmeteo_grid,2026-07-09T03:45:48Z
+2026-07-08,highest-temperature-in-houston-on-july-8-2026,houston,F,whole,metar,KHOU,,34.3,93.7,openmeteo_grid,2026-07-09T03:45:48Z
+2026-07-08,highest-temperature-in-los-angeles-on-july-8-2026,los-angeles,F,whole,metar,KLAX,,24.0,75.2,openmeteo_grid,2026-07-09T03:45:48Z
+2026-07-08,highest-temperature-in-mexico-city-on-july-8-2026,mexico-city,C,whole,metar,MMMX,,23.0,23.0,iem_metar,2026-07-09T03:45:48Z
+2026-07-08,highest-temperature-in-miami-on-july-8-2026,miami,F,whole,metar,KMIA,,31.8,89.2,openmeteo_grid,2026-07-09T03:45:48Z
+2026-07-08,highest-temperature-in-nyc-on-july-8-2026,nyc,F,whole,metar,KLGA,,31.4,88.5,openmeteo_grid,2026-07-09T03:45:48Z
+2026-07-08,highest-temperature-in-panama-city-on-july-8-2026,panama-city,C,whole,metar,MPMG,,35.0,35.0,iem_metar,2026-07-09T03:45:48Z
+2026-07-08,highest-temperature-in-san-francisco-on-july-8-2026,san-francisco,F,whole,metar,KSFO,,18.4,65.1,openmeteo_grid,2026-07-09T03:45:48Z
+2026-07-08,highest-temperature-in-seattle-on-july-8-2026,seattle,F,whole,metar,KSEA,,21.3,70.3,openmeteo_grid,2026-07-09T03:45:48Z
+2026-07-08,highest-temperature-in-toronto-on-july-8-2026,toronto,C,whole,metar,CYYZ,,29.0,29.0,iem_metar,2026-07-09T03:45:48Z
