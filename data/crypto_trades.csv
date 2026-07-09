@@ -1,1 +1,2 @@
 entry_utc,market_slug,ccy,side,price,shares,stake,fee,model_prob,edge,end_date,status,payout,pnl,settle_utc
+2026-07-09T16:10:46Z,ethereum-above-1700-on-july-12-2026,ETH,NO,0.23,43.48,10.0,0.539,0.6714,0.0862,2026-07-12T16:00:00Z,open,,,

@@ -1,2 +1,4 @@
 scan_utc,kind,event_slug,detail,edge,sum_ask,sum_bid,market_prob,model_prob,volume24hr,liquidity,note
 2026-07-09T04:41:05Z,negrisk_buy_all,highest-temperature-in-wellington-on-july-10-2026,"11 o, mua het = 0.960, tra ve 1.000",0.04,0.96,0.896,,,20271.903384999998,97555.53206,kiem tra do sau so lenh truoc khi vao; phi lam giam lai
+2026-07-09T16:10:46Z,crypto_eth,ethereum-above-1700-on-july-12-2026,"ETH > $1,700 luc 2026-07-12T16:00:00Z; spot $1,738, DVOL 52%; mua NO @0.230; RONG +0.086 sau phi",0.0862,,,0.78,0.6714,95.987462,17034.6896,mo hinh bo qua skew - tu tham dinh truoc khi vao lenh
+2026-07-09T16:10:46Z,negrisk_buy_all,highest-temperature-in-seattle-on-july-10-2026,11 o | tong mua 0.931 + phi 0.037 = 0.968 | nhan 1.000 | RONG +0.032,0.032,0.931,0.847,,,10011.522047,55948.33752,da tru phi taker; kiem tra do sau so lenh + gia con hieu luc
