@@ -164,7 +164,7 @@
     <th>Polymarket</th><th>ECMWF</th><th>GFS</th><th>ICON</th><th>UKMO</th>
   </tr></thead><tbody></tbody></table>
   <div class="note">✓ xanh = đoán trúng khoảng nhiệt độ thắng cuộc · ✗ đỏ = đoán trượt. "Polymarket" = khoảng nhiệt độ mà người chơi đặt cược tin nhất.
-  Trên Polymarket, các thành phố Mỹ tính bằng °F — bảng này đã quy đổi TẤT CẢ về °C và gắn nhãn <span style="color:var(--gold)">(gốc °F)</span> để bạn đối chiếu khi mở Polymarket.</div>
+  Mỗi thành phố hiển thị ĐÚNG đơn vị như trên Polymarket: thành phố Mỹ (nhãn vàng <span style="color:var(--gold)">°F</span>) bằng °F, còn lại bằng °C — mở Polymarket đối chiếu là khớp từng số.</div>
 </div>
 
 <div class="foot">
@@ -451,20 +451,26 @@ function render(){
   };
   arr.forEach(s=>{
     const r=RES[s.event_slug];
+    const isF=s.unit==='F';
     const rb=parseBucket(r.resolved_bucket);
     const mark=ok=>ok==null?'':(ok?' <span class="hit">✓</span>':' <span class="miss">✗</span>');
     const fcCell=v0=>{
       const v=num(v0);if(v==null)return '<td>–</td>';
-      const nat=s.unit==='F'?c2f(v):v;
+      const nat=isF?c2f(v):v;
       const ok=rb?bucketContains(rb,nat,s.precision||'whole'):null;
-      return `<td>${v.toFixed(1)}°${mark(ok)}</td>`;
+      return `<td>${nat.toFixed(1)}°${mark(ok)}</td>`;
     };
+    let act='–';
+    if(isF){
+      const f=num(r.actual_native)!=null?num(r.actual_native):(num(r.actual_c)!=null?c2f(num(r.actual_c)):null);
+      if(f!=null)act=f.toFixed(1)+'°F';
+    }else if(r.actual_c!=='')act=(+r.actual_c).toFixed(1)+'°C';
     const pmOk=r.resolved_bucket?(s.pm_top_bucket===r.resolved_bucket):null;
     const tr=document.createElement('tr');
-    const unitTag=s.unit==='F'?' <span style="color:var(--gold);font-size:10px">(gốc °F)</span>':'';
+    const unitTag=isF?' <span style="color:var(--gold);font-size:10px">°F</span>':'';
     tr.innerHTML=`<td>${s.target_date}</td><td>${s.city}${unitTag} <span style="color:var(--mut);font-size:11px">${s.lead_days}d</span></td>
-      <td><b>${r.actual_c!==''?(+r.actual_c).toFixed(1)+'°C':'–'}</b></td>
-      <td>${bucketC(s.pm_top_bucket)}${mark(pmOk)}</td>
+      <td><b>${act}</b></td>
+      <td>${s.pm_top_bucket||'–'}${mark(pmOk)}</td>
       ${fcCell(s.fc_ecmwf_ifs025_c)}${fcCell(s.fc_gfs_seamless_c)}${fcCell(s.fc_icon_seamless_c)}${fcCell(s.fc_ukmo_seamless_c)}`;
     rt.appendChild(tr);
   });
