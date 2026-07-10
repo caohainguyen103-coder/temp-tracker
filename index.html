@@ -240,7 +240,8 @@ async function loadOpps(){
     tb.innerHTML='<tr><td colspan="5" style="color:var(--mut)">Chưa bắt được cơ hội nào có lãi ròng — bot quét tiếp mỗi giờ.</td></tr>';
     return;
   }
-  const kindVN={negrisk_buy_all:'Mua trọn bộ',negrisk_sell_all:'Bán trọn bộ',
+  const kindVN={negrisk_buy_all:'Mua trọn bộ ✅',negrisk_sell_all:'Bán trọn bộ',
+    negrisk_gan_dat:'Gần đạt (theo dõi)',
     crypto_btc:'BTC lệch giá',crypto_eth:'ETH lệch giá'};
   parseCSV(txt).reverse().slice(0,15).forEach(r=>{
     const slug=(r.event_slug||'').replace(/-\d+c(orbelow|orhigher)?$/,'');

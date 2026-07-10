@@ -38,7 +38,8 @@ OPP_FIELDS = [
 
 NET_EDGE_MIN = 0.01     # lãi ròng >= 1%/bộ mới báo
 SUM_BID_MIN = 1.04      # chiều bán (tham khảo)
-CRYPTO_EDGE_MIN = 0.08  # 8 điểm % ròng
+CRYPTO_EDGE_MIN = 0.05  # 5 điểm % ròng (hạ từ 8% để gom nhiều dữ liệu đo lường
+                        # hơn cho chiến dịch TIỀN ẢO; tiền thật nên dùng ngưỡng cao hơn)
 MIN_LIQUIDITY = 1000
 
 
@@ -110,6 +111,18 @@ def scan_negrisk(events, now):
                 "volume24hr": ev.get("volume24hr"), "liquidity": ev.get("liquidity"),
                 "note": ("MIEN PHI (geopolitics)" if s_fee == 0 else
                          "da tru phi taker") + "; kiem tra do sau so lenh + gia con hieu luc",
+            })
+        elif -0.01 <= net < NET_EDGE_MIN:
+            # "cận kề": chưa đáng vào tiền nhưng ghi lại để thấy bot đang săn
+            rows.append({
+                "scan_utc": now, "kind": "negrisk_gan_dat",
+                "event_slug": ev.get("slug", ""),
+                "detail": (f"{n_active} o | mua {s_ask:.3f} + phi {s_fee:.3f} "
+                           f"-> RONG {net:+.3f} (thieu {NET_EDGE_MIN - net:.3f})"),
+                "edge": round(net, 4), "sum_ask": round(s_ask, 4),
+                "sum_bid": round(s_bid, 4), "market_prob": "", "model_prob": "",
+                "volume24hr": ev.get("volume24hr"), "liquidity": ev.get("liquidity"),
+                "note": "CHUA DANG VAO - chi theo doi",
             })
         elif s_bid >= SUM_BID_MIN:
             rows.append({
