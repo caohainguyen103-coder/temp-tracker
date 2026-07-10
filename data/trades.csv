@@ -39,3 +39,6 @@ entry_utc,event_slug,city,target_date,lead_days,bucket,ask,shares,stake,fee,mode
 2026-07-10T11:33:28Z,highest-temperature-in-lucknow-on-july-11-2026,lucknow,2026-07-11,1,34°C,0.116,43.1,5.0,0.221,34.3,32°C,open,,,
 2026-07-10T11:33:28Z,highest-temperature-in-wuhan-on-july-11-2026,wuhan,2026-07-11,1,36°C,0.125,40.0,5.0,0.2188,36.3,37°C,open,,,
 2026-07-10T11:33:28Z,highest-temperature-in-chengdu-on-july-12-2026,chengdu,2026-07-12,2,33°C,0.14,35.71,5.0,0.215,32.6,35°C,open,,,
+2026-07-10T18:10:09Z,highest-temperature-in-kuala-lumpur-on-july-12-2026,kuala-lumpur,2026-07-12,2,31°C,0.15,33.33,5.0,0.2125,31.4,33°C,open,,,
+2026-07-10T18:10:09Z,highest-temperature-in-ankara-on-july-12-2026,ankara,2026-07-12,2,30°C,0.16,31.25,5.0,0.21,30.3,31°C,open,,,
+2026-07-10T18:10:09Z,highest-temperature-in-singapore-on-july-11-2026,singapore,2026-07-11,1,30°C,0.18,27.78,5.0,0.205,29.7,31°C,open,,,
