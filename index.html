@@ -71,6 +71,16 @@
   <div class="sub" style="margin-top:4px">🕐 Dữ liệu cập nhật lúc: <b id="updated" style="color:var(--txt)">…</b> (giờ Việt Nam)</div>
 </header>
 
+<div class="panel" style="border-left:3px solid var(--acc)">
+  <div class="ptitle">📖 Đọc trang này trong 30 giây</div>
+  <div style="font-size:13.5px;line-height:1.9;color:var(--txt)">
+    <b>1.</b> Nhìn thẻ <b>"Lãi/lỗ ảo tổng"</b> — số xanh dương nghĩa là 3 chiến lược đang kiếm được tiền (ảo), số đỏ là đang lỗ.<br>
+    <b>2.</b> Nhìn <b>biểu đồ cột vàng</b> — nguồn dự báo nào đứng đầu là nguồn đáng tin nhất (chọn "trước 1 ngày" để chấm điểm công bằng).<br>
+    <b>3.</b> Quy tắc <b>vào lệnh trên hay dưới</b>: nếu nguồn đứng đầu chỉ vào khoảng nhiệt độ <b>THẤP hơn</b> khoảng Polymarket tin nhất → cơ hội ở cửa DƯỚI (mua ô thấp); chỉ vào khoảng <b>CAO hơn</b> → cửa TRÊN. Chỉ đáng chú ý khi giá ô đó ≤ 30¢.<br>
+    <b>4.</b> Đừng tự làm vội: chiến dịch 🌡️ bên dưới <b>đang tự động làm đúng quy tắc này bằng tiền ảo</b> — nhìn nó thắng hay thua vài tuần trước, rồi hãy quyết định có bắt chước bằng tiền thật hay không.
+  </div>
+</div>
+
 <div class="cards">
   <div class="card"><b id="c-total">–</b><span>lãi/lỗ ảo tổng (3 chiến dịch)</span></div>
   <div class="card"><b id="c-days">–</b><span>ngày thu thập dữ liệu</span></div>
@@ -179,9 +189,11 @@ function parseCSV(text){
 }
 const num=s=>{const v=parseFloat(s);return isNaN(v)?null:v;};
 const MODELS=[
-  ['Polymarket (EV)','pm_ev_c'],['ECMWF IFS','fc_ecmwf_ifs025_c'],
-  ['NOAA GFS','fc_gfs_seamless_c'],['DWD ICON','fc_icon_seamless_c'],
-  ['UK MetOffice','fc_ukmo_seamless_c'],['OM best_match','fc_best_match_c']];
+  ['Mô hình châu Âu (ECMWF)','fc_ecmwf_ifs025_c'],
+  ['Mô hình Mỹ (GFS)','fc_gfs_seamless_c'],
+  ['Mô hình Đức (ICON)','fc_icon_seamless_c'],
+  ['Mô hình Anh (UKMO)','fc_ukmo_seamless_c'],
+  ['Tổng hợp tự chọn (best match)','fc_best_match_c']];
 function parseBucket(t){
   t=(t||'').trim();let kind='eq';
   if(t.startsWith('<=')){kind='le';t=t.slice(2);}else if(t.startsWith('>=')){kind='ge';t=t.slice(2);}
@@ -389,9 +401,15 @@ function render(){
       bias:errs.reduce((x,e)=>x+e,0)/errs.length,
       hit:nh?hits/nh:null});
   });
-  {let hits=0,nh=0;
-   pairs.forEach(([s,r])=>{if(s.pm_top_bucket&&r.resolved_bucket){nh++;if(s.pm_top_bucket===r.resolved_bucket)hits++;}});
-   if(nh)rows.push({name:'Polymarket (ô đỉnh)',n:nh,mae:null,bias:null,hit:hits/nh});}
+  {let hits=0,nh=0,errs=[];
+   pairs.forEach(([s,r])=>{
+     if(s.pm_top_bucket&&r.resolved_bucket){nh++;if(s.pm_top_bucket===r.resolved_bucket)hits++;}
+     const v=num(s.pm_ev_c),a=num(r.actual_c);
+     if(v!=null&&a!=null)errs.push(v-a);
+   });
+   if(nh)rows.push({name:'Polymarket (đám đông)',n:nh,
+     mae:errs.length?errs.reduce((x,e)=>x+Math.abs(e),0)/errs.length:null,
+     bias:null,hit:hits/nh});}
   rows.sort((a,b)=>(a.mae??99)-(b.mae??99));
   if(!rows.length)tb.innerHTML='<tr><td colspan="5" style="color:var(--mut)">Cần vài ngày dữ liệu nữa — bảng tự điền khi các thị trường phân giải.</td></tr>';
   rows.forEach((r,i)=>{
