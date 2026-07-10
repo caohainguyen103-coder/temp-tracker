@@ -38,8 +38,10 @@ OPP_FIELDS = [
 
 NET_EDGE_MIN = 0.01     # lãi ròng >= 1%/bộ mới báo
 SUM_BID_MIN = 1.04      # chiều bán (tham khảo)
-CRYPTO_EDGE_MIN = 0.05  # 5 điểm % ròng (hạ từ 8% để gom nhiều dữ liệu đo lường
-                        # hơn cho chiến dịch TIỀN ẢO; tiền thật nên dùng ngưỡng cao hơn)
+CRYPTO_EDGE_MIN = 0.04  # 4 điểm % ròng — ngưỡng THẤP có chủ đích cho chiến dịch
+                        # TIỀN ẢO: gom nhiều lệnh để đo xem lệch nhỏ có ăn được
+                        # không. Nếu nhóm lệnh 4-6% thua lỗ, đó là bằng chứng
+                        # phải quay về ngưỡng cao. Tiền thật: dùng >= 8%.
 MIN_LIQUIDITY = 1000
 
 
@@ -304,7 +306,7 @@ CT_FIELDS = ["entry_utc", "market_slug", "ccy", "side", "price", "shares",
              "status", "payout", "pnl", "settle_utc"]
 CT_BUDGET = 200.0
 CT_STAKE = 10.0
-CT_MAX_PER_SCAN = 5
+CT_MAX_PER_SCAN = 8
 
 
 def crypto_resolved_side(slug):

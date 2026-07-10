@@ -132,9 +132,9 @@
       </span>
     </div>
     <table id="leader"><thead><tr>
-      <th>Nguồn</th><th>n</th><th>MAE °C</th><th>Bias °C</th><th>Trúng ô</th>
+      <th>Nguồn dự báo</th><th>Số lần</th><th>Lệch trung bình</th><th>Đoán đúng</th>
     </tr></thead><tbody></tbody></table>
-    <div class="note">MAE = sai số trung bình. Bias dương = đoán nóng hơn thực tế. "Trúng ô" = chọn đúng khoảng nhiệt độ thắng cuộc.</div>
+    <div class="note">Đọc đơn giản: "Lệch trung bình" càng nhỏ càng giỏi · "Đoán đúng" = % lần chỉ trúng khoảng nhiệt độ thắng cuộc. Nguồn đứng đầu = đáng tin nhất.</div>
   </div>
   <div class="panel" style="margin:0">
     <div class="ptitle">📊 Polymarket lệch theo thành phố (°C)</div>
@@ -149,10 +149,10 @@
     </span>
   </div>
   <table id="recent"><thead><tr>
-    <th>Ngày</th><th>Thành phố</th><th>Lead</th><th>Ô thắng</th><th>Thực đo</th>
-    <th>Chợ đoán</th><th>Chợ EV</th><th>ECMWF</th><th>GFS</th><th>ICON</th><th>UKMO</th>
+    <th>Ngày</th><th>Thành phố</th><th>Thực đo</th>
+    <th>Polymarket</th><th>ECMWF</th><th>GFS</th><th>ICON</th><th>UKMO</th>
   </tr></thead><tbody></tbody></table>
-  <div class="note">Lead = dự báo được chụp trước ngày mục tiêu bao nhiêu ngày (1–2d = dự báo trước, 0d = trong ngày, chỉ tham khảo).</div>
+  <div class="note">✓ xanh = đoán trúng khoảng nhiệt độ thắng cuộc · ✗ đỏ = đoán trượt. Tất cả nhiệt độ đã quy về °C. "Polymarket" = khoảng nhiệt độ mà người chơi đặt cược tin nhất.</div>
 </div>
 
 <div class="foot">
@@ -392,11 +392,12 @@ function render(){
    if(nh)rows.push({name:'Polymarket (ô đỉnh)',n:nh,mae:null,bias:null,hit:hits/nh});}
   rows.sort((a,b)=>(a.mae??99)-(b.mae??99));
   if(!rows.length)tb.innerHTML='<tr><td colspan="5" style="color:var(--mut)">Cần vài ngày dữ liệu nữa — bảng tự điền khi các thị trường phân giải.</td></tr>';
-  rows.forEach(r=>{
+  rows.forEach((r,i)=>{
     const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${r.name}</td><td>${r.n}</td><td>${r.mae==null?'–':r.mae.toFixed(2)}</td>
-      <td class="${r.bias>0?'pos':'neg'}">${r.bias==null?'–':(r.bias>0?'+':'')+r.bias.toFixed(2)}</td>
-      <td>${r.hit==null?'–':(100*r.hit).toFixed(0)+'%'}</td>`;
+    const medal=i===0?'🥇 ':(i===1?'🥈 ':(i===2?'🥉 ':''));
+    tr.innerHTML=`<td>${medal}${r.name}</td><td>${r.n}</td>
+      <td>${r.mae==null?'–':r.mae.toFixed(1)+'°C'}</td>
+      <td class="${r.hit>=0.4?'hit':''}">${r.hit==null?'–':(100*r.hit).toFixed(0)+'%'}</td>`;
     tb.appendChild(tr);
   });
 
@@ -423,17 +424,31 @@ function render(){
   let arr=joined('best',day==='all'?'all':day).map(p=>p[0])
     .sort((a,b)=>b.target_date.localeCompare(a.target_date)||a.city.localeCompare(b.city));
   arr=arr.slice(0,60);
-  if(!arr.length)rt.innerHTML='<tr><td colspan="11" style="color:var(--mut)">Chưa có kết quả cho lựa chọn này — thử chọn ngày khác.</td></tr>';
+  if(!arr.length)rt.innerHTML='<tr><td colspan="8" style="color:var(--mut)">Chưa có kết quả cho ngày này — các thị trường tự phân giải sau khi ngày kết thúc, bảng sẽ tự điền.</td></tr>';
+  const bucketC=label=>{
+    const b=parseBucket(label);if(!b)return label||'–';
+    const f=x=>b.unit==='F'?Math.round((x-32)*5/9):x;
+    if(b.kind==='le')return '≤'+f(b.hi)+'°C';
+    if(b.kind==='ge')return '≥'+f(b.lo)+'°C';
+    const lo=f(b.lo),hi=f(b.hi);
+    return lo===hi?lo+'°C':lo+'–'+hi+'°C';
+  };
   arr.forEach(s=>{
     const r=RES[s.event_slug];
-    const hitCls=s.pm_top_bucket===r.resolved_bucket?'hit':'miss';
-    const cell=v=>v===''||v==null?'–':(+v).toFixed(1);
+    const rb=parseBucket(r.resolved_bucket);
+    const mark=ok=>ok==null?'':(ok?' <span class="hit">✓</span>':' <span class="miss">✗</span>');
+    const fcCell=v0=>{
+      const v=num(v0);if(v==null)return '<td>–</td>';
+      const nat=s.unit==='F'?c2f(v):v;
+      const ok=rb?bucketContains(rb,nat,s.precision||'whole'):null;
+      return `<td>${v.toFixed(1)}°${mark(ok)}</td>`;
+    };
+    const pmOk=r.resolved_bucket?(s.pm_top_bucket===r.resolved_bucket):null;
     const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${s.target_date}</td><td>${s.city}</td><td>${s.lead_days}d</td>
-      <td>${r.resolved_bucket||'–'}</td><td>${cell(r.actual_c)}°C</td>
-      <td class="${hitCls}">${s.pm_top_bucket}</td><td>${cell(s.pm_ev_c)}</td>
-      <td>${cell(s.fc_ecmwf_ifs025_c)}</td><td>${cell(s.fc_gfs_seamless_c)}</td>
-      <td>${cell(s.fc_icon_seamless_c)}</td><td>${cell(s.fc_ukmo_seamless_c)}</td>`;
+    tr.innerHTML=`<td>${s.target_date}</td><td>${s.city} <span style="color:var(--mut);font-size:11px">${s.lead_days}d</span></td>
+      <td><b>${r.actual_c!==''?(+r.actual_c).toFixed(1)+'°C':'–'}</b></td>
+      <td>${bucketC(s.pm_top_bucket)}${mark(pmOk)}</td>
+      ${fcCell(s.fc_ecmwf_ifs025_c)}${fcCell(s.fc_gfs_seamless_c)}${fcCell(s.fc_icon_seamless_c)}${fcCell(s.fc_ukmo_seamless_c)}`;
     rt.appendChild(tr);
   });
 }
