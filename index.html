@@ -127,7 +127,8 @@
   <div class="panel" style="margin:0">
     <div class="ptitle">🏆 Ai dự báo giỏi nhất?
       <span style="margin-left:auto;font-weight:400;font-size:12px;color:var(--mut)">
-        Lead <select id="leadSel"><option value="1">1 ngày</option><option value="2">2 ngày</option><option value="0">trong ngày</option></select>
+        <select id="ldDay"><option value="all">tổng hợp</option></select>
+        <select id="leadSel"><option value="best">dự báo tốt nhất có sẵn</option><option value="1">trước 1 ngày</option><option value="2">trước 2 ngày</option><option value="0">trong ngày</option></select>
       </span>
     </div>
     <table id="leader"><thead><tr>
@@ -148,9 +149,10 @@
     </span>
   </div>
   <table id="recent"><thead><tr>
-    <th>Ngày</th><th>Thành phố</th><th>Ô thắng</th><th>Thực đo</th>
+    <th>Ngày</th><th>Thành phố</th><th>Lead</th><th>Ô thắng</th><th>Thực đo</th>
     <th>Chợ đoán</th><th>Chợ EV</th><th>ECMWF</th><th>GFS</th><th>ICON</th><th>UKMO</th>
   </tr></thead><tbody></tbody></table>
+  <div class="note">Lead = dự báo được chụp trước ngày mục tiêu bao nhiêu ngày (1–2d = dự báo trước, 0d = trong ngày, chỉ tham khảo).</div>
 </div>
 
 <div class="foot">
@@ -227,8 +229,11 @@ async function load(){
   const last=SNAPS.map(s=>s.snapshot_utc).sort().pop();
   document.getElementById('updated').textContent=last?vnTime(last):'chưa có dữ liệu';
   const days=[...new Set(SNAPS.map(s=>s.target_date))].sort().reverse();
-  const sel=document.getElementById('daySel');
-  days.forEach(d=>{const o=document.createElement('option');o.value=d;o.textContent=d;sel.appendChild(o);});
+  const sel=document.getElementById('daySel'), ld=document.getElementById('ldDay');
+  days.forEach(d=>{
+    const o=document.createElement('option');o.value=d;o.textContent=d;sel.appendChild(o);
+    const o2=document.createElement('option');o2.value=d;o2.textContent=d;ld.appendChild(o2);
+  });
   loadOpps(); loadPaper(); loadArb(); loadCrypto(); render();
 }
 
@@ -342,19 +347,28 @@ async function loadPaper(){
   });
 }
 
-function joined(lead){
+function joined(lead,day){
+  const rank=l=>l===1?0:(l===2?1:(l===0?2:9));
   const by={};
   SNAPS.forEach(s=>{
-    if(+s.lead_days!==lead)return;
     const r=RES[s.event_slug];if(!r||r.actual_c==='')return;
-    if(!by[s.event_slug]||s.snapshot_utc>by[s.event_slug][0].snapshot_utc)by[s.event_slug]=[s,r];
+    if(day&&day!=='all'&&s.target_date!==day)return;
+    const L=+s.lead_days;
+    if(lead!=='best'&&L!==+lead)return;
+    const cur=by[s.event_slug];
+    if(!cur){by[s.event_slug]=[s,r];return;}
+    const c=+cur[0].lead_days;
+    if(lead==='best'){
+      if(rank(L)<rank(c)||(rank(L)===rank(c)&&s.snapshot_utc>cur[0].snapshot_utc))by[s.event_slug]=[s,r];
+    }else if(s.snapshot_utc>cur[0].snapshot_utc)by[s.event_slug]=[s,r];
   });
   return Object.values(by);
 }
 
 function render(){
-  const lead=+document.getElementById('leadSel').value;
-  const pairs=joined(lead);
+  const lead=document.getElementById('leadSel').value;
+  const ldDay=document.getElementById('ldDay').value;
+  const pairs=joined(lead,ldDay);
   const tb=document.querySelector('#leader tbody');tb.innerHTML='';
   const rows=[];
   MODELS.forEach(([name,col])=>{
@@ -405,20 +419,17 @@ function render(){
   });
 
   const rt=document.querySelector('#recent tbody');rt.innerHTML='';
-  const latest={};
-  SNAPS.forEach(s=>{const k=s.event_slug;
-    if(RES[k]&&(+s.lead_days===1)&&(!latest[k]||s.snapshot_utc>latest[k].snapshot_utc))latest[k]=s;});
   const day=document.getElementById('daySel').value;
-  let arr=Object.values(latest).sort((a,b)=>b.target_date.localeCompare(a.target_date));
-  if(day!=='all')arr=arr.filter(s=>s.target_date===day);
-  arr=arr.slice(0,40);
-  if(!arr.length)rt.innerHTML='<tr><td colspan="10" style="color:var(--mut)">Chờ các thị trường đầu tiên phân giải (1–2 ngày).</td></tr>';
+  let arr=joined('best',day==='all'?'all':day).map(p=>p[0])
+    .sort((a,b)=>b.target_date.localeCompare(a.target_date)||a.city.localeCompare(b.city));
+  arr=arr.slice(0,60);
+  if(!arr.length)rt.innerHTML='<tr><td colspan="11" style="color:var(--mut)">Chưa có kết quả cho lựa chọn này — thử chọn ngày khác.</td></tr>';
   arr.forEach(s=>{
     const r=RES[s.event_slug];
     const hitCls=s.pm_top_bucket===r.resolved_bucket?'hit':'miss';
     const cell=v=>v===''||v==null?'–':(+v).toFixed(1);
     const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${s.target_date}</td><td>${s.city}</td>
+    tr.innerHTML=`<td>${s.target_date}</td><td>${s.city}</td><td>${s.lead_days}d</td>
       <td>${r.resolved_bucket||'–'}</td><td>${cell(r.actual_c)}°C</td>
       <td class="${hitCls}">${s.pm_top_bucket}</td><td>${cell(s.pm_ev_c)}</td>
       <td>${cell(s.fc_ecmwf_ifs025_c)}</td><td>${cell(s.fc_gfs_seamless_c)}</td>
@@ -429,6 +440,7 @@ function render(){
 
 document.getElementById('leadSel').addEventListener('change',render);
 document.getElementById('daySel').addEventListener('change',render);
+document.getElementById('ldDay').addEventListener('change',render);
 load();
 </script>
 </body>
