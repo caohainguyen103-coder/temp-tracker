@@ -7,3 +7,5 @@ entry_utc,event_slug,end_date,sets,cost_per_set,total_cost,payout_per_set,locked
 2026-07-11T10:47:09Z,what-will-the-median-home-value-in-the-los-angeles-metro-area-be-on-september-30-20260630173100174,2026-09-30T04:00:00Z,25,0.9632,24.08,1.0,0.92,open,
 2026-07-12T07:16:33Z,openai-ipo-closing-market-cap,2026-12-31T23:55:00Z,25,0.9861,24.65,1.0,0.35,open,
 2026-07-12T11:42:35Z,peoples-bank-of-china-rate-change-by-september-30-20260630000252021,2026-09-30T23:59:00Z,25,0.9528,23.82,1.0,1.18,open,
+2026-07-12T23:36:22Z,emmys-2026-outstanding-guest-actor-in-a-comedy-series,2026-09-14T20:00:00Z,25,0.9651,24.13,1.0,0.87,open,
+2026-07-12T23:36:22Z,emmys-2026-outstanding-variety-series,2026-09-14T20:00:00Z,11,0.967,10.64,1.0,0.36,open,
