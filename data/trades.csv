@@ -52,3 +52,6 @@ entry_utc,event_slug,city,target_date,lead_days,bucket,ask,shares,stake,fee,mode
 2026-07-12T07:58:32Z,highest-temperature-in-hong-kong-on-july-13-2026,hong-kong,2026-07-13,1,30°C,0.071,70.42,5.0,0.2322,30.6,33°C,open,,,
 2026-07-12T07:58:32Z,highest-temperature-in-istanbul-on-july-13-2026,istanbul,2026-07-13,1,28°C,0.08,62.5,5.0,0.23,27.9,27°C,open,,,
 2026-07-12T07:58:32Z,highest-temperature-in-hong-kong-on-july-14-2026,hong-kong,2026-07-14,2,27°C,0.08,62.5,5.0,0.23,27.8,30°C,open,,,
+2026-07-12T15:41:20Z,highest-temperature-in-ankara-on-july-13-2026,ankara,2026-07-13,1,31°C,0.096,52.08,5.0,0.226,31.3,32°C,open,,,
+2026-07-12T15:41:20Z,highest-temperature-in-wellington-on-july-13-2026,wellington,2026-07-13,1,12°C,0.13,38.46,5.0,0.2175,12.3,13°C,open,,,
+2026-07-12T15:41:20Z,highest-temperature-in-guangzhou-on-july-14-2026,guangzhou,2026-07-14,2,30°C,0.13,38.46,5.0,0.2175,29.7,>=34°C,open,,,
