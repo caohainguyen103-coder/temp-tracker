@@ -102,3 +102,5 @@ scan_utc,kind,event_slug,detail,edge,sum_ask,sum_bid,market_prob,model_prob,volu
 2026-07-13T18:22:45Z,negrisk_gan_dat,uel-ftc-vns-2026-07-16,3 o | mua 0.970 + phi 0.024 -> RONG +0.006 (thieu 0.004),0.0062,0.97,0.92,,,14702.128133999999,66945.834,CHUA DANG VAO - chi theo doi
 2026-07-13T18:22:45Z,negrisk_gan_dat,bank-of-brazil-decision-in-august,5 o | mua 0.982 + phi 0.015 -> RONG +0.003 (thieu 0.007),0.0034,0.982,0.924,,,4397.139458000001,57481.31842,CHUA DANG VAO - chi theo doi
 2026-07-13T18:22:45Z,negrisk_gan_dat,bank-of-japan-decision-in-july-659,5 o | mua 1.007 + phi 0.002 -> RONG -0.009 (thieu 0.019),-0.0089,1.007,0.991,,,4836.975429,106261.07751,CHUA DANG VAO - chi theo doi
+2026-07-13T21:35:57Z,negrisk_buy_all,clacton-by-election-count-binface-vote-20260708142507718,5 o | tong mua 0.950 + phi 0.030 = 0.980 | nhan 1.000 | RONG +0.020,0.0204,0.95,0.897,,,10830.874002999999,179804.97787,da tru phi taker; kiem tra do sau so lenh + gia con hieu luc
+2026-07-13T21:35:57Z,negrisk_gan_dat,bank-of-japan-decision-in-july-659,5 o | mua 1.007 + phi 0.002 -> RONG -0.009 (thieu 0.019),-0.0089,1.007,0.991,,,4800.8654289999995,110375.41257,CHUA DANG VAO - chi theo doi
