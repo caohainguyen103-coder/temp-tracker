@@ -133,10 +133,17 @@
   </tr></thead><tbody></tbody></table>
 </div>
 
+<div class="panel">
+  <div class="ptitle">📈 Vốn ảo theo ngày — chiến lược nào sống, chiến lược nào chết</div>
+  <div style="position:relative;width:100%;height:260px"><canvas id="equityChart"></canvas></div>
+  <div class="note">Mỗi đường = một túi $200 ảo (chỉ tính lãi/lỗ ĐÃ CHỐT). Đường đi lên đều = chiến lược đáng tin · đường lao dốc = chiến lược vừa cứu bạn khỏi mất tiền thật.</div>
+</div>
+
 <div class="grid2">
   <div class="panel" style="margin:0">
     <div class="ptitle">🏆 Ai dự báo giỏi nhất?
       <span style="margin-left:auto;font-weight:400;font-size:12px;color:var(--mut)">
+        <select id="regionSel"><option value="all">mọi khu vực</option><option value="Asia">Châu Á</option><option value="Europe">Châu Âu</option><option value="America">Châu Mỹ</option><option value="Africa">Châu Phi</option><option value="Pacific">Châu Đại Dương</option></select>
         <select id="ldDay"><option value="all">tổng hợp</option></select>
         <select id="leadSel"><option value="best">dự báo tốt nhất có sẵn</option><option value="1">trước 1 ngày</option><option value="2">trước 2 ngày</option><option value="0">trong ngày</option></select>
       </span>
@@ -216,7 +223,33 @@ const c2f=c=>c*9/5+32;
 const badge=s=>{const m={open:['b-open','đang mở'],won:['b-won','THẮNG'],lost:['b-lost','thua'],void:['b-void','hủy'],settled:['b-won','đã chốt']};
   const x=m[s]||['b-void',s];return `<span class="badge ${x[0]}">${x[1]}</span>`;};
 
-let SNAPS=[],RES={},chart=null;
+let SNAPS=[],RES={},chart=null,chartEq=null;
+let PAPER_ROWS=[],ARB_ROWS=[],CRYPTO_ROWS=[];
+function renderEquity(){
+  const days=new Set();
+  const day1={A:{},C:{},W:{}};
+  ARB_ROWS.forEach(t=>{const d=(t.entry_utc||'').slice(0,10);if(!d)return;
+    days.add(d);day1.A[d]=(day1.A[d]||0)+(num(t.locked_profit)||0);});
+  CRYPTO_ROWS.forEach(t=>{if(t.status==='open'||!t.settle_utc)return;const d=t.settle_utc.slice(0,10);
+    days.add(d);day1.C[d]=(day1.C[d]||0)+(num(t.pnl)||0);});
+  PAPER_ROWS.forEach(t=>{if(t.status==='open'||!t.settle_utc)return;const d=t.settle_utc.slice(0,10);
+    days.add(d);day1.W[d]=(day1.W[d]||0)+(num(t.pnl)||0);});
+  const axis=[...days].sort();
+  if(!axis.length)return;
+  const line=k=>{let run=200;return axis.map(d=>{run+=(day1[k][d]||0);return +run.toFixed(2);});};
+  if(chartEq)chartEq.destroy();
+  chartEq=new Chart(document.getElementById('equityChart'),{
+    type:'line',
+    data:{labels:axis.map(d=>d.slice(5)),datasets:[
+      {label:'💰 Arbitrage',data:line('A'),borderColor:'#34d399',backgroundColor:'#34d399',tension:.25,pointRadius:3},
+      {label:'🪙 Crypto',data:line('C'),borderColor:'#6ea8ff',backgroundColor:'#6ea8ff',tension:.25,pointRadius:3},
+      {label:'🌡️ Thời tiết',data:line('W'),borderColor:'#fb7185',backgroundColor:'#fb7185',tension:.25,pointRadius:3}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{labels:{color:'#eef2fb',boxWidth:14}}},
+      scales:{y:{grid:{color:'#232d4d'},ticks:{color:'#8a94b0',callback:v=>'$'+v}},
+        x:{grid:{display:false},ticks:{color:'#8a94b0'}}}}
+  });
+}
 const TOTALS={arb:0,crypto:0,weather:0};
 function updateTotal(){
   const t=TOTALS.arb+TOTALS.crypto+TOTALS.weather;
@@ -280,10 +313,10 @@ async function loadArb(){
   try{ txt=await (await fetch('data/arb_trades.csv',{cache:'no-store'})).text(); }catch(e){}
   let profit=0,open=0,count=0;
   if(txt.includes('event_slug')){
-    const rows=parseCSV(txt);count=rows.length;
+    const rows=parseCSV(txt);count=rows.length;ARB_ROWS=rows;
     rows.forEach(r=>{ profit+=num(r.locked_profit)||0; if(r.status==='open')open++; });
   }
-  TOTALS.arb=profit;updateTotal();
+  TOTALS.arb=profit;updateTotal();renderEquity();
   document.getElementById('a-profit').textContent='+$'+profit.toFixed(2);
   document.getElementById('a-open').textContent=open;
   document.getElementById('a-count').textContent=count;
@@ -307,7 +340,8 @@ async function loadCrypto(){
     if(r.status==='open'){open++;openCost+=(num(r.stake)||0)+(num(r.fee)||0);}
     else{realized+=num(r.pnl)||0;if(r.status==='won')won++;if(r.status==='lost')lost++;}
   });
-  TOTALS.crypto=realized;updateTotal();
+  CRYPTO_ROWS=rows;
+  TOTALS.crypto=realized;updateTotal();renderEquity();
   document.getElementById('k-balance').textContent='$'+(200+realized-openCost).toFixed(2);
   const kp=document.getElementById('k-pnl');
   kp.textContent=(realized>=0?'+':'')+realized.toFixed(2)+' $';
@@ -341,7 +375,8 @@ async function loadPaper(){
     if(r.status==='open'){open++;openCost+=(num(r.stake)||0)+(num(r.fee)||0);}
     else{realized+=num(r.pnl)||0;if(r.status==='won')won++;if(r.status==='lost')lost++;}
   });
-  TOTALS.weather=realized;updateTotal();
+  PAPER_ROWS=rows;
+  TOTALS.weather=realized;updateTotal();renderEquity();
   document.getElementById('p-balance').textContent='$'+(200+realized-openCost).toFixed(2);
   const pp=document.getElementById('p-pnl');
   pp.textContent=(realized>=0?'+':'')+realized.toFixed(2)+' $';
@@ -363,10 +398,12 @@ async function loadPaper(){
 
 function joined(lead,day){
   const rank=l=>l===1?0:(l===2?1:(l===0?2:9));
+  const reg=document.getElementById('regionSel').value;
   const by={};
   SNAPS.forEach(s=>{
     const r=RES[s.event_slug];if(!r||r.actual_c==='')return;
     if(day&&day!=='all'&&s.target_date!==day)return;
+    if(reg!=='all'&&!(s.tz||'').startsWith(reg))return;
     const L=+s.lead_days;
     if(lead!=='best'&&L!==+lead)return;
     const cur=by[s.event_slug];
@@ -479,6 +516,7 @@ function render(){
 document.getElementById('leadSel').addEventListener('change',render);
 document.getElementById('daySel').addEventListener('change',render);
 document.getElementById('ldDay').addEventListener('change',render);
+document.getElementById('regionSel').addEventListener('change',render);
 load();
 </script>
 </body>
