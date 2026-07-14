@@ -253,3 +253,7 @@ target_date,event_slug,city,unit,precision,station_kind,station_id,resolved_buck
 2026-07-13,highest-temperature-in-wellington-on-july-13-2026,wellington,C,whole,metar,NZWN,13°C,13.0,13.0,iem_metar,2026-07-14T07:34:51Z
 2026-07-12,highest-temperature-in-wuhan-on-july-12-2026,wuhan,C,whole,metar,ZHHH,34°C,34.0,34.0,iem_metar,2026-07-14T07:34:51Z
 2026-07-13,highest-temperature-in-wuhan-on-july-13-2026,wuhan,C,whole,metar,ZHHH,37°C,37.0,37.0,iem_metar,2026-07-14T07:34:51Z
+2026-07-13,highest-temperature-in-denver-on-july-13-2026,denver,F,whole,geocode,denver,96-97°F,38.0,100.4,openmeteo_grid,2026-07-14T16:47:46Z
+2026-07-13,highest-temperature-in-los-angeles-on-july-13-2026,los-angeles,F,whole,metar,KLAX,74-75°F,23.9,75.0,iem_metar,2026-07-14T16:47:46Z
+2026-07-13,highest-temperature-in-san-francisco-on-july-13-2026,san-francisco,F,whole,metar,KSFO,76-77°F,26.1,79.0,iem_metar,2026-07-14T16:47:46Z
+2026-07-13,highest-temperature-in-seattle-on-july-13-2026,seattle,F,whole,metar,KSEA,78-79°F,26.7,80.0,iem_metar,2026-07-14T16:47:46Z
