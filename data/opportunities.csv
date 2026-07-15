@@ -124,3 +124,4 @@ scan_utc,kind,event_slug,detail,edge,sum_ask,sum_bid,market_prob,model_prob,volu
 2026-07-15T17:51:51Z,crypto_btc,bitcoin-above-64k-on-july-16-2026,"BTC > $64,000 luc 2026-07-16T16:00:00Z; spot $64,975, DVOL 36%; mua NO @0.150; RONG +0.047 sau phi",0.0468,,,0.855,0.7942,23603.613488000003,15660.7717,mo hinh bo qua skew - tu tham dinh truoc khi vao lenh
 2026-07-15T17:51:51Z,negrisk_gan_dat,fed-decisions-apr-jul,3 o | mua 1.002 + phi 0.004 -> RONG -0.006 (thieu 0.016),-0.0061,1.002,0.985,,,32133.218251,96199.21703,CHUA DANG VAO - chi theo doi
 2026-07-15T17:51:51Z,negrisk_gan_dat,fed-decision-in-july-181,5 o | mua 1.005 + phi 0.005 -> RONG -0.010 (thieu 0.020),-0.0097,1.005,1.0,,,4221539.805699,4968759.48299,CHUA DANG VAO - chi theo doi
+2026-07-15T21:41:27Z,negrisk_gan_dat,uel-ves-qar-2026-07-16,3 o | mua 0.994 + phi 0.011 -> RONG -0.005 (thieu 0.015),-0.0046,0.994,0.972,,,5029.994301,42334.65799,CHUA DANG VAO - chi theo doi
