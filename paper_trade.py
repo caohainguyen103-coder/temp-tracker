@@ -27,10 +27,15 @@ TRADES_CSV = C.DATA_DIR + "/trades.csv"
 
 TRADE_FIELDS = [
     "entry_utc", "event_slug", "city", "target_date", "lead_days",
-    "bucket", "ask", "shares", "stake", "fee",
+    "side", "bucket", "ask", "shares", "stake", "fee",
     "model_median_c", "pm_top_bucket",
     "status", "payout", "pnl", "settle_utc",
 ]
+
+# Phía đặt cược: "YES" = mua bucket mô hình chọn (chiến lược cũ, đã lỗ -139$),
+# "NO" = cược bucket đó KHÔNG xảy ra (mô phỏng trên 52 lệnh cũ: chỉ +0.63$),
+# "BOTH" = mở song song cả hai để so sánh trực tiếp trên dashboard.
+SIDE = "NO"
 
 BUDGET = 200.0
 STAKE = 5.0
@@ -92,9 +97,12 @@ def settle(trades, results):
             continue
         rb = r["resolved_bucket"]
         stake, fee, shares = float(t["stake"]), float(t["fee"]), float(t["shares"])
+        side = (t.get("side") or "YES").upper()
+        hit = (rb == t["bucket"])
+        win = (hit if side == "YES" else not hit)
         if rb == "UNRESOLVED":
             t["status"], t["payout"], t["pnl"] = "void", stake, 0.0
-        elif rb == t["bucket"]:
+        elif win:
             payout = shares * 1.0
             t["status"], t["payout"] = "won", round(payout, 2)
             t["pnl"] = round(payout - stake - fee, 2)
@@ -155,25 +163,34 @@ def enter(trades, snaps, full, now):
 
     candidates.sort(key=lambda x: x[0])
     added = 0
+    sides = ["YES", "NO"] if SIDE == "BOTH" else [SIDE]
     for ask, s, pick, med_c in candidates:
         if added >= MAX_TRADES_PER_DAY:
             break
-        shares = round(STAKE / ask, 2)
-        fee = round(FEE_RATE * ask * (1 - ask) * shares, 4)
-        if cash_available(trades) < STAKE + fee:
-            print("  [HET TIEN AO] cho lenh cu chot da")
-            break
-        trades.append({
-            "entry_utc": now, "event_slug": s["event_slug"], "city": s["city"],
-            "target_date": s["target_date"], "lead_days": s["lead_days"],
-            "bucket": pick["label"], "ask": ask, "shares": shares,
-            "stake": STAKE, "fee": fee,
-            "model_median_c": round(med_c, 1), "pm_top_bucket": s.get("pm_top_bucket", ""),
-            "status": "open", "payout": "", "pnl": "", "settle_utc": "",
-        })
+        for side in sides:
+            if side == "NO":
+                bid = to_float(pick.get("bid"))
+                price = round(1 - bid, 3) if bid is not None else round(1 - ask, 3)
+            else:
+                price = ask
+            if not (0 < price < 1):
+                continue
+            shares = round(STAKE / price, 2)
+            fee = round(FEE_RATE * price * (1 - price) * shares, 4)
+            if cash_available(trades) < STAKE + fee:
+                print("  [HET TIEN AO] cho lenh cu chot da")
+                return added
+            trades.append({
+                "entry_utc": now, "event_slug": s["event_slug"], "city": s["city"],
+                "target_date": s["target_date"], "lead_days": s["lead_days"],
+                "side": side, "bucket": pick["label"], "ask": price, "shares": shares,
+                "stake": STAKE, "fee": fee,
+                "model_median_c": round(med_c, 1), "pm_top_bucket": s.get("pm_top_bucket", ""),
+                "status": "open", "payout": "", "pnl": "", "settle_utc": "",
+            })
+            print(f"  VAO LENH AO: {s['city']} {s['target_date']} {side} '{pick['label']}' "
+                  f"@{price} x{shares} co phan (mo hinh {med_c:.1f}C vs cho {s.get('pm_top_bucket')})")
         added += 1
-        print(f"  VAO LENH AO: {s['city']} {s['target_date']} mua '{pick['label']}' "
-              f"@{ask} x{shares} co phan (mo hinh {med_c:.1f}C vs cho {s.get('pm_top_bucket')})")
     return added
 
 
