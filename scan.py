@@ -310,17 +310,38 @@ CT_MAX_PER_SCAN = 8
 
 
 def crypto_resolved_side(slug):
-    j = C.http_get_json(f"{C.GAMMA}/markets", {"slug": slug})
-    try:
-        mk = j[0]
-        prices = json.loads(mk.get("outcomePrices") or "[]")
-        y = float(prices[0])
-        if mk.get("closed") and y >= 0.99:
+    """Tìm phía thắng của market đã hết hạn.
+    SỬA LỖI: bản cũ chỉ hỏi /markets?slug= và đòi cờ closed=true -> nhiều
+    lệnh treo 'open' vĩnh viễn. Bản này:
+      1) thử /markets?slug= rồi /events?slug= (slug lưu là slug event);
+      2) sau hạn chót, chấp nhận giá phân giải cực đoan (>=0.995 / <=0.005)
+         kể cả khi Gamma cập nhật cờ closed chậm.
+    """
+    def side_from(mk):
+        try:
+            y = float(json.loads(mk.get("outcomePrices") or "[]")[0])
+        except (TypeError, KeyError, IndexError, ValueError):
+            return None
+        closed = bool(mk.get("closed"))
+        if (closed and y >= 0.99) or y >= 0.995:
             return "YES"
-        if mk.get("closed") and y <= 0.01:
+        if (closed and y <= 0.01) or y <= 0.005:
             return "NO"
-    except (TypeError, KeyError, IndexError, ValueError):
-        pass
+        return None
+
+    j = C.http_get_json(f"{C.GAMMA}/markets", {"slug": slug})
+    if isinstance(j, list):
+        for mk in j:
+            s = side_from(mk)
+            if s:
+                return s
+    j = C.http_get_json(f"{C.GAMMA}/events", {"slug": slug})
+    ev = j[0] if isinstance(j, list) and j else None
+    if ev:
+        for mk in ev.get("markets", []):
+            s = side_from(mk)
+            if s:
+                return s
     return None
 
 
@@ -332,6 +353,19 @@ def paper_crypto(rows, now):
             continue
         winner = crypto_resolved_side(t["market_slug"])
         if winner is None:
+            # SỬA LỖI: không để lệnh treo vĩnh viễn. Quá hạn > 5 ngày mà API
+            # vẫn không cho biết kết quả -> coi như hủy, hoàn cọc (mất phí),
+            # để giải phóng ngân sách ảo. Ghi rõ 'void' trên dashboard.
+            try:
+                overdue = (datetime.now(timezone.utc)
+                           - datetime.strptime(t["end_date"][:19], "%Y-%m-%dT%H:%M:%S")
+                             .replace(tzinfo=timezone.utc)).days
+            except ValueError:
+                overdue = 0
+            if overdue > 5:
+                t["status"], t["payout"] = "void", float(t["stake"])
+                t["pnl"] = round(-float(t["fee"]), 2)
+                t["settle_utc"] = now
             continue
         stake, fee, shares = float(t["stake"]), float(t["fee"]), float(t["shares"])
         if winner == t["side"]:
