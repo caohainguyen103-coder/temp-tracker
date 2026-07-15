@@ -112,7 +112,7 @@
     <div class="card"><b id="k-record">–</b><span>thắng / thua</span></div>
     <div class="card"><b id="k-open">–</b><span>lệnh đang mở</span></div>
   </div>
-  <table id="crypto"><thead><tr>
+  <div class="pdesc" id="k-sum" style="color:var(--txt);font-weight:600"></div><table id="crypto"><thead><tr>
     <th>Vào lệnh</th><th>Coin</th><th>Phía</th><th>Giá</th><th>Deribit nói</th><th>Lệch</th><th>Trạng thái</th><th>Lãi/lỗ</th>
   </tr></thead><tbody></tbody></table>
   <div class="note">Mô hình bỏ qua skew quyền chọn nên chỉ bắt lệch rất lớn — có thể nhiều ngày không có lệnh nào. Không có lệnh = không có cơ hội đạt chuẩn, đó là thông tin tốt.</div>
@@ -127,7 +127,7 @@
     <div class="card"><b id="p-record">–</b><span>thắng / thua</span></div>
     <div class="card"><b id="p-open">–</b><span>lệnh đang mở</span></div>
   </div>
-  <table id="paper"><thead><tr>
+  <div class="pdesc" id="p-sum" style="color:var(--txt);font-weight:600"></div><table id="paper"><thead><tr>
     <th>Vào lệnh</th><th>Thành phố</th><th>Ngày</th><th>Mua ô</th><th>Giá</th>
     <th>Mô hình nói</th><th>Chợ tin</th><th>Trạng thái</th><th>Lãi/lỗ</th>
   </tr></thead><tbody></tbody></table>
@@ -145,13 +145,13 @@
       <span style="margin-left:auto;font-weight:400;font-size:12px;color:var(--mut)">
         <select id="regionSel"><option value="all">mọi khu vực</option><option value="Asia">Châu Á</option><option value="Europe">Châu Âu</option><option value="America">Châu Mỹ</option><option value="Africa">Châu Phi</option><option value="Pacific">Châu Đại Dương</option></select>
         <select id="ldDay"><option value="all">tổng hợp</option></select>
-        <select id="leadSel"><option value="best">dự báo tốt nhất có sẵn</option><option value="1">trước 1 ngày</option><option value="2">trước 2 ngày</option><option value="0">trong ngày</option></select>
+        <select id="leadSel"><option value="best">trước 1–2 ngày (công bằng)</option><option value="1">trước 1 ngày</option><option value="2">trước 2 ngày</option><option value="0">trong ngày</option></select>
       </span>
     </div>
     <table id="leader"><thead><tr>
       <th>Nguồn dự báo</th><th>Số lần</th><th>Lệch trung bình</th><th>Đoán đúng</th>
     </tr></thead><tbody></tbody></table>
-    <div class="note">Đọc đơn giản: "Lệch trung bình" càng nhỏ càng giỏi · "Đoán đúng" = % lần chỉ trúng khoảng nhiệt độ thắng cuộc. Nguồn đứng đầu = đáng tin nhất.</div>
+    <div class="note">Đọc đơn giản: "Lệch trung bình" càng nhỏ càng giỏi · "Đoán đúng" = % lần chỉ trúng khoảng nhiệt độ thắng cuộc. Nguồn đứng đầu = đáng tin nhất.<br><span id="dq" style="color:var(--gold)"></span></div>
   </div>
   <div class="panel" style="margin:0">
     <div class="ptitle">📊 Tỷ lệ đoán đúng — cột càng dài càng giỏi</div>
@@ -220,7 +220,28 @@ function bucketContains(b,v,precision){
   return b.lo<=r&&r<=b.hi;
 }
 const c2f=c=>c*9/5+32;
-const badge=s=>{const m={open:['b-open','đang mở'],won:['b-won','THẮNG'],lost:['b-lost','thua'],void:['b-void','hủy'],settled:['b-won','đã chốt']};
+function bucketMidC(b,precision){
+  if(!b)return null;let mid;
+  if(b.kind==='le')mid=b.hi-0.5;
+  else if(b.kind==='ge')mid=b.lo+0.5;
+  else{mid=(b.lo+b.hi)/2;if(precision==='decimal')mid+=0.5;}
+  return b.unit==='F'?(mid-32)*5/9:mid;
+}
+const bucketsEq=(x,y)=>!!(x&&y&&x.kind===y.kind&&x.lo===y.lo&&x.hi===y.hi&&x.unit===y.unit);
+// "Chân lý" để chấm điểm: nếu số đo trạm MÂU THUẪN với bucket mà Polymarket
+// đã trả tiền (trạm sai / nguồn dự phòng openmeteo_grid) -> thay bằng điểm
+// giữa bucket phân giải, và đánh dấu ok=false để hiển thị cảnh báo ⚠.
+function effActualC(s,r){
+  const a=num(r.actual_c);
+  const b=parseBucket(r.resolved_bucket);
+  if(!b)return{c:a,ok:a!=null};
+  let nat=s.unit==='F'
+    ?(num(r.actual_native)!=null?num(r.actual_native):(a!=null?c2f(a):null))
+    :a;
+  if(nat!=null&&bucketContains(b,nat,s.precision||'whole'))return{c:a,ok:true};
+  return{c:bucketMidC(b,s.precision||'whole'),ok:false};
+}
+const badge=s=>{const m={open:['b-open','đang mở'],won:['b-won','THẮNG'],lost:['b-lost','THUA'],void:['b-void','hủy/hoàn tiền'],settled:['b-won','đã chốt'],overdue:['b-void','⏳ quá hạn — chờ chốt']};
   const x=m[s]||['b-void',s];return `<span class="badge ${x[0]}">${x[1]}</span>`;};
 
 let SNAPS=[],RES={},chart=null,chartEq=null;
@@ -228,7 +249,8 @@ let PAPER_ROWS=[],ARB_ROWS=[],CRYPTO_ROWS=[];
 function renderEquity(){
   const days=new Set();
   const day1={A:{},C:{},W:{}};
-  ARB_ROWS.forEach(t=>{const d=(t.entry_utc||'').slice(0,10);if(!d)return;
+  ARB_ROWS.forEach(t=>{if(t.status==='open')return;
+    const d=(t.settle_utc||t.entry_utc||'').slice(0,10);if(!d)return;
     days.add(d);day1.A[d]=(day1.A[d]||0)+(num(t.locked_profit)||0);});
   CRYPTO_ROWS.forEach(t=>{if(t.status==='open'||!t.settle_utc)return;const d=t.settle_utc.slice(0,10);
     days.add(d);day1.C[d]=(day1.C[d]||0)+(num(t.pnl)||0);});
@@ -348,14 +370,18 @@ async function loadCrypto(){
   kp.style.color=realized>=0?'var(--good)':'var(--bad)';
   document.getElementById('k-record').textContent=won+' / '+lost;
   document.getElementById('k-open').textContent=open;
+  const kSum=document.getElementById('k-sum');
+  if(kSum)kSum.innerHTML=`✅ ${won} thắng · ❌ ${lost} thua · ⏳ ${open} đang mở — lãi/lỗ đã chốt <b style="color:${realized>=0?'var(--good)':'var(--bad)'}">${(realized>=0?'+':'')+realized.toFixed(2)} $</b>`;
+  const nowIso=new Date().toISOString();
   rows.slice(-15).reverse().forEach(r=>{
+    const st=(r.status==='open'&&r.end_date&&r.end_date<nowIso)?'overdue':r.status;
     const cls=r.status==='won'?'hit':(r.status==='lost'?'miss':'');
     const tr=document.createElement('tr');
     tr.innerHTML=`<td>${(r.entry_utc||'').slice(5,16).replace('T',' ')}</td>
       <td>${r.ccy}</td><td>${r.side}</td><td>${r.price}</td>
       <td>${r.model_prob?(100*num(r.model_prob)).toFixed(0)+'%':'–'}</td>
       <td>+${(100*(num(r.edge)||0)).toFixed(0)}%</td>
-      <td>${badge(r.status)}</td>
+      <td>${badge(st)}</td>
       <td class="${cls}">${r.pnl?((+r.pnl>=0?'+':'')+(+r.pnl).toFixed(2)+' $'):'–'}</td>`;
     tb.appendChild(tr);
   });
@@ -383,14 +409,18 @@ async function loadPaper(){
   pp.style.color=realized>=0?'var(--good)':'var(--bad)';
   document.getElementById('p-record').textContent=won+' / '+lost;
   document.getElementById('p-open').textContent=open;
+  const pSum=document.getElementById('p-sum');
+  if(pSum)pSum.innerHTML=`✅ ${won} thắng · ❌ ${lost} thua · ⏳ ${open} đang mở — lãi/lỗ đã chốt <b style="color:${realized>=0?'var(--good)':'var(--bad)'}">${(realized>=0?'+':'')+realized.toFixed(2)} $</b>${(200+realized-openCost)<5?' · <span style=\"color:var(--gold)\">⚠ hết ngân sách ảo, bot ngừng vào lệnh mới</span>':''}`;
+  const todayIso=new Date().toISOString().slice(0,10);
   rows.slice(-20).reverse().forEach(r=>{
+    const st=(r.status==='open'&&r.target_date&&r.target_date<todayIso)?'overdue':r.status;
     const cls=r.status==='won'?'hit':(r.status==='lost'?'miss':'');
     const tr=document.createElement('tr');
     tr.innerHTML=`<td>${(r.entry_utc||'').slice(5,16).replace('T',' ')}</td>
       <td>${r.city}</td><td>${(r.target_date||'').slice(5)}</td>
       <td>${r.bucket}</td><td>${r.ask}</td>
       <td>${r.model_median_c}°C</td><td>${r.pm_top_bucket}</td>
-      <td>${badge(r.status)}</td>
+      <td>${badge(st)}</td>
       <td class="${cls}">${r.pnl?((+r.pnl>=0?'+':'')+(+r.pnl).toFixed(2)+' $'):'–'}</td>`;
     tb.appendChild(tr);
   });
@@ -419,13 +449,19 @@ function joined(lead,day){
 function render(){
   const lead=document.getElementById('leadSel').value;
   const ldDay=document.getElementById('ldDay').value;
-  const pairs=joined(lead,ldDay);
+  let pairs=joined(lead,ldDay);
+  // Chế độ "công bằng": chỉ chấm dự báo đưa ra TRƯỚC ngày mục tiêu.
+  // Snapshot trong ngày (lead 0) chụp lúc thị trường gần như đã biết kết quả
+  // -> làm Polymarket "giỏi" giả tạo. Muốn xem vẫn chọn được "trong ngày".
+  if(lead==='best')pairs=pairs.filter(([s])=>+s.lead_days>=1);
+  let dqBad=0;
+  pairs.forEach(([s,r])=>{if(!effActualC(s,r).ok)dqBad++;});
   const tb=document.querySelector('#leader tbody');tb.innerHTML='';
   const rows=[];
   MODELS.forEach(([name,col])=>{
     let errs=[],hits=0,nh=0;
     pairs.forEach(([s,r])=>{
-      const v=num(s[col]);const a=num(r.actual_c);if(v==null||a==null)return;
+      const v=num(s[col]);const a=effActualC(s,r).c;if(v==null||a==null)return;
       errs.push(v-a);
       const b=parseBucket(r.resolved_bucket);
       if(b){const nat=s.unit==='F'?c2f(v):v;
@@ -440,15 +476,18 @@ function render(){
   });
   {let hits=0,nh=0,errs=[];
    pairs.forEach(([s,r])=>{
-     if(s.pm_top_bucket&&r.resolved_bucket){nh++;if(s.pm_top_bucket===r.resolved_bucket)hits++;}
-     const v=num(s.pm_ev_c),a=num(r.actual_c);
+     const rb=parseBucket(r.resolved_bucket);
+     if(s.pm_top_bucket&&rb){nh++;if(bucketsEq(parseBucket(s.pm_top_bucket),rb))hits++;}
+     const v=num(s.pm_ev_c),a=effActualC(s,r).c;
      if(v!=null&&a!=null)errs.push(v-a);
    });
    if(nh)rows.push({name:'Polymarket (đám đông)',n:nh,
      mae:errs.length?errs.reduce((x,e)=>x+Math.abs(e),0)/errs.length:null,
      bias:null,hit:hits/nh});}
+  const dqEl=document.getElementById('dq');
+  if(dqEl)dqEl.textContent=dqBad?`⚠ ${dqBad}/${pairs.length} kết quả có số đo trạm lệch với bucket Polymarket trả tiền — đã tự sửa về bucket phân giải khi chấm điểm.`:'';
   rows.sort((a,b)=>(a.mae??99)-(b.mae??99));
-  if(!rows.length)tb.innerHTML='<tr><td colspan="5" style="color:var(--mut)">Cần vài ngày dữ liệu nữa — bảng tự điền khi các thị trường phân giải.</td></tr>';
+  if(!rows.length)tb.innerHTML='<tr><td colspan="4" style="color:var(--mut)">Cần vài ngày dữ liệu nữa — bảng tự điền khi các thị trường phân giải.</td></tr>';
   rows.forEach((r,i)=>{
     const tr=document.createElement('tr');
     const medal=i===0?'🥇 ':(i===1?'🥈 ':(i===2?'🥉 ':''));
@@ -502,11 +541,12 @@ function render(){
       const f=num(r.actual_native)!=null?num(r.actual_native):(num(r.actual_c)!=null?c2f(num(r.actual_c)):null);
       if(f!=null)act=f.toFixed(1)+'°F';
     }else if(r.actual_c!=='')act=(+r.actual_c).toFixed(1)+'°C';
-    const pmOk=r.resolved_bucket?(s.pm_top_bucket===r.resolved_bucket):null;
+    const eff=effActualC(s,r);
+    const pmOk=rb?bucketsEq(parseBucket(s.pm_top_bucket),rb):null;
     const tr=document.createElement('tr');
     const unitTag=isF?' <span style="color:var(--gold);font-size:10px">°F</span>':'';
     tr.innerHTML=`<td>${s.target_date}</td><td>${s.city}${unitTag} <span style="color:var(--mut);font-size:11px">${s.lead_days}d</span></td>
-      <td><b>${act}</b></td>
+      <td><b>${act}</b>${eff.ok?'':' <span title="Số đo trạm lệch với bucket Polymarket đã trả tiền (\''+(r.resolved_bucket||'')+'\') — nguồn: '+(r.actual_source||'?')+'" style="cursor:help">⚠</span>'}</td>
       <td>${s.pm_top_bucket||'–'}${mark(pmOk)}</td>
       ${fcCell(s.fc_ecmwf_ifs025_c)}${fcCell(s.fc_gfs_seamless_c)}${fcCell(s.fc_icon_seamless_c)}${fcCell(s.fc_ukmo_seamless_c)}`;
     rt.appendChild(tr);
