@@ -8,6 +8,8 @@ Quy tắc (cố định, khách quan, không chỉnh tay giữa chừng):
     5 mô hình chỉ vào ô KHÁC ô thị trường tin nhất (mô hình "cãi" đám đông)
     và giá YES của ô đó trong [0.02, 0.30].
   - Vào lệnh ở T+1 hoặc T+2 (snapshot trước ngày mục tiêu 1-2 ngày).
+  - KHÔNG vào lệnh nếu ô thị trường tin nhất được định giá > 63%
+    (đám đông quá chắc chắn -> không cãi).
   - Khác biệt duy nhất: thay vì mua YES, CƯỢC NO chính ô đó
     (cược rằng ô mô hình chọn sẽ KHÔNG xảy ra). Giá NO = 1 − bid của ô.
   - TỶ LỆ TỐI THIỂU: đặt 10 phải nhận về ít nhất 13.5 khi thắng
@@ -38,6 +40,7 @@ FEE_RATE = 0.05                   # phí taker thời tiết (như chiến dịc
 MAX_ASK = P.MAX_ASK   # 0.30
 MIN_ASK = P.MIN_ASK   # 0.02
 MAX_TRADES_PER_DAY = 10
+MAX_TOP_PROB = 0.63   # o dam dong tin nhat > 63% -> bo qua thi truong do
 
 
 def cash_available(trades):
@@ -86,6 +89,11 @@ def enter(trades, snaps, full, now):
             continue
         if pick["label"] == s.get("pm_top_bucket"):
             continue  # mô hình đồng ý với thị trường -> bỏ qua
+        top_p = max((P.to_float(b.get("p")) or 0) for b in buckets)
+        if top_p > MAX_TOP_PROB:
+            print(f"  BO QUA (dam dong qua chac): {s['city']} {s['target_date']} "
+                  f"o '{s.get('pm_top_bucket')}' dang {100*top_p:.0f}% > 63%")
+            continue
         candidates.append((ask, s, pick, med_c))
 
     candidates.sort(key=lambda x: x[0])
