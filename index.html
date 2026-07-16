@@ -136,7 +136,7 @@
 <div class="panel">
   <div class="ptitle">🎯 Chiến dịch 4 — Bản NO của chiến dịch 3, tối thiểu "đặt 10 ăn 13.5" <span class="chip risk">rủi ro vừa · $1000 ảo</span>
     <span style="margin-left:auto;font-weight:400;font-size:12px;color:var(--mut)">Chọn ngày <select id="p4-day"><option value="all">tất cả</option></select></span></div>
-  <p class="pdesc">Tín hiệu vào lệnh GIỐNG HỆT chiến dịch 3 (mô hình cãi đám đông, giá YES ô đó ≤ 30¢), nhưng thay vì mua YES thì <b>cược NO</b> chính ô mô hình chọn. Chỉ vào lệnh khi đặt $10 thắng nhận về ≥ $13.5 (giá NO ≤ 74¢) — tỷ lệ thấp hơn thì bỏ qua. Vào lệnh ở T+1 hoặc T+2 (trước ngày mục tiêu 1–2 ngày). Không vào nếu ô đám đông tin nhất đã vượt 63%. Mỗi lệnh $10 ảo, ngân sách $1000.</p>
+  <p class="pdesc">Tín hiệu như chiến dịch 3 (mô hình cãi đám đông) nhưng <b>cược NO</b> chính ô mô hình chọn và <b>không có trần giá YES 30¢</b> — lệnh có YES &gt; 30¢ được gắn nhãn <b style="color:#a78bfa">MỞ RỘNG</b> thành mục riêng để dễ kiểm tra. Chỉ vào lệnh khi đặt $10 thắng nhận về ≥ $13.5 (giá NO ≤ 74¢) — tỷ lệ thấp hơn thì bỏ qua. Vào lệnh ở T+1 hoặc T+2 (trước ngày mục tiêu 1–2 ngày). Không vào nếu ô đám đông tin nhất đã vượt 63%. Mỗi lệnh $10 ảo, ngân sách $1000.</p>
   <div class="cards" style="margin-bottom:14px">
     <div class="card"><b id="p4-balance">–</b><span>số dư khả dụng (ảo)</span></div>
     <div class="card"><b id="p4-pnl">–</b><span>lãi/lỗ đã chốt</span></div>
@@ -149,7 +149,7 @@
   </tr></thead><tbody></tbody></table>
   <div class="note" style="margin-bottom:14px">Bảng trên: tổng từng ngày (theo ngày vào lệnh). Bảng dưới: 20 lệnh gần nhất.</div>
   <table id="paper4"><thead><tr>
-    <th>Vào lệnh</th><th>Thành phố</th><th>Ngày</th><th>Cược NO ô</th><th>Giá NO</th><th>Đặt 10 ăn</th>
+    <th>Vào lệnh</th><th>Thành phố</th><th>Ngày</th><th>Cược NO ô</th><th>Nhóm</th><th>Giá NO</th><th>Đặt 10 ăn</th>
     <th>Mô hình nói</th><th>Chợ tin</th><th>Trạng thái</th><th>Lãi/lỗ</th>
   </tr></thead><tbody></tbody></table>
 </div>
@@ -467,7 +467,7 @@ function renderPaper4(){
   const tb=document.querySelector('#paper4 tbody'),td=document.querySelector('#paper4daily tbody');
   tb.innerHTML='';td.innerHTML='';
   if(!PAPER4_ROWS.length){
-    tb.innerHTML='<tr><td colspan="10" style="color:var(--mut)">Chưa có lệnh — bot chỉ vào khi tỷ lệ NO đạt tối thiểu "đặt 10 ăn 13.5".</td></tr>';
+    tb.innerHTML='<tr><td colspan="11" style="color:var(--mut)">Chưa có lệnh — bot chỉ vào khi tỷ lệ NO đạt tối thiểu "đặt 10 ăn 13.5".</td></tr>';
     td.innerHTML='<tr><td colspan="8" style="color:var(--mut)">Chưa có dữ liệu ngày nào.</td></tr>';
     document.getElementById('p4-balance').textContent='$1000.00';
     document.getElementById('p4-pnl').textContent='+0.00 $';
@@ -489,8 +489,11 @@ function renderPaper4(){
   pp.style.color=realized>=0?'var(--good)':'var(--bad)';
   document.getElementById('p4-record').textContent=won+' / '+lost;
   document.getElementById('p4-open').textContent=open;
+  let mrW=0,mrL=0,mrO=0,mrPnl=0;
+  rows.forEach(r=>{if(r.nhom!=='mo_rong')return;
+    if(r.status==='open')mrO++;else{mrPnl+=num(r.pnl)||0;if(r.status==='won')mrW++;if(r.status==='lost')mrL++;}});
   const pSum=document.getElementById('p4-sum');
-  if(pSum)pSum.innerHTML=`✅ ${won} thắng · ❌ ${lost} thua · ⏳ ${open} đang mở — lãi/lỗ đã chốt <b style="color:${realized>=0?'var(--good)':'var(--bad)'}">${(realized>=0?'+':'')+realized.toFixed(2)} $</b>${(1000+realized-openCost)<11?' · <span style="color:var(--gold)">⚠ hết ngân sách ảo, bot ngừng vào lệnh mới</span>':''}`;
+  if(pSum)pSum.innerHTML=`✅ ${won} thắng · ❌ ${lost} thua · ⏳ ${open} đang mở — lãi/lỗ đã chốt <b style="color:${realized>=0?'var(--good)':'var(--bad)'}">${(realized>=0?'+':'')+realized.toFixed(2)} $</b>${(1000+realized-openCost)<11?' · <span style="color:var(--gold)">⚠ hết ngân sách ảo, bot ngừng vào lệnh mới</span>':''}<br><span style="color:#a78bfa">Mục riêng — nhóm MỞ RỘNG (YES &gt; 30¢):</span> ${mrW} thắng · ${mrL} thua · ${mrO} đang mở — lãi/lỗ <b style="color:${mrPnl>=0?'var(--good)':'var(--bad)'}">${(mrPnl>=0?'+':'')+mrPnl.toFixed(2)} $</b>`;
   // lọc theo ngày được chọn
   const selEl=document.getElementById('p4-day');
   const day=selEl?selEl.value:'all';
@@ -526,16 +529,17 @@ function renderPaper4(){
   // bảng chi tiết: chọn ngày cụ thể -> hiện đủ lệnh ngày đó; "tất cả" -> 20 lệnh mới nhất
   const list=day==='all'?shown.slice(-20):shown;
   const todayIso=new Date().toISOString().slice(0,10);
-  if(!list.length)tb.innerHTML='<tr><td colspan="10" style="color:var(--mut)">Không có lệnh trong ngày này.</td></tr>';
+  if(!list.length)tb.innerHTML='<tr><td colspan="11" style="color:var(--mut)">Không có lệnh trong ngày này.</td></tr>';
   list.slice().reverse().forEach(r=>{
     const st=(r.status==='open'&&r.target_date&&r.target_date<todayIso)?'overdue':r.status;
     const cls=r.status==='won'?'hit':(r.status==='lost'?'miss':'');
     const price=num(r.ask);
     const odds=price?(10/price).toFixed(2):'–';
     const tr=document.createElement('tr');
+    const nhomTag=r.nhom==='mo_rong'?'<span class="badge" style="background:rgba(139,92,246,.18);color:#a78bfa">MỞ RỘNG</span>':'<span class="badge b-void">gốc</span>';
     tr.innerHTML=`<td>${(r.entry_utc||'').slice(5,16).replace('T',' ')}</td>
       <td>${r.city}</td><td>${(r.target_date||'').slice(5)}</td>
-      <td>NO ${r.bucket}</td><td>${r.ask}</td><td>${odds}</td>
+      <td>NO ${r.bucket}</td><td>${nhomTag}</td><td>${r.ask}</td><td>${odds}</td>
       <td>${r.model_median_c}°C</td><td>${r.pm_top_bucket}</td>
       <td>${badge(st)}</td>
       <td class="${cls}">${r.pnl?((+r.pnl>=0?'+':'')+(+r.pnl).toFixed(2)+' $'):'–'}</td>`;
