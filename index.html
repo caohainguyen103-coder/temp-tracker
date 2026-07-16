@@ -134,7 +134,8 @@
 </div>
 
 <div class="panel">
-  <div class="ptitle">🎯 Chiến dịch 4 — Bản NO của chiến dịch 3, tối thiểu "đặt 10 ăn 13.5" <span class="chip risk">rủi ro vừa · $1000 ảo</span></div>
+  <div class="ptitle">🎯 Chiến dịch 4 — Bản NO của chiến dịch 3, tối thiểu "đặt 10 ăn 13.5" <span class="chip risk">rủi ro vừa · $1000 ảo</span>
+    <span style="margin-left:auto;font-weight:400;font-size:12px;color:var(--mut)">Chọn ngày <select id="p4-day"><option value="all">tất cả</option></select></span></div>
   <p class="pdesc">Tín hiệu vào lệnh GIỐNG HỆT chiến dịch 3 (mô hình cãi đám đông, giá YES ô đó ≤ 30¢), nhưng thay vì mua YES thì <b>cược NO</b> chính ô mô hình chọn. Chỉ vào lệnh khi đặt $10 thắng nhận về ≥ $13.5 (giá NO ≤ 74¢) — tỷ lệ thấp hơn thì bỏ qua. Mỗi lệnh $10 ảo, ngân sách $1000.</p>
   <div class="cards" style="margin-bottom:14px">
     <div class="card"><b id="p4-balance">–</b><span>số dư khả dụng (ảo)</span></div>
@@ -452,9 +453,20 @@ async function loadPaper(){
 async function loadPaper4(){
   let txt='';
   try{ txt=await (await fetch('data/trades4.csv',{cache:'no-store'})).text(); }catch(e){}
+  const sel=document.getElementById('p4-day');
+  if(txt.includes('event_slug')){
+    PAPER4_ROWS=parseCSV(txt);
+    if(sel){
+      const days=[...new Set(PAPER4_ROWS.map(r=>(r.entry_utc||'').slice(0,10)).filter(Boolean))].sort().reverse();
+      days.forEach(d=>{const o=document.createElement('option');o.value=d;o.textContent=d;sel.appendChild(o);});
+    }
+  }
+  renderPaper4();
+}
+function renderPaper4(){
   const tb=document.querySelector('#paper4 tbody'),td=document.querySelector('#paper4daily tbody');
   tb.innerHTML='';td.innerHTML='';
-  if(!txt.includes('event_slug')){
+  if(!PAPER4_ROWS.length){
     tb.innerHTML='<tr><td colspan="10" style="color:var(--mut)">Chưa có lệnh — bot chỉ vào khi tỷ lệ NO đạt tối thiểu "đặt 10 ăn 13.5".</td></tr>';
     td.innerHTML='<tr><td colspan="8" style="color:var(--mut)">Chưa có dữ liệu ngày nào.</td></tr>';
     document.getElementById('p4-balance').textContent='$1000.00';
@@ -463,13 +475,13 @@ async function loadPaper4(){
     document.getElementById('p4-open').textContent='0';
     return;
   }
-  const rows=parseCSV(txt);
+  const rows=PAPER4_ROWS;
+  // 4 thẻ tổng luôn tính trên TOÀN BỘ lệnh (không theo ngày lọc)
   let realized=0,openCost=0,won=0,lost=0,open=0;
   rows.forEach(r=>{
     if(r.status==='open'){open++;openCost+=(num(r.stake)||0)+(num(r.fee)||0);}
     else{realized+=num(r.pnl)||0;if(r.status==='won')won++;if(r.status==='lost')lost++;}
   });
-  PAPER4_ROWS=rows;
   TOTALS.weather4=realized;updateTotal();renderEquity();
   document.getElementById('p4-balance').textContent='$'+(1000+realized-openCost).toFixed(2);
   const pp=document.getElementById('p4-pnl');
@@ -479,29 +491,43 @@ async function loadPaper4(){
   document.getElementById('p4-open').textContent=open;
   const pSum=document.getElementById('p4-sum');
   if(pSum)pSum.innerHTML=`✅ ${won} thắng · ❌ ${lost} thua · ⏳ ${open} đang mở — lãi/lỗ đã chốt <b style="color:${realized>=0?'var(--good)':'var(--bad)'}">${(realized>=0?'+':'')+realized.toFixed(2)} $</b>${(1000+realized-openCost)<11?' · <span style="color:var(--gold)">⚠ hết ngân sách ảo, bot ngừng vào lệnh mới</span>':''}`;
+  // lọc theo ngày được chọn
+  const selEl=document.getElementById('p4-day');
+  const day=selEl?selEl.value:'all';
+  const shown=day==='all'?rows:rows.filter(r=>(r.entry_utc||'').slice(0,10)===day);
+  // bảng tổng từng ngày
   const byDay={};
-  rows.forEach(r=>{
+  shown.forEach(r=>{
     const d=(r.entry_utc||'').slice(0,10);if(!d)return;
     const x=byDay[d]||(byDay[d]={n:0,stake:0,won:0,lost:0,open:0,pnl:0});
     x.n++;x.stake+=num(r.stake)||0;
     if(r.status==='open')x.open++;
     else{x.pnl+=num(r.pnl)||0;if(r.status==='won')x.won++;if(r.status==='lost')x.lost++;}
   });
-  const dayKeys=Object.keys(byDay).sort();
-  let cum=0;const cumMap={};
-  dayKeys.forEach(d=>{cum+=byDay[d].pnl;cumMap[d]=cum;});
-  dayKeys.slice().reverse().forEach(d=>{
+  // lũy kế luôn tính trên toàn bộ lịch sử để con số có ý nghĩa
+  const cumAll={};let cum=0;
+  const allDays=[...new Set(rows.map(r=>(r.entry_utc||'').slice(0,10)).filter(Boolean))].sort();
+  allDays.forEach(d=>{
+    rows.forEach(r=>{if((r.entry_utc||'').slice(0,10)===d&&r.status!=='open')cum+=num(r.pnl)||0;});
+    cumAll[d]=cum;
+  });
+  const dayKeys=Object.keys(byDay).sort().reverse();
+  if(!dayKeys.length)td.innerHTML='<tr><td colspan="8" style="color:var(--mut)">Không có lệnh trong ngày này.</td></tr>';
+  dayKeys.forEach(d=>{
     const x=byDay[d];
     const tr=document.createElement('tr');
-    const c1=x.pnl>=0?'hit':'miss',c2=cumMap[d]>=0?'hit':'miss';
+    const c1=x.pnl>=0?'hit':'miss',c2=(cumAll[d]||0)>=0?'hit':'miss';
     tr.innerHTML=`<td><b>${d}</b></td><td>${x.n}</td><td>$${x.stake.toFixed(0)}</td>
       <td class="hit">${x.won}</td><td class="miss">${x.lost}</td><td>${x.open}</td>
       <td class="${c1}">${(x.pnl>=0?'+':'')+x.pnl.toFixed(2)} $</td>
-      <td class="${c2}">${(cumMap[d]>=0?'+':'')+cumMap[d].toFixed(2)} $</td>`;
+      <td class="${c2}">${((cumAll[d]||0)>=0?'+':'')+(cumAll[d]||0).toFixed(2)} $</td>`;
     td.appendChild(tr);
   });
+  // bảng chi tiết: chọn ngày cụ thể -> hiện đủ lệnh ngày đó; "tất cả" -> 20 lệnh mới nhất
+  const list=day==='all'?shown.slice(-20):shown;
   const todayIso=new Date().toISOString().slice(0,10);
-  rows.slice(-20).reverse().forEach(r=>{
+  if(!list.length)tb.innerHTML='<tr><td colspan="10" style="color:var(--mut)">Không có lệnh trong ngày này.</td></tr>';
+  list.slice().reverse().forEach(r=>{
     const st=(r.status==='open'&&r.target_date&&r.target_date<todayIso)?'overdue':r.status;
     const cls=r.status==='won'?'hit':(r.status==='lost'?'miss':'');
     const price=num(r.ask);
@@ -648,6 +674,7 @@ document.getElementById('leadSel').addEventListener('change',render);
 document.getElementById('daySel').addEventListener('change',render);
 document.getElementById('ldDay').addEventListener('change',render);
 document.getElementById('regionSel').addEventListener('change',render);
+document.getElementById('p4-day').addEventListener('change',renderPaper4);
 load();
 </script>
 </body>
