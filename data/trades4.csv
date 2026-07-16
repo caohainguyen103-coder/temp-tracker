@@ -1,0 +1,7 @@
+entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee,model_median_c,pm_top_bucket,status,payout,pnl,settle_utc
+2026-07-16T07:56:34Z,highest-temperature-in-qingdao-on-july-18-2026,qingdao,2026-07-18,2,NO,30°C,0.74,13.51,10.0,0.13,30.3,29°C,open,,,
+2026-07-16T07:56:34Z,highest-temperature-in-shanghai-on-july-17-2026,shanghai,2026-07-17,1,NO,37°C,0.72,13.89,10.0,0.14,37.1,38°C,open,,,
+2026-07-16T07:56:34Z,highest-temperature-in-manila-on-july-17-2026,manila,2026-07-17,1,NO,32°C,0.72,13.89,10.0,0.14,31.5,33°C,open,,,
+2026-07-16T07:56:34Z,highest-temperature-in-dallas-on-july-17-2026,dallas,2026-07-17,1,NO,94-95°F,0.73,13.7,10.0,0.135,34.2,92-93°F,open,,,
+2026-07-16T07:56:34Z,highest-temperature-in-austin-on-july-17-2026,austin,2026-07-17,1,NO,92-93°F,0.71,14.08,10.0,0.145,33.9,90-91°F,open,,,
+2026-07-16T07:56:34Z,highest-temperature-in-milan-on-july-18-2026,milan,2026-07-18,2,NO,34°C,0.74,13.51,10.0,0.13,33.5,33°C,open,,,
