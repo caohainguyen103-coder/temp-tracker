@@ -136,3 +136,5 @@ scan_utc,kind,event_slug,detail,edge,sum_ask,sum_bid,market_prob,model_prob,volu
 2026-07-16T13:07:32Z,crypto_eth,ethereum-above-1900-on-july-16-2026,"ETH > $1,900 luc 2026-07-16T16:00:00Z; spot $1,872, DVOL 49%; mua NO @0.890; RONG +0.058 sau phi",0.0582,,,0.1165,0.045,22898.643997,15889.35608,mo hinh bo qua skew - tu tham dinh truoc khi vao lenh
 2026-07-16T13:07:32Z,negrisk_gan_dat,fed-decisions-apr-jul,3 o | mua 0.996 + phi 0.004 -> RONG +0.000 (thieu 0.010),0.0002,0.996,0.981,,,16041.819652000002,106885.6608,CHUA DANG VAO - chi theo doi
 2026-07-16T13:07:32Z,negrisk_gan_dat,fed-decision-in-october-20260617190323537,5 o | mua 0.980 + phi 0.024 -> RONG -0.004 (thieu 0.014),-0.0043,0.98,0.946,,,16907.751351,251362.0619,CHUA DANG VAO - chi theo doi
+2026-07-16T17:49:04Z,negrisk_gan_dat,fed-decision-in-october-20260617190323537,5 o | mua 0.979 + phi 0.024 -> RONG -0.003 (thieu 0.013),-0.0033,0.979,0.947,,,15918.344783999999,238475.90407,CHUA DANG VAO - chi theo doi
+2026-07-16T17:49:04Z,negrisk_gan_dat,fed-decisions-apr-jul,3 o | mua 1.000 + phi 0.004 -> RONG -0.004 (thieu 0.014),-0.004,1.0,0.992,,,14613.655611,96246.45176,CHUA DANG VAO - chi theo doi
