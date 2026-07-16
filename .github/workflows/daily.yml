@@ -47,6 +47,12 @@ jobs:
       - name: Chien dich 5 - NO theo GFS, loi >= 3 do (1000 do ao)
         run: python paper_trade5.py
 
+      - name: Chien dich 6 - YES o dam dong 30-70c (1500 do ao)
+        run: python paper_trade6.py
+
+      - name: Chien dich 7 - NO o GFS 70-100c (1500 do ao)
+        run: python paper_trade7.py
+
       - name: Luu du lieu vao repo
         run: |
           git config user.name "temp-tracker-bot"
