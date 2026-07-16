@@ -138,3 +138,6 @@ scan_utc,kind,event_slug,detail,edge,sum_ask,sum_bid,market_prob,model_prob,volu
 2026-07-16T13:07:32Z,negrisk_gan_dat,fed-decision-in-october-20260617190323537,5 o | mua 0.980 + phi 0.024 -> RONG -0.004 (thieu 0.014),-0.0043,0.98,0.946,,,16907.751351,251362.0619,CHUA DANG VAO - chi theo doi
 2026-07-16T17:49:04Z,negrisk_gan_dat,fed-decision-in-october-20260617190323537,5 o | mua 0.979 + phi 0.024 -> RONG -0.003 (thieu 0.013),-0.0033,0.979,0.947,,,15918.344783999999,238475.90407,CHUA DANG VAO - chi theo doi
 2026-07-16T17:49:04Z,negrisk_gan_dat,fed-decisions-apr-jul,3 o | mua 1.000 + phi 0.004 -> RONG -0.004 (thieu 0.014),-0.004,1.0,0.992,,,14613.655611,96246.45176,CHUA DANG VAO - chi theo doi
+2026-07-16T22:13:32Z,negrisk_gan_dat,fed-decision-in-october-20260617190323537,5 o | mua 0.979 + phi 0.024 -> RONG -0.003 (thieu 0.013),-0.0028,0.979,0.947,,,16031.535467,254660.09929,CHUA DANG VAO - chi theo doi
+2026-07-16T22:13:32Z,negrisk_gan_dat,fed-decisions-apr-jul,3 o | mua 1.000 + phi 0.004 -> RONG -0.004 (thieu 0.014),-0.004,1.0,0.992,,,14449.635611,94540.94014,CHUA DANG VAO - chi theo doi
+2026-07-16T22:13:32Z,negrisk_gan_dat,avgpt-of-ships-transiting-strait-of-hormuz-end-of-july-20260626153158273,5 o | mua 1.007 + phi 0.000 -> RONG -0.007 (thieu 0.017),-0.007,1.007,0.927,,,18516.911388,141465.4472,CHUA DANG VAO - chi theo doi
