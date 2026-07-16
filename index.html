@@ -82,7 +82,7 @@
 </div>
 
 <div class="cards">
-  <div class="card"><b id="c-total">–</b><span>lãi/lỗ ảo tổng (3 chiến dịch)</span></div>
+  <div class="card"><b id="c-total">–</b><span>lãi/lỗ ảo tổng (4 chiến dịch)</span></div>
   <div class="card"><b id="c-days">–</b><span>ngày thu thập dữ liệu</span></div>
   <div class="card"><b id="c-events">–</b><span>thị trường theo dõi</span></div>
   <div class="card"><b id="c-resolved">–</b><span>đã có kết quả</span></div>
@@ -134,9 +134,29 @@
 </div>
 
 <div class="panel">
+  <div class="ptitle">🎯 Chiến dịch 4 — Bản NO của chiến dịch 3, tối thiểu "đặt 10 ăn 13.5" <span class="chip risk">rủi ro vừa · $1000 ảo</span></div>
+  <p class="pdesc">Tín hiệu vào lệnh GIỐNG HỆT chiến dịch 3 (mô hình cãi đám đông, giá YES ô đó ≤ 30¢), nhưng thay vì mua YES thì <b>cược NO</b> chính ô mô hình chọn. Chỉ vào lệnh khi đặt $10 thắng nhận về ≥ $13.5 (giá NO ≤ 74¢) — tỷ lệ thấp hơn thì bỏ qua. Mỗi lệnh $10 ảo, ngân sách $1000.</p>
+  <div class="cards" style="margin-bottom:14px">
+    <div class="card"><b id="p4-balance">–</b><span>số dư khả dụng (ảo)</span></div>
+    <div class="card"><b id="p4-pnl">–</b><span>lãi/lỗ đã chốt</span></div>
+    <div class="card"><b id="p4-record">–</b><span>thắng / thua</span></div>
+    <div class="card"><b id="p4-open">–</b><span>lệnh đang mở</span></div>
+  </div>
+  <div class="pdesc" id="p4-sum" style="color:var(--txt);font-weight:600"></div>
+  <table id="paper4daily"><thead><tr>
+    <th>Ngày vào lệnh</th><th>Số lệnh đã cược</th><th>Tổng cược</th><th>Thắng</th><th>Thua</th><th>Đang mở</th><th>Lãi/lỗ đã chốt</th><th>Lũy kế</th>
+  </tr></thead><tbody></tbody></table>
+  <div class="note" style="margin-bottom:14px">Bảng trên: tổng từng ngày (theo ngày vào lệnh). Bảng dưới: 20 lệnh gần nhất.</div>
+  <table id="paper4"><thead><tr>
+    <th>Vào lệnh</th><th>Thành phố</th><th>Ngày</th><th>Cược NO ô</th><th>Giá NO</th><th>Đặt 10 ăn</th>
+    <th>Mô hình nói</th><th>Chợ tin</th><th>Trạng thái</th><th>Lãi/lỗ</th>
+  </tr></thead><tbody></tbody></table>
+</div>
+
+<div class="panel">
   <div class="ptitle">📈 Vốn ảo theo ngày — chiến lược nào sống, chiến lược nào chết</div>
   <div style="position:relative;width:100%;height:260px"><canvas id="equityChart"></canvas></div>
-  <div class="note">Mỗi đường = một túi $200 ảo (chỉ tính lãi/lỗ ĐÃ CHỐT). Đường đi lên đều = chiến lược đáng tin · đường lao dốc = chiến lược vừa cứu bạn khỏi mất tiền thật.</div>
+  <div class="note">Mỗi đường = một túi tiền ảo riêng: chiến dịch 1–3 bắt đầu $200, chiến dịch 4 bắt đầu $1000 (chỉ tính lãi/lỗ ĐÃ CHỐT). Đường đi lên đều = chiến lược đáng tin · đường lao dốc = chiến lược vừa cứu bạn khỏi mất tiền thật.</div>
 </div>
 
 <div class="grid2">
@@ -245,10 +265,10 @@ const badge=s=>{const m={open:['b-open','đang mở'],won:['b-won','THẮNG'],lo
   const x=m[s]||['b-void',s];return `<span class="badge ${x[0]}">${x[1]}</span>`;};
 
 let SNAPS=[],RES={},chart=null,chartEq=null;
-let PAPER_ROWS=[],ARB_ROWS=[],CRYPTO_ROWS=[];
+let PAPER_ROWS=[],ARB_ROWS=[],CRYPTO_ROWS=[],PAPER4_ROWS=[];
 function renderEquity(){
   const days=new Set();
-  const day1={A:{},C:{},W:{}};
+  const day1={A:{},C:{},W:{},W4:{}};
   ARB_ROWS.forEach(t=>{if(t.status==='open')return;
     const d=(t.settle_utc||t.entry_utc||'').slice(0,10);if(!d)return;
     days.add(d);day1.A[d]=(day1.A[d]||0)+(num(t.locked_profit)||0);});
@@ -256,25 +276,28 @@ function renderEquity(){
     days.add(d);day1.C[d]=(day1.C[d]||0)+(num(t.pnl)||0);});
   PAPER_ROWS.forEach(t=>{if(t.status==='open'||!t.settle_utc)return;const d=t.settle_utc.slice(0,10);
     days.add(d);day1.W[d]=(day1.W[d]||0)+(num(t.pnl)||0);});
+  PAPER4_ROWS.forEach(t=>{if(t.status==='open'||!t.settle_utc)return;const d=t.settle_utc.slice(0,10);
+    days.add(d);day1.W4[d]=(day1.W4[d]||0)+(num(t.pnl)||0);});
   const axis=[...days].sort();
   if(!axis.length)return;
-  const line=k=>{let run=200;return axis.map(d=>{run+=(day1[k][d]||0);return +run.toFixed(2);});};
+  const line=(k,start)=>{let run=start??200;return axis.map(d=>{run+=(day1[k][d]||0);return +run.toFixed(2);});};
   if(chartEq)chartEq.destroy();
   chartEq=new Chart(document.getElementById('equityChart'),{
     type:'line',
     data:{labels:axis.map(d=>d.slice(5)),datasets:[
       {label:'💰 Arbitrage',data:line('A'),borderColor:'#34d399',backgroundColor:'#34d399',tension:.25,pointRadius:3},
       {label:'🪙 Crypto',data:line('C'),borderColor:'#6ea8ff',backgroundColor:'#6ea8ff',tension:.25,pointRadius:3},
-      {label:'🌡️ Thời tiết',data:line('W'),borderColor:'#fb7185',backgroundColor:'#fb7185',tension:.25,pointRadius:3}]},
+      {label:'🌡️ Thời tiết',data:line('W'),borderColor:'#fb7185',backgroundColor:'#fb7185',tension:.25,pointRadius:3},
+      {label:'🎯 CD4 — NO ≥1.35 ($1000)',data:line('W4',1000),borderColor:'#fbbf24',backgroundColor:'#fbbf24',tension:.25,pointRadius:3}]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{labels:{color:'#eef2fb',boxWidth:14}}},
       scales:{y:{grid:{color:'#232d4d'},ticks:{color:'#8a94b0',callback:v=>'$'+v}},
         x:{grid:{display:false},ticks:{color:'#8a94b0'}}}}
   });
 }
-const TOTALS={arb:0,crypto:0,weather:0};
+const TOTALS={arb:0,crypto:0,weather:0,weather4:0};
 function updateTotal(){
-  const t=TOTALS.arb+TOTALS.crypto+TOTALS.weather;
+  const t=TOTALS.arb+TOTALS.crypto+TOTALS.weather+TOTALS.weather4;
   const el=document.getElementById('c-total');
   el.textContent=(t>=0?'+$':'-$')+Math.abs(t).toFixed(2);
   el.style.color=t>=0?'var(--good)':'var(--bad)';
@@ -303,7 +326,7 @@ async function load(){
     const o=document.createElement('option');o.value=d;o.textContent=d;sel.appendChild(o);
     const o2=document.createElement('option');o2.value=d;o2.textContent=d;ld.appendChild(o2);
   });
-  loadOpps(); loadPaper(); loadArb(); loadCrypto(); render();
+  loadOpps(); loadPaper(); loadPaper4(); loadArb(); loadCrypto(); render();
 }
 
 async function loadOpps(){
@@ -419,6 +442,74 @@ async function loadPaper(){
     tr.innerHTML=`<td>${(r.entry_utc||'').slice(5,16).replace('T',' ')}</td>
       <td>${r.city}</td><td>${(r.target_date||'').slice(5)}</td>
       <td>${r.bucket}</td><td>${r.ask}</td>
+      <td>${r.model_median_c}°C</td><td>${r.pm_top_bucket}</td>
+      <td>${badge(st)}</td>
+      <td class="${cls}">${r.pnl?((+r.pnl>=0?'+':'')+(+r.pnl).toFixed(2)+' $'):'–'}</td>`;
+    tb.appendChild(tr);
+  });
+}
+
+async function loadPaper4(){
+  let txt='';
+  try{ txt=await (await fetch('data/trades4.csv',{cache:'no-store'})).text(); }catch(e){}
+  const tb=document.querySelector('#paper4 tbody'),td=document.querySelector('#paper4daily tbody');
+  tb.innerHTML='';td.innerHTML='';
+  if(!txt.includes('event_slug')){
+    tb.innerHTML='<tr><td colspan="10" style="color:var(--mut)">Chưa có lệnh — bot chỉ vào khi tỷ lệ NO đạt tối thiểu "đặt 10 ăn 13.5".</td></tr>';
+    td.innerHTML='<tr><td colspan="8" style="color:var(--mut)">Chưa có dữ liệu ngày nào.</td></tr>';
+    document.getElementById('p4-balance').textContent='$1000.00';
+    document.getElementById('p4-pnl').textContent='+0.00 $';
+    document.getElementById('p4-record').textContent='0 / 0';
+    document.getElementById('p4-open').textContent='0';
+    return;
+  }
+  const rows=parseCSV(txt);
+  let realized=0,openCost=0,won=0,lost=0,open=0;
+  rows.forEach(r=>{
+    if(r.status==='open'){open++;openCost+=(num(r.stake)||0)+(num(r.fee)||0);}
+    else{realized+=num(r.pnl)||0;if(r.status==='won')won++;if(r.status==='lost')lost++;}
+  });
+  PAPER4_ROWS=rows;
+  TOTALS.weather4=realized;updateTotal();renderEquity();
+  document.getElementById('p4-balance').textContent='$'+(1000+realized-openCost).toFixed(2);
+  const pp=document.getElementById('p4-pnl');
+  pp.textContent=(realized>=0?'+':'')+realized.toFixed(2)+' $';
+  pp.style.color=realized>=0?'var(--good)':'var(--bad)';
+  document.getElementById('p4-record').textContent=won+' / '+lost;
+  document.getElementById('p4-open').textContent=open;
+  const pSum=document.getElementById('p4-sum');
+  if(pSum)pSum.innerHTML=`✅ ${won} thắng · ❌ ${lost} thua · ⏳ ${open} đang mở — lãi/lỗ đã chốt <b style="color:${realized>=0?'var(--good)':'var(--bad)'}">${(realized>=0?'+':'')+realized.toFixed(2)} $</b>${(1000+realized-openCost)<11?' · <span style="color:var(--gold)">⚠ hết ngân sách ảo, bot ngừng vào lệnh mới</span>':''}`;
+  const byDay={};
+  rows.forEach(r=>{
+    const d=(r.entry_utc||'').slice(0,10);if(!d)return;
+    const x=byDay[d]||(byDay[d]={n:0,stake:0,won:0,lost:0,open:0,pnl:0});
+    x.n++;x.stake+=num(r.stake)||0;
+    if(r.status==='open')x.open++;
+    else{x.pnl+=num(r.pnl)||0;if(r.status==='won')x.won++;if(r.status==='lost')x.lost++;}
+  });
+  const dayKeys=Object.keys(byDay).sort();
+  let cum=0;const cumMap={};
+  dayKeys.forEach(d=>{cum+=byDay[d].pnl;cumMap[d]=cum;});
+  dayKeys.slice().reverse().forEach(d=>{
+    const x=byDay[d];
+    const tr=document.createElement('tr');
+    const c1=x.pnl>=0?'hit':'miss',c2=cumMap[d]>=0?'hit':'miss';
+    tr.innerHTML=`<td><b>${d}</b></td><td>${x.n}</td><td>$${x.stake.toFixed(0)}</td>
+      <td class="hit">${x.won}</td><td class="miss">${x.lost}</td><td>${x.open}</td>
+      <td class="${c1}">${(x.pnl>=0?'+':'')+x.pnl.toFixed(2)} $</td>
+      <td class="${c2}">${(cumMap[d]>=0?'+':'')+cumMap[d].toFixed(2)} $</td>`;
+    td.appendChild(tr);
+  });
+  const todayIso=new Date().toISOString().slice(0,10);
+  rows.slice(-20).reverse().forEach(r=>{
+    const st=(r.status==='open'&&r.target_date&&r.target_date<todayIso)?'overdue':r.status;
+    const cls=r.status==='won'?'hit':(r.status==='lost'?'miss':'');
+    const price=num(r.ask);
+    const odds=price?(10/price).toFixed(2):'–';
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${(r.entry_utc||'').slice(5,16).replace('T',' ')}</td>
+      <td>${r.city}</td><td>${(r.target_date||'').slice(5)}</td>
+      <td>NO ${r.bucket}</td><td>${r.ask}</td><td>${odds}</td>
       <td>${r.model_median_c}°C</td><td>${r.pm_top_bucket}</td>
       <td>${badge(st)}</td>
       <td class="${cls}">${r.pnl?((+r.pnl>=0?'+':'')+(+r.pnl).toFixed(2)+' $'):'–'}</td>`;
