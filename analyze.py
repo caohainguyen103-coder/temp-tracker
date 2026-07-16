@@ -132,6 +132,7 @@ def main():
         return
 
     stats = eval_sources(pairs)
+    print_no_campaign(stats)
 
     # 1. Bảng xếp hạng tổng
     print("\n1) XEP HANG TONG (moi nguon):")
@@ -207,6 +208,57 @@ def main():
      10 lenh du de biet pattern con song, KHONG du de khang dinh loi nhuan dai han.
    - Phi: Polymarket thu phi taker ~5% tren thi truong thoi tiet (feeSchedule
      rate 0.05) — tinh vao gia truoc khi vao lenh.
+""")
+  def find_no_patterns(stats):
+    pm = stats.get("Polymarket (EV)") or stats.get("Polymarket (top bucket)", {})
+    out = []
+    for city, vals in sorted(pm.items()):
+        n, mae, bias, hit, cons = agg(vals)
+        if n < MIN_N or cons is None or bias is None:
+            continue
+        if cons >= MIN_CONSISTENCY and bias >= MIN_BIAS:
+            out.append((city, n, bias, cons))
+    return out
+
+
+def no_entry_ok(price_no, spread, liquidity):
+    NO_MAX_PRICE = round(1.0 / 1.35, 4)
+    if price_no is None:
+        return False, "thieu gia No"
+    eff_price = price_no * 1.05
+    if eff_price > NO_MAX_PRICE:
+        return False, f"payout thap (eff {eff_price:.3f} > {NO_MAX_PRICE})"
+    if spread is not None and spread > 0.05:
+        return False, f"spread rong ({spread:.3f})"
+    if liquidity is not None and liquidity < 500.0:
+        return False, f"thanh khoan thap ({liquidity:.0f})"
+    mult = 1.0 / eff_price
+    return True, f"OK payout ~{mult:.2f}x (10$ -> {10*mult:.2f}$)"
+
+
+def print_no_campaign(stats):
+    patterns = find_no_patterns(stats)
+    print("\n" + "=" * 60)
+    print("KHUNG TEST 'NO' — 1000 USD  (chi la thu nghiem thong ke)")
+    print("=" * 60)
+    print("  Canh bao: KHONG phai loi khuyen dau tu. Chi dung tien chap nhan mat.")
+    if not patterns:
+        print("\n  Chua co pattern 'thi truong dinh gia CAO' nao dat nguong.")
+        print("  KHONG vao lenh No. Thu thap them du lieu, chay lai sau.")
+        return
+    print("\n  Cac thanh pho co tin hieu NO (Polymarket dinh gia CAO hon thuc te):")
+    for city, n, bias, cons in patterns:
+        print(f"   - {city}: bias +{bias:.2f}C (nong hon thuc te), n={n}, nhat_quan {cons:.0%}")
+    print("""
+  Von: 1000 USD, chia 20 lenh x 50 USD. KHONG gap thep khi thua.
+  Payout: chi mua No khi gia (da tinh phi 5%) <= 0.74 -> 10$ thang hoan ve >= 13.5$.
+  Vao lenh khi: (a) thanh pho co pattern; (b) lead 1 ngay;
+     (c) mua NO tren dung bucket DINH ma Polymarket dang thoi gia;
+     (d) spread <= 0.05; (e) thanh khoan >= 500 USD.
+  Phan bo: 1 pattern/thanh pho <= 30% von (~6 lenh).
+  Dung ngay neu: thua 10/20 lenh dau, HOAC tong lo cham -350 USD,
+     HOAC pattern tut duoi 60% nhat quan khi cap nhat du lieu.
+  Phi taker ~5% - tinh vao gia truoc khi vao lenh.
 """)
 
 
