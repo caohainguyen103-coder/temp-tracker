@@ -7,6 +7,7 @@ Quy tắc (cố định, khách quan, không chỉnh tay giữa chừng):
   - TÍN HIỆU VÀO LỆNH GIỐNG HỆT CHIẾN DỊCH 3: trung vị dự báo Tmax của
     5 mô hình chỉ vào ô KHÁC ô thị trường tin nhất (mô hình "cãi" đám đông)
     và giá YES của ô đó trong [0.02, 0.30].
+  - Vào lệnh ở T+1 hoặc T+2 (snapshot trước ngày mục tiêu 1-2 ngày).
   - Khác biệt duy nhất: thay vì mua YES, CƯỢC NO chính ô đó
     (cược rằng ô mô hình chọn sẽ KHÔNG xảy ra). Giá NO = 1 − bid của ô.
   - TỶ LỆ TỐI THIỂU: đặt 10 phải nhận về ít nhất 13.5 khi thắng
@@ -59,7 +60,7 @@ def enter(trades, snaps, full, now):
             lead = int(s["lead_days"])
         except (ValueError, TypeError):
             continue
-        if lead < 1 or lead > 2 or s["event_slug"] in have:
+        if lead < 1 or lead > 2 or s["event_slug"] in have:  # T+1 hoac T+2
             continue
         if s["snapshot_utc"][:10] != today:
             continue  # chỉ vào lệnh từ snapshot mới hôm nay
