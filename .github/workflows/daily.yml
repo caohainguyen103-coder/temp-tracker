@@ -44,6 +44,9 @@ jobs:
       - name: Chien dich 4 - NO odds toi thieu 1.35 (1000 do ao)
         run: python paper_trade4.py
 
+      - name: Chien dich 5 - NO theo GFS, loi >= 3 do (1000 do ao)
+        run: python paper_trade5.py
+
       - name: Luu du lieu vao repo
         run: |
           git config user.name "temp-tracker-bot"
