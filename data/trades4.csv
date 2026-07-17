@@ -22,3 +22,4 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-07-17T07:42:56Z,highest-temperature-in-london-on-july-19-2026,london,2026-07-19,2,NO,24°C,0.69,14.49,10.0,0.155,23.5,23°C,open,,,,mo_rong
 2026-07-17T07:42:56Z,highest-temperature-in-busan-on-july-18-2026,busan,2026-07-18,1,NO,30°C,0.68,14.71,10.0,0.16,30.5,31°C,open,,,,mo_rong
 2026-07-17T07:42:56Z,highest-temperature-in-tokyo-on-july-19-2026,tokyo,2026-07-19,2,NO,31°C,0.68,14.71,10.0,0.16,31.1,32°C,open,,,,mo_rong
+2026-07-17T09:19:37Z,highest-temperature-in-wellington-on-july-19-2026,wellington,2026-07-19,2,NO,13°C,0.67,14.93,10.0,0.1651,13.2,14°C,open,,,,mo_rong

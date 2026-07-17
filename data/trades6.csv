@@ -15,7 +15,7 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-07-16T14:53:49Z,highest-temperature-in-sao-paulo-on-july-16-2026,sao-paulo,2026-07-16,0,YES,25°C,0.5,20.0,10.0,0.25,49.5,25°C,lost,0.0,-10.25,2026-07-17T07:42:56Z
 2026-07-16T14:53:49Z,highest-temperature-in-buenos-aires-on-july-16-2026,buenos-aires,2026-07-16,0,YES,23°C,0.44,22.73,10.0,0.28,43.0,23°C,lost,0.0,-10.28,2026-07-17T07:42:56Z
 2026-07-16T14:53:49Z,highest-temperature-in-toronto-on-july-16-2026,toronto,2026-07-16,0,YES,<=27°C,0.348,28.74,10.0,0.326,32.7,<=27°C,lost,0.0,-10.33,2026-07-17T07:42:56Z
-2026-07-16T14:53:49Z,highest-temperature-in-seattle-on-july-16-2026,seattle,2026-07-16,0,YES,70-71°F,0.3,33.33,10.0,0.35,29.0,70-71°F,open,,,
+2026-07-16T14:53:49Z,highest-temperature-in-seattle-on-july-16-2026,seattle,2026-07-16,0,YES,70-71°F,0.3,33.33,10.0,0.35,29.0,70-71°F,lost,0.0,-10.35,2026-07-17T09:19:37Z
 2026-07-16T14:53:49Z,highest-temperature-in-nyc-on-july-16-2026,nyc,2026-07-16,0,YES,92-93°F,0.34,29.41,10.0,0.33,33.0,92-93°F,lost,0.0,-10.33,2026-07-17T07:42:56Z
 2026-07-16T14:53:49Z,highest-temperature-in-dallas-on-july-16-2026,dallas,2026-07-16,0,YES,88-89°F,0.3,33.33,10.0,0.35,29.5,88-89°F,won,33.33,22.98,2026-07-17T07:42:56Z
 2026-07-16T14:53:49Z,highest-temperature-in-atlanta-on-july-16-2026,atlanta,2026-07-16,0,YES,90-91°F,0.52,19.23,10.0,0.24,51.5,90-91°F,lost,0.0,-10.24,2026-07-17T07:42:56Z
@@ -24,8 +24,8 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-07-16T14:53:49Z,highest-temperature-in-austin-on-july-16-2026,austin,2026-07-16,0,YES,86-87°F,0.34,29.41,10.0,0.33,32.5,86-87°F,lost,0.0,-10.33,2026-07-17T07:42:56Z
 2026-07-16T14:53:49Z,highest-temperature-in-denver-on-july-16-2026,denver,2026-07-16,0,YES,92-93°F,0.65,15.38,10.0,0.1749,64.5,92-93°F,won,15.38,5.21,2026-07-17T07:42:56Z
 2026-07-16T14:53:49Z,highest-temperature-in-houston-on-july-16-2026,houston,2026-07-16,0,YES,92-93°F,0.46,21.74,10.0,0.27,45.5,92-93°F,lost,0.0,-10.27,2026-07-17T07:42:56Z
-2026-07-16T14:53:49Z,highest-temperature-in-los-angeles-on-july-16-2026,los-angeles,2026-07-16,0,YES,80-81°F,0.53,18.87,10.0,0.235,52.5,80-81°F,open,,,
-2026-07-16T14:53:49Z,highest-temperature-in-san-francisco-on-july-16-2026,san-francisco,2026-07-16,0,YES,68-69°F,0.4,25.0,10.0,0.3,39.5,68-69°F,open,,,
+2026-07-16T14:53:49Z,highest-temperature-in-los-angeles-on-july-16-2026,los-angeles,2026-07-16,0,YES,80-81°F,0.53,18.87,10.0,0.235,52.5,80-81°F,lost,0.0,-10.23,2026-07-17T09:19:37Z
+2026-07-16T14:53:49Z,highest-temperature-in-san-francisco-on-july-16-2026,san-francisco,2026-07-16,0,YES,68-69°F,0.4,25.0,10.0,0.3,39.5,68-69°F,won,25.0,14.7,2026-07-17T09:19:37Z
 2026-07-16T14:53:49Z,highest-temperature-in-mexico-city-on-july-16-2026,mexico-city,2026-07-16,0,YES,25°C,0.45,22.22,10.0,0.275,44.5,25°C,won,22.22,11.94,2026-07-17T07:42:56Z
 2026-07-16T14:53:49Z,highest-temperature-in-panama-city-on-july-16-2026,panama-city,2026-07-16,0,YES,34°C,0.55,18.18,10.0,0.225,54.5,34°C,won,18.18,7.96,2026-07-17T07:42:56Z
 2026-07-16T14:53:49Z,highest-temperature-in-london-on-july-17-2026,london,2026-07-17,1,YES,28°C,0.43,23.26,10.0,0.2851,42.0,28°C,open,,,
