@@ -1,9 +1,1 @@
 entry_utc,event_slug,market_slug,city,target_date,side,bucket,tier,price,shares,stake,fee,trigger_ask,peak_ask,potential_profit,status,payout,pnl,settle_utc
-2026-07-17T16:22:44Z,highest-temperature-in-london-on-july-17-2026,highest-temperature-in-london-on-july-17-2026-27c,london,2026-07-17,YES,27°C,0.7,0.82,12.2,10.0,0.09,0.82,0.82,2.11,open,,,
-2026-07-17T16:22:44Z,highest-temperature-in-paris-on-july-17-2026,highest-temperature-in-paris-on-july-17-2026-26c,paris,2026-07-17,YES,26°C,0.7,0.98,10.2,10.0,0.01,0.98,0.98,0.19,open,,,
-2026-07-17T16:22:44Z,highest-temperature-in-madrid-on-july-17-2026,highest-temperature-in-madrid-on-july-17-2026-34c,madrid,2026-07-17,YES,34°C,0.7,0.74,13.51,10.0,0.13,0.74,0.74,3.38,open,,,
-2026-07-17T16:22:44Z,highest-temperature-in-london-on-july-17-2026,highest-temperature-in-london-on-july-17-2026-27c,london,2026-07-17,YES,27°C,0.6,0.82,12.2,10.0,0.09,0.82,0.82,2.11,open,,,
-2026-07-17T16:22:44Z,highest-temperature-in-paris-on-july-17-2026,highest-temperature-in-paris-on-july-17-2026-26c,paris,2026-07-17,YES,26°C,0.6,0.98,10.2,10.0,0.01,0.98,0.98,0.19,open,,,
-2026-07-17T16:22:44Z,highest-temperature-in-madrid-on-july-17-2026,highest-temperature-in-madrid-on-july-17-2026-34c,madrid,2026-07-17,YES,34°C,0.6,0.74,13.51,10.0,0.13,0.74,0.74,3.38,open,,,
-2026-07-17T16:22:44Z,highest-temperature-in-madrid-on-july-17-2026,highest-temperature-in-madrid-on-july-17-2026-35c,madrid,2026-07-17,YES,35°C,0.6,0.62,16.13,10.0,0.19,0.62,0.62,5.94,open,,,
-2026-07-17T16:22:44Z,highest-temperature-in-los-angeles-on-july-17-2026,highest-temperature-in-los-angeles-on-july-17-2026-80-81f,los-angeles,2026-07-17,YES,80-81°F,0.6,0.65,15.38,10.0,0.1749,0.65,0.65,5.21,open,,,
