@@ -22,12 +22,12 @@ v4 (17/07 chiều, đã chạy live): 2 phía —
   $1500) vì hầu như thị trường nào cũng có vài ô "vai" nằm sẵn trong dải
   10-20c ngay từ đầu — không phải tín hiệu "đám đông vừa đổi ý", chỉ là ô đó
   vốn dĩ đã là longshot.
-v5 (17/07, ĐANG DÙNG — theo yêu cầu mới nhất) — thu hẹp lại có chủ đích:
+v5 (17/07) — thu hẹp lại có chủ đích:
     - CHỈ xét market có target_date == HÔM NAY (ngày T) — cho CẢ 2 phía.
       (Đây là đổi ngược lại so với v4, chấp nhận rủi ro giá cực đoan cuối
       ngày đã nêu ở v1, nhưng bù lại bằng: vẫn giữ chặn [0.02,0.98], và
       luật NO giờ đòi hỏi lịch sử giá cụ thể chứ không chỉ "giá đang thấp".)
-    - PHÍA YES: giữ nguyên — ô >=60c mua 1 lần, >=70c mua thêm 1 lần.
+    - PHÍA YES: ô >=60c mua 1 lần, >=70c mua thêm 1 lần (mốc rời rạc).
     - PHÍA NO: THAY HẲN luật cũ. Không còn ngưỡng cố định 10-20c. Giờ chỉ
       mua NO khi ô đó TỪNG đạt đỉnh giá trong khoảng [0.40, 0.70] ở một lần
       quét trước đó, RỒI SAU ĐÓ tuột xuống dưới 0.40 — tức đám đông từng coi
@@ -35,6 +35,15 @@ v5 (17/07, ĐANG DÙNG — theo yêu cầu mới nhất) — thu hẹp lại có
       Cần bộ nhớ giá đỉnh từng thấy mỗi ô -> lưu riêng data/cd9_price_hist.csv,
       cập nhật MỌI lần quét cho MỌI market (không giới hạn ngày) để có đủ
       lịch sử ngay khi market bước vào ngày T.
+  Lỗi phát sinh: 2 mốc 60/70 độc lập nên nếu 1 ô mới thấy lần đầu đã ở giá
+  74c, bot mua CẢ 2 mốc cùng lúc (vì 74>=60 VÀ 74>=70) — ra 2 lệnh cho cùng
+  1 ô ngay trong 1 lần quét (vd Madrid). Không đúng ý muốn "mỗi khoảng giá
+  chỉ mua 1 lần".
+v6 (17/07, ĐANG DÙNG) — PHÍA YES đổi từ "mốc rời rạc" sang "khoảng giá",
+  mỗi khoảng chỉ mua ĐÚNG 1 LẦN/ô bất kể quét bao nhiêu lần hay giá nhích
+  bao nhiêu trong khoảng đó: [60,70) mua 1 lần, [70,80) mua 1 lần,
+  [80,90) mua 1 lần, [90,97] mua 1 lần (tối đa 4 lệnh/ô nếu giá leo hết
+  các khoảng qua nhiều lần quét). PHÍA NO không đổi.
 Đây là chiến dịch THỬ NGHIỆM, CHƯA có backtest lịch sử — theo dõi khách
 quan, không kết luận sớm, không chỉnh luật giữa chừng nếu không có lý do.
 Kết quả: data/trades9.csv | Lịch sử giá: data/cd9_price_hist.csv
@@ -61,12 +70,27 @@ PRICE_HIST_FIELDS = [
 
 BUDGET = 1500.0
 STAKE = 10.0
-YES_TIERS = [0.60, 0.70]        # moi moc mua YES rieng 1 lan/o, chi ngay T
+# PHIA YES: khoang gia, moi khoang mua DUNG 1 LAN/o bat ke quet may lan hay
+# gia nhich bao nhieu trong khoang do. [lo, hi) tru khoang cuoi la [lo, hi].
+YES_RANGES = [(0.60, 0.70, "60-69c"), (0.70, 0.80, "70-79c"),
+              (0.80, 0.90, "80-89c"), (0.90, 0.97, "90-97c")]
 NO_PEAK_LOW, NO_PEAK_HIGH = 0.40, 0.70  # dinh gia tung dat de duoc tinh la "ung vien that su"
 NO_DROP_BELOW = 0.40            # sau do phai tuot xuong duoi muc nay moi mua NO
 MIN_PRICE, MAX_PRICE = 0.02, 0.98  # loai gia cuc doan (don bay vo ly)
 FEE_RATE = 0.05
 HIST_KEEP_DAYS = 3  # don rac: bo entry lich su cu hon x ngay so voi target_date
+
+
+def yes_range_label(ask):
+    """Tra ve nhan khoang gia YES ma ask dang roi vao, hoac None neu <60c."""
+    for i, (lo, hi, label) in enumerate(YES_RANGES):
+        if i == len(YES_RANGES) - 1:
+            if lo <= ask <= hi:
+                return label
+        else:
+            if lo <= ask < hi:
+                return label
+    return None
 
 
 def parse_buckets(event):
@@ -201,18 +225,15 @@ def enter(trades, now, events=None, price_hist=None):
             if not is_today:
                 continue  # chi VAO LENH khi target_date == hom nay (ca 2 phia)
 
-            # --- PHIA YES: theo cua nang ky, 2 moc doc lap 60/70, chi ngay T ---
-            for tier in YES_TIERS:
-                if ask < tier:
-                    continue
-                key = (b["slug"], "YES", str(tier))
-                if key in have_keys:
-                    continue
-                price = round(ask, 3)
-                if not (MIN_PRICE <= price <= MAX_PRICE):
-                    continue
-                candidates.append(_mk_candidate(
-                    slug, city, target, b, "YES", tier, price, ask, ask))
+            # --- PHIA YES: theo cua nang ky, khoang gia, 1 lan/khoang/o, chi ngay T ---
+            rlabel = yes_range_label(ask)
+            if rlabel is not None:
+                key = (b["slug"], "YES", rlabel)
+                if key not in have_keys:
+                    price = round(ask, 3)
+                    if MIN_PRICE <= price <= MAX_PRICE:
+                        candidates.append(_mk_candidate(
+                            slug, city, target, b, "YES", rlabel, price, ask, ask))
 
             # --- PHIA NO: tung la ung vien that su (dinh 40-70c) roi tuot xuong duoi 40c ---
             if prev_max is not None and NO_PEAK_LOW <= prev_max <= NO_PEAK_HIGH and ask < NO_DROP_BELOW:
@@ -225,8 +246,9 @@ def enter(trades, now, events=None, price_hist=None):
 
     save_price_hist(price_hist, today)
 
-    # moc/tin hieu manh hon vao truoc khi het tien ao: YES 70 > YES 60 > NO
-    order = {("YES", "0.7"): 0, ("YES", "0.6"): 1, ("NO", "dropped"): 2}
+    # tin hieu manh hon vao truoc khi het tien ao: YES 90-97 > 80-89 > 70-79 > 60-69 > NO
+    order = {("YES", "90-97c"): 0, ("YES", "80-89c"): 1, ("YES", "70-79c"): 2,
+             ("YES", "60-69c"): 3, ("NO", "dropped"): 4}
     candidates.sort(key=lambda x: order.get((x["side"], str(x["tier"])), 9))
     added = 0
     for c in candidates:
@@ -241,7 +263,7 @@ def enter(trades, now, events=None, price_hist=None):
             print("  [HET TIEN AO] (CD9) cho lenh cu chot da")
             break
         if c["side"] == "YES":
-            tier_txt = f"{c['tier']*100:.0f}c"
+            tier_txt = c["tier"]  # da la nhan khoang gia san, vd "60-79c"
             info = f"dam dong dang tin {c['trigger_ask']*100:.0f}%"
         else:
             tier_txt = "tuot < 40c"
@@ -284,7 +306,7 @@ def main():
                     if t["status"] == "open")
     won = sum(1 for t in trades if t["status"] == "won")
     lost = sum(1 for t in trades if t["status"] == "lost")
-    print(f"\n[CHIEN DICH 9 v5 — chi ngay T: YES 60/70c + NO tuot tu dinh 40-70c xuong <40c]")
+    print(f"\n[CHIEN DICH 9 v6 — chi ngay T: YES 4 khoang 60-69/70-79/80-89/90-97c + NO tuot tu dinh 40-70c xuong <40c]")
     print(f"Chot {n_settled}, vao moi {n_new} | {won} thang / {lost} thua | "
           f"lai/lo {realized:+.2f} | kha dung {BUDGET + realized - open_cost:.2f}/{BUDGET:.0f}")
 
