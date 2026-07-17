@@ -3,15 +3,19 @@
 sports_common.py — Ham dung chung cho CHIEN DICH 8 (the thao, doi chieu Pinnacle).
 
 Nguon du lieu:
-  - gamma-api.polymarket.com : gia YES/NO cac market "doi X thang" / "hoa"
-    cua tung tran (da kiem chung cau truc that ngay 2026-07-17, tran
-    Phap vs Anh & Tay Ban Nha vs Argentina, World Cup 2026).
-  - api.the-odds-api.com     : keo nha cai Pinnacle (nha cai sac, gan nhu
-    khong co bien loi cho nguoi choi bat loi), dung lam "mo hinh doi
-    chieu" thay cho mo hinh thoi tiet o cac chien dich truoc.
-
-Y tuong giong het cac chien dich thoi tiet: so gia Polymarket (dam dong)
-voi mot nguon "chuan" doc lap (Pinnacle, da khu vig) - lech gia = co hoi.
+  - gamma-api.polymarket.com : gia cac market "thang ca tran" (moneyline)
+    cua tung tran.
+      * Bong da (World Cup...): moi tran co 3 market rieng (doi nha thang /
+        hoa / doi khach thang), moi market la nhi phan Yes/No rieng.
+      * The thao 2 chieu (MLB, NBA...): moi tran chi co 1 market voi
+        outcomes = [ten doi A, ten doi B] — cuoc doi B = mua "No" cua
+        market do (gia = 1 - bid), giong het quy uoc cac chien dich
+        thoi tiet (side NO) da dung tu truoc.
+  - api.the-odds-api.com     : keo nha cai Pinnacle (nha cai sac) — dung
+    lam "mo hinh doi chieu" thay cho mo hinh thoi tiet o cac chien dich
+    truoc. Da xac minh that: World Cup 2026 (bong da, co hoa) va MLB
+    (bong chay, khong hoa, ~10-15 tran/ngay — nhieu mau hon han World Cup
+    dang o vong chung ket).
 """
 import os
 
@@ -20,12 +24,14 @@ import common as C
 ODDS_API_KEY = os.environ.get("ODDS_API_KEY", "")
 ODDS_API_BASE = "https://api.the-odds-api.com/v4"
 
-# Danh sach giai dau theo doi (sport_key cua the-odds-api, series_slug cua
-# Polymarket). Hien tai moi kiem chung World Cup 2026; them giai khac sau
-# khi xac nhan cau truc slug tuong tu.
+# Danh sach giai dau (sport_key cua the-odds-api, series_slug cua
+# Polymarket). Da kiem chung that cau truc + co du lieu Pinnacle
+# ngay 2026-07-17. Them giai khac sau khi xac nhan tuong tu.
 SPORTS = [
     {"odds_sport_key": "soccer_fifa_world_cup", "pm_series_slug": "soccer-fifwc",
      "label": "FIFA World Cup 2026"},
+    {"odds_sport_key": "baseball_mlb", "pm_series_slug": "mlb",
+     "label": "MLB"},
 ]
 
 # Alias ten doi giua 2 nguon (phong khi ten khac nhau chut it).
@@ -47,16 +53,17 @@ def devig(decimal_odds):
 
 
 def fetch_pinnacle_odds(sport_key):
-    """Lay keo Pinnacle (h2h, 3-way voi bong da) cho 1 giai dau.
+    """Lay keo Pinnacle (h2h) cho 1 giai dau. Ho tro ca 2-way (khong hoa)
+    va 3-way (co hoa, bong da).
     Tra ve list dict: home_team, away_team, commence_time,
     p (dict ten doi/'Draw' -> xac suat cong bang da khu vig),
-    o (dict ten doi/'Draw' -> ty le decimal goc, de doi chieu)."""
+    o (dict ten doi/'Draw' -> ty le decimal goc)."""
     if not ODDS_API_KEY:
         print("  [LOI CD8] Chua co bien moi truong ODDS_API_KEY")
         return []
     url = f"{ODDS_API_BASE}/sports/{sport_key}/odds"
     j = C.http_get_json(url, {
-        "apiKey": ODDS_API_KEY, "regions": "eu,uk", "markets": "h2h",
+        "apiKey": ODDS_API_KEY, "regions": "eu,uk,us", "markets": "h2h",
     })
     if not j:
         return []
@@ -98,7 +105,7 @@ def find_pinnacle_for_match(pinnacle_odds, team_a, team_b):
 
 
 def list_pm_matches(series_slug, closed=False):
-    """Danh sach tran (event) tren Polymarket kem market con (nha/hoa/khach)."""
+    """Danh sach tran (event) tren Polymarket kem market con."""
     j = C.http_get_json(f"{C.GAMMA}/events", {
         "series_slug": series_slug, "closed": str(closed).lower(),
         "limit": 100, "order": "startDate", "ascending": "true",
@@ -107,8 +114,8 @@ def list_pm_matches(series_slug, closed=False):
 
 
 def market_outcome_key(market):
-    """Xac dinh market nay ung voi 'Draw' hay ten doi nao, dua tren
-    marketMetadata.opticOddsSelectionLine ('home'/'away'/'draw')."""
+    """Xac dinh market nay (kieu bong da: 1 market/1 ket qua) ung voi 'Draw'
+    hay ten doi nao, dua tren marketMetadata.opticOddsSelectionLine."""
     meta = market.get("marketMetadata") or {}
     line = (meta.get("opticOddsSelectionLine") or "").lower()
     if line == "draw":
