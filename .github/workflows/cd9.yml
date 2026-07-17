@@ -35,6 +35,6 @@ jobs:
           git config user.name "temp-tracker-bot"
           git config user.email "actions@users.noreply.github.com"
           git pull --rebase || true
-          git add data/trades9.csv
+          git add data/trades9.csv data/cd9_price_hist.csv
           git diff --cached --quiet || git commit -m "CD9 quet $(date -u +%Y-%m-%dT%H:%M)"
           git push
