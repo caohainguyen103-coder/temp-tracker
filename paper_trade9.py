@@ -39,11 +39,16 @@ v5 (17/07) — thu hẹp lại có chủ đích:
   74c, bot mua CẢ 2 mốc cùng lúc (vì 74>=60 VÀ 74>=70) — ra 2 lệnh cho cùng
   1 ô ngay trong 1 lần quét (vd Madrid). Không đúng ý muốn "mỗi khoảng giá
   chỉ mua 1 lần".
-v6 (17/07, ĐANG DÙNG) — PHÍA YES đổi từ "mốc rời rạc" sang "khoảng giá",
+v6 (17/07) — PHÍA YES đổi từ "mốc rời rạc" sang "khoảng giá",
   mỗi khoảng chỉ mua ĐÚNG 1 LẦN/ô bất kể quét bao nhiêu lần hay giá nhích
   bao nhiêu trong khoảng đó: [60,70) mua 1 lần, [70,80) mua 1 lần,
   [80,90) mua 1 lần, [90,97] mua 1 lần (tối đa 4 lệnh/ô nếu giá leo hết
   các khoảng qua nhiều lần quét). PHÍA NO không đổi.
+v7 (17/07, ĐANG DÙNG) — PHÍA NO thêm 1 điều kiện: phải tuột cách đỉnh từng
+  đạt ÍT NHẤT 5 điểm % (không chỉ cần <40c). Lý do: ô Mexico City đỉnh vừa
+  chạm 40% rồi tuột còn 39% đã kích hoạt mua NO — tuột 1 điểm % gần như
+  không có ý nghĩa gì (nhiễu bình thường), không phải tín hiệu "đám đông
+  đổi ý" thật sự. Giờ ví dụ đỉnh 40% phải tuột về 35% trở xuống mới mua.
 Đây là chiến dịch THỬ NGHIỆM, CHƯA có backtest lịch sử — theo dõi khách
 quan, không kết luận sớm, không chỉnh luật giữa chừng nếu không có lý do.
 Kết quả: data/trades9.csv | Lịch sử giá: data/cd9_price_hist.csv
@@ -76,6 +81,7 @@ YES_RANGES = [(0.60, 0.70, "60-69c"), (0.70, 0.80, "70-79c"),
               (0.80, 0.90, "80-89c"), (0.90, 0.97, "90-97c")]
 NO_PEAK_LOW, NO_PEAK_HIGH = 0.40, 0.70  # dinh gia tung dat de duoc tinh la "ung vien that su"
 NO_DROP_BELOW = 0.40            # sau do phai tuot xuong duoi muc nay moi mua NO
+NO_MIN_DROP_GAP = 0.05           # va phai each dinh it nhat tung nay (tranh tuot 1-2 diem % vo nghia)
 MIN_PRICE, MAX_PRICE = 0.02, 0.98  # loai gia cuc doan (don bay vo ly)
 FEE_RATE = 0.05
 HIST_KEEP_DAYS = 3  # don rac: bo entry lich su cu hon x ngay so voi target_date
@@ -235,8 +241,10 @@ def enter(trades, now, events=None, price_hist=None):
                         candidates.append(_mk_candidate(
                             slug, city, target, b, "YES", rlabel, price, ask, ask))
 
-            # --- PHIA NO: tung la ung vien that su (dinh 40-70c) roi tuot xuong duoi 40c ---
-            if prev_max is not None and NO_PEAK_LOW <= prev_max <= NO_PEAK_HIGH and ask < NO_DROP_BELOW:
+            # --- PHIA NO: tung la ung vien that su (dinh 40-70c) roi tuot xuong duoi 40c,
+            # va phai tuot each dinh it nhat NO_MIN_DROP_GAP (tranh tuot 1-2 diem % vo nghia) ---
+            if (prev_max is not None and NO_PEAK_LOW <= prev_max <= NO_PEAK_HIGH
+                    and ask < NO_DROP_BELOW and ask <= prev_max - NO_MIN_DROP_GAP):
                 key = (b["slug"], "NO", "dropped")
                 if key not in have_keys:
                     price = round(1 - b["bid"], 3) if b["bid"] is not None else round(1 - ask, 3)
@@ -306,7 +314,7 @@ def main():
                     if t["status"] == "open")
     won = sum(1 for t in trades if t["status"] == "won")
     lost = sum(1 for t in trades if t["status"] == "lost")
-    print(f"\n[CHIEN DICH 9 v6 — chi ngay T: YES 4 khoang 60-69/70-79/80-89/90-97c + NO tuot tu dinh 40-70c xuong <40c]")
+    print(f"\n[CHIEN DICH 9 v7 — chi ngay T: YES 4 khoang 60-69/70-79/80-89/90-97c + NO tuot tu dinh 40-70c, each dinh >=5 diem %, xuong <40c]")
     print(f"Chot {n_settled}, vao moi {n_new} | {won} thang / {lost} thua | "
           f"lai/lo {realized:+.2f} | kha dung {BUDGET + realized - open_cost:.2f}/{BUDGET:.0f}")
 
