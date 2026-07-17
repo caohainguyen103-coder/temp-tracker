@@ -3,3 +3,5 @@ entry_utc,market_slug,match,side_team,commence_utc,side,ask,shares,stake,fee,pin
 2026-07-17T09:38:14Z,mlb-tex-atl-2026-07-18,Texas Rangers vs. Atlanta Braves,Atlanta Braves,2026-07-17T23:16:00Z,NO,0.56,17.86,10.0,0.22,0.6527,,0.0927,open,,,
 2026-07-17T09:38:14Z,mlb-cin-col-2026-07-19,Cincinnati Reds vs. Colorado Rockies,Colorado Rockies,2026-07-18T00:41:00Z,NO,0.44,22.73,10.0,0.28,0.5141,,0.0741,open,,,
 2026-07-17T09:38:14Z,mlb-det-laa-2026-07-18,Detroit Tigers vs. Los Angeles Angels,Los Angeles Angels,2026-07-18T01:39:00Z,NO,0.43,23.26,10.0,0.2851,0.4936,,0.0636,open,,,
+2026-07-17T16:39:13Z,mlb-sf-sea-2026-07-18,San Francisco Giants vs. Seattle Mariners,Seattle Mariners,2026-07-18T02:11:00Z,NO,0.58,17.24,10.0,0.21,0.6383,,0.0583,open,,,
+2026-07-17T16:39:13Z,mlb-wsh-oak-2026-07-18,Washington Nationals vs. Athletics,Washington Nationals,2026-07-18T01:41:00Z,YES,0.5,20.0,10.0,0.25,0.5505,,0.0505,open,,,
