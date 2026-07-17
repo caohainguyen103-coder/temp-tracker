@@ -76,6 +76,13 @@ def enter(trades, now):
             for mkt in ev.get("markets", []):
                 if mkt.get("closed") or not mkt.get("active"):
                     continue
+                # Chi lay market "thang ca tran" (moneyline day du), KHONG lay
+                # cac market phu cung trong series co cung ten doi (halftime,
+                # second-half, ...) — cac market do da tung bi khop nham vao
+                # keo Pinnacle full-match, tao "canh" gia nhung thuc ra la
+                # so sai 2 loai xac suat khac nhau.
+                if mkt.get("sportsMarketType") != "moneyline":
+                    continue
                 slug = mkt.get("slug")
                 if not slug or slug in have_slugs:
                     continue
