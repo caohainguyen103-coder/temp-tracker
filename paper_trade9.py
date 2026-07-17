@@ -1,17 +1,20 @@
 # -*- coding: utf-8 -*-
 """
-paper_trade9.py — CHIẾN DỊCH 9: NO Ô ĐÁM ĐÔNG TIN NHẤT (>=70c), quét liên tục.
+paper_trade9.py — CHIẾN DỊCH 9: theo đám đông ở 2 đầu, quét liên tục.
 Tiền ảo $1500. KHÔNG dùng tiền thật. Chạy ĐỘC LẬP mỗi 30 phút bằng workflow
 riêng (cd9.yml) — KHÔNG phụ thuộc snapshot 2 lần/ngày của các chiến dịch
 thời tiết khác, tự lấy giá market Polymarket TRỰC TIẾP mỗi lần chạy để bắt
-kịp lúc giá vừa chạm ngưỡng 70c.
+kịp lúc giá vừa chạm ngưỡng.
 
-Cơ sở: giả thuyết NGƯỢC với chiến dịch 6 (CD6 mua YES ô đám đông tin ở mức
-vừa phải 30-70c). Khi đám đông tin một ô đến mức cực đoan (>=70c), có thể
-bị định giá quá tự tin (overconfidence / longshot ở phía đối nghịch bị bán
-tháo) -> FADE bằng NO. Đây là chiến dịch THỬ NGHIỆM, CHƯA có backtest lịch
-sử (tin nhắn tự nhiên đám đông >=70% ít khi thấy trong dữ liệu snapshot cũ
-vì snapshot chỉ chụp 2 lần/ngày) — theo dõi khách quan, không kết luận sớm.
+Cơ sở: favorite-longshot bias — đám đông thường trả THIẾU cho cửa nặng ký
+(favorite) và trả THỪA cho cửa nhẹ ký (longshot). CD6 đã khai thác việc này
+ở vùng giá vừa phải (30-70c). CD9 khai thác ở 2 đầu cực đoan hơn:
+  - Cửa nặng ký RẤT mạnh (đám đông tin >=60c hoặc >=70c) -> mua YES theo,
+    vì phần này thường vẫn bị trả thiếu.
+  - Cửa đã rớt xuống thành longshot (đám đông chỉ còn tin 10-20c) -> mua NO
+    (cược nó KHÔNG xảy ra), vì longshot thường bị trả thừa.
+Đây là chiến dịch THỬ NGHIỆM, CHƯA có backtest lịch sử — theo dõi khách
+quan, không kết luận sớm.
 
 Quy tắc (cố định từ ngày dựng — không chỉnh giữa chừng):
   - Mỗi lần chạy (mỗi 30 phút): lấy trực tiếp mọi market "Highest
@@ -19,21 +22,26 @@ Quy tắc (cố định từ ngày dựng — không chỉnh giữa chừng):
   - CHỈ xét market có ngày mục tiêu (target_date) SAU ngày hôm nay (UTC).
     Bỏ qua market của NGÀY HÔM NAY — vào cuối ngày, giá đám đông tiến gần
     100% đơn giản vì nhiệt độ thực tế đã gần như biết rồi (sắp phân giải),
-    không phải "quá tự tin" thật sự -> fade NO lúc đó là rủi ro đuôi (tail
+    không phải "quá tự tin" thật sự -> vào lệnh lúc đó là rủi ro đuôi (tail
     risk) chứ không kiểm tra đúng giả thuyết. (Lỗi thực tế bắt được ở lần
-    chạy thử đầu tiên 2026-07-17: 32 lệnh vào giá 0.001-0.01, x10000 đòn
-    bẩy, ăn hết 335$ ngân sách chỉ trong 1 lần quét — đã sửa bằng luật này.)
-  - Ô mục tiêu = BẤT KỲ ô nào có giá ask hiện tại (đám đông) >= 0.70.
-  - Giá NO phải nằm trong [0.02, 0.98] — loại các trường hợp giá cực đoan
-    gần 0 hoặc gần 1 (đòn bẩy vô lý / gần như đã phân giải).
-  - Cược NO ô đó với giá = 1 - bid (không có bid thì 1 - ask).
-  - Mỗi Ô (theo market slug riêng của từng ô, không phải event) chỉ vào
-    ĐÚNG 1 lần trong suốt vòng đời — quét lại nhiều lần sau đó sẽ bỏ qua.
-  - $10/lệnh, ngân sách $1500, phí taker 5% x p x (1-p) như thật.
-  - Thắng khi ô phân giải KHÁC ô đã cược NO.
+    chạy thử đầu tiên 2026-07-17: 32 lệnh vào giá cực đoan, x10000 đòn bẩy,
+    ăn hết 335$ ngân sách chỉ trong 1 lần quét — đã sửa bằng luật này.)
+  - PHÍA YES (theo cửa nặng ký): ô nào giá ask (đám đông tin) >= 0.60 ->
+    mua YES 1 lần ở mốc 60c (giá mua = giá ask thật lúc quét). Nếu SAU ĐÓ
+    giá lên tiếp >= 0.70 -> mua YES thêm 1 lần nữa ở mốc 70c (giá thật lúc
+    đó). Mỗi ô tối đa 2 lệnh YES (1 lệnh/mốc, không mua lại mốc đã mua).
+  - PHÍA NO (fade cửa đã thành longshot): ô BẤT KỲ (không cần liên quan gì
+    đến ô đã mua YES) có giá ask rơi vào khoảng [0.10, 0.20] -> mua NO 1
+    lần duy nhất (giá mua = 1 - bid, hoặc 1 - ask nếu thiếu bid).
+  - Giá vào lệnh (YES lẫn NO) phải nằm trong [0.02, 0.98] — loại các trường
+    hợp giá cực đoan gần 0 hoặc gần 1 (đòn bẩy vô lý / gần như đã phân giải).
+  - $10/lệnh, ngân sách $1500 dùng chung 2 phía, phí taker 5% x p x (1-p).
+  - Ghi lại "lợi nhuận dự kiến nếu thắng" (potential_profit) ngay lúc vào
+    lệnh, để dễ nhìn không cần đợi chốt mới biết ăn bao nhiêu.
+  - Thắng: YES thắng khi ô phân giải ĐÚNG ô đã mua; NO thắng khi ô phân
+    giải KHÁC ô đã mua.
 Kết quả: data/trades9.csv
 """
-import json
 import os
 from datetime import datetime, timezone
 
@@ -44,14 +52,15 @@ TRADES9_CSV = C.DATA_DIR + "/trades9.csv"
 
 TRADE_FIELDS9 = [
     "entry_utc", "event_slug", "market_slug", "city", "target_date",
-    "side", "bucket", "price", "shares", "stake", "fee",
-    "trigger_ask", "status", "payout", "pnl", "settle_utc",
+    "side", "bucket", "tier", "price", "shares", "stake", "fee",
+    "trigger_ask", "potential_profit", "status", "payout", "pnl", "settle_utc",
 ]
 
 BUDGET = 1500.0
 STAKE = 10.0
-THRESHOLD = 0.70   # nguong dam dong "tin chac" kich hoat fade NO
-MIN_PRICE, MAX_PRICE = 0.02, 0.98  # loai gia NO cuc doan (don bay vo ly)
+YES_TIERS = [0.60, 0.70]      # moi moc mua YES rieng 1 lan/o
+NO_LOW, NO_HIGH = 0.10, 0.20  # dam dong tut xuong khoang nay -> mua NO 1 lan/o
+MIN_PRICE, MAX_PRICE = 0.02, 0.98  # loai gia cuc doan (don bay vo ly)
 FEE_RATE = 0.05
 
 
@@ -100,10 +109,12 @@ def settle(trades):
             continue
         rb = r["resolved_bucket"]
         stake, fee, shares = float(t["stake"]), float(t["fee"]), float(t["shares"])
+        side = (t.get("side") or "NO").upper()
         if rb == "UNRESOLVED":
             t["status"], t["payout"], t["pnl"] = "void", stake, 0.0
         else:
-            win = (rb != t["bucket"])  # NO thang khi o phan giai KHAC o da cuoc
+            hit = (rb == t["bucket"])
+            win = hit if side == "YES" else (not hit)
             if win:
                 payout = shares * 1.0
                 t["status"], t["payout"] = "won", round(payout, 2)
@@ -116,8 +127,18 @@ def settle(trades):
     return n
 
 
+def _mk_candidate(ev_slug, city, target, b, side, tier_label, price, trigger_ask):
+    return {
+        "event_slug": ev_slug, "market_slug": b["slug"], "city": city,
+        "target_date": target, "bucket": b["label"], "side": side,
+        "tier": tier_label, "price": price, "trigger_ask": trigger_ask,
+    }
+
+
 def enter(trades, now, events=None):
-    have_slugs = {t["market_slug"] for t in trades}
+    # khoa theo (slug, side, moc) - YES co 2 moc rieng, NO chi co 1 "moc" 10-20
+    have_keys = {(t["market_slug"], (t.get("side") or "").upper(), str(t.get("tier") or ""))
+                 for t in trades}
     today = now[:10]
     if events is None:
         events = collect.fetch_temperature_events()
@@ -129,42 +150,61 @@ def enter(trades, now, events=None):
         if not target or target <= today:
             continue  # bo qua market cua HOM NAY tro ve truoc (xem docstring)
         for b in parse_buckets(ev):
-            if not b["slug"] or b["slug"] in have_slugs:
+            if not b["slug"] or b["ask"] is None:
                 continue
-            if b["ask"] is None or b["ask"] < THRESHOLD:
-                continue
-            price = round(1 - b["bid"], 3) if b["bid"] is not None else round(1 - b["ask"], 3)
-            if not (MIN_PRICE <= price <= MAX_PRICE):
-                continue
-            candidates.append({
-                "event_slug": slug, "market_slug": b["slug"], "city": city,
-                "target_date": target, "bucket": b["label"],
-                "price": price, "trigger_ask": b["ask"],
-            })
+            ask = b["ask"]
 
-    candidates.sort(key=lambda x: -x["trigger_ask"])  # dam dong tin chac nhat truoc
+            # --- PHIA YES: theo cua nang ky, 2 moc doc lap 60/70 ---
+            for tier in YES_TIERS:
+                if ask < tier:
+                    continue
+                key = (b["slug"], "YES", str(tier))
+                if key in have_keys:
+                    continue
+                price = round(ask, 3)
+                if not (MIN_PRICE <= price <= MAX_PRICE):
+                    continue
+                candidates.append(_mk_candidate(
+                    slug, city, target, b, "YES", tier, price, ask))
+
+            # --- PHIA NO: fade cua da thanh longshot 10-20c ---
+            if NO_LOW <= ask <= NO_HIGH:
+                key = (b["slug"], "NO", "lowconf")
+                if key not in have_keys:
+                    price = round(1 - b["bid"], 3) if b["bid"] is not None else round(1 - ask, 3)
+                    if MIN_PRICE <= price <= MAX_PRICE:
+                        candidates.append(_mk_candidate(
+                            slug, city, target, b, "NO", "lowconf", price, ask))
+
+    # moc/tin hieu manh hon vao truoc khi het tien ao: YES 70 > YES 60 > NO
+    order = {("YES", "0.7"): 0, ("YES", "0.6"): 1, ("NO", "lowconf"): 2}
+    candidates.sort(key=lambda x: order.get((x["side"], str(x["tier"])), 9))
     added = 0
     for c in candidates:
-        if c["market_slug"] in have_slugs:
+        key = (c["market_slug"], c["side"], str(c["tier"]))
+        if key in have_keys:
             continue
         price = c["price"]
         shares = round(STAKE / price, 2)
         fee = round(FEE_RATE * price * (1 - price) * shares, 4)
+        potential_profit = round(shares - STAKE - fee, 2)  # neu thang
         if cash_available(trades) < STAKE + fee:
             print("  [HET TIEN AO] (CD9) cho lenh cu chot da")
             break
+        tier_txt = (f"{c['tier']*100:.0f}c" if c["side"] == "YES" else "10-20c")
         trades.append({
             "entry_utc": now, "event_slug": c["event_slug"],
             "market_slug": c["market_slug"], "city": c["city"],
-            "target_date": c["target_date"], "side": "NO",
-            "bucket": c["bucket"], "price": price, "shares": shares,
+            "target_date": c["target_date"], "side": c["side"],
+            "bucket": c["bucket"], "tier": c["tier"], "price": price, "shares": shares,
             "stake": STAKE, "fee": fee, "trigger_ask": c["trigger_ask"],
+            "potential_profit": potential_profit,
             "status": "open", "payout": "", "pnl": "", "settle_utc": "",
         })
-        have_slugs.add(c["market_slug"])
-        print(f"  VAO LENH AO (CD9): {c['city']} {c['target_date']} NO "
-              f"'{c['bucket']}' @{price} x{shares} co phan "
-              f"(dam dong dang tin {c['trigger_ask']*100:.0f}%)")
+        have_keys.add(key)
+        print(f"  VAO LENH AO (CD9/{c['side']} {tier_txt}): {c['city']} {c['target_date']} "
+              f"{c['side']} '{c['bucket']}' @{price} x{shares} co phan "
+              f"(dam dong dang tin {c['trigger_ask']*100:.0f}% | neu thang +{potential_profit:.2f}$)")
         added += 1
     return added
 
@@ -190,7 +230,7 @@ def main():
                     if t["status"] == "open")
     won = sum(1 for t in trades if t["status"] == "won")
     lost = sum(1 for t in trades if t["status"] == "lost")
-    print(f"\n[CHIEN DICH 9 — NO fade dam dong >=70c, quet moi 30 phut, $1500 ao]")
+    print(f"\n[CHIEN DICH 9 — YES o 60/70c + NO fade longshot 10-20c, quet moi 30 phut, $1500 ao]")
     print(f"Chot {n_settled}, vao moi {n_new} | {won} thang / {lost} thua | "
           f"lai/lo {realized:+.2f} | kha dung {BUDGET + realized - open_cost:.2f}/{BUDGET:.0f}")
 

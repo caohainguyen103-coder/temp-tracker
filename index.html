@@ -237,9 +237,9 @@
 </div>
 
 <div class="panel">
-  <div class="ptitle">🎯 Chiến dịch 9 — Fade đám đông ≥70¢ (quét mỗi 30 phút) <span class="chip risk">MỚI 17/07 · $1500 ảo</span>
+  <div class="ptitle">🎯 Chiến dịch 9 — Theo đám đông 2 đầu (quét mỗi 30 phút) <span class="chip risk">MỚI 17/07 · $1500 ảo</span>
     <span style="margin-left:auto;font-weight:400;font-size:12px;color:var(--mut)">Chọn ngày <select id="p9-day"><option value="all">tất cả</option></select></span></div>
-  <p class="pdesc">Quét trực tiếp giá Polymarket mỗi 30 phút (không đợi snapshot 2 lần/ngày như các chiến dịch khác). Hễ ô nào giá đám đông chạm ≥70¢ (chỉ market của NGÀY MAI trở đi, loại market hôm nay đang gần phân giải) thì cược NO ô đó. Giả thuyết: đám đông có thể quá tự tin ở mức cực đoan. Chưa có backtest lịch sử (mới bật 17/07, đã sửa 1 lỗi thật trong ngày đầu — xem ghi chú code) — đây là kiểm chứng tiến cứu ngay từ đầu.</p>
+  <p class="pdesc">Quét trực tiếp giá Polymarket mỗi 30 phút (không đợi snapshot 2 lần/ngày như các chiến dịch khác), chỉ market từ NGÀY MAI trở đi. <b>Phía YES</b>: ô nào đám đông tin ≥60¢ thì mua YES; nếu sau đó lên tiếp ≥70¢ thì mua thêm 1 lệnh YES nữa (tối đa 2 lệnh/ô). <b>Phía NO</b>: ô bất kỳ rớt xuống còn 10-20¢ (đã thành "kèo dài") thì mua NO 1 lần. Cơ sở: favorite-longshot bias — cửa nặng ký hay bị trả thiếu, cửa nhẹ ký hay bị trả thừa. Mỗi lệnh ghi sẵn "nếu thắng được bao nhiêu". Chưa có backtest lịch sử (mới bật 17/07, đã sửa 1 lỗi thật trong ngày đầu — xem ghi chú code) — đây là kiểm chứng tiến cứu ngay từ đầu.</p>
   <div class="cards" style="margin-bottom:14px">
     <div class="card"><b id="p9-balance">–</b><span>số dư khả dụng (ảo)</span></div>
     <div class="card"><b id="p9-pnl">–</b><span>lãi/lỗ đã chốt</span></div>
@@ -252,7 +252,7 @@
   </tr></thead><tbody></tbody></table>
   <div class="note" style="margin-bottom:14px">Bảng trên: tổng từng ngày. Bảng dưới: lệnh chi tiết (chọn ngày để xem đủ).</div>
   <table id="paper9"><thead><tr>
-    <th>Vào lệnh</th><th>Thành phố</th><th>Ngày mục tiêu</th><th>Ô cược NO</th><th>Giá NO</th><th>Đám đông lúc vào</th><th>Trạng thái</th><th>Lãi/lỗ</th>
+    <th>Vào lệnh</th><th>Thành phố</th><th>Ngày mục tiêu</th><th>Cược</th><th>Ô</th><th>Mốc</th><th>Giá</th><th>Đám đông lúc vào</th><th>Nếu thắng</th><th>Trạng thái</th><th>Lãi/lỗ</th>
   </tr></thead><tbody></tbody></table>
 </div>
 
@@ -946,7 +946,7 @@ function renderPaper9(){
   tb.innerHTML='';td.innerHTML='';
   const rows=PAPER9_ROWS;
   if(!rows.length){
-    tb.innerHTML='<tr><td colspan="8" style="color:var(--mut)">Chưa có lệnh — bot quét mỗi 30 phút, chỉ vào khi có ô chạm ngưỡng 70¢.</td></tr>';
+    tb.innerHTML='<tr><td colspan="11" style="color:var(--mut)">Chưa có lệnh — bot quét mỗi 30 phút, chỉ vào khi có ô chạm ngưỡng YES 60/70¢ hoặc NO 10-20¢.</td></tr>';
     td.innerHTML='<tr><td colspan="8" style="color:var(--mut)">Chưa có dữ liệu ngày nào.</td></tr>';
     document.getElementById('p9-balance').textContent='$'+budget.toFixed(2);
     document.getElementById('p9-pnl').textContent='+0.00 $';
@@ -996,14 +996,20 @@ function renderPaper9(){
     td.appendChild(tr);
   });
   const list=day==='all'?shown.slice(-20):shown;
-  if(!list.length)tb.innerHTML='<tr><td colspan="8" style="color:var(--mut)">Không có lệnh trong ngày này.</td></tr>';
+  if(!list.length)tb.innerHTML='<tr><td colspan="11" style="color:var(--mut)">Không có lệnh trong ngày này.</td></tr>';
   list.slice().reverse().forEach(r=>{
     const cls=r.status==='won'?'hit':(r.status==='lost'?'miss':'');
     const trig=num(r.trigger_ask);
+    const pot=num(r.potential_profit);
+    const tierTxt=r.side==='YES'?((num(r.tier)||0)*100).toFixed(0)+'¢':'10-20¢';
+    const sideCls=r.side==='YES'?'hit':'miss';
     const tr=document.createElement('tr');
     tr.innerHTML=`<td>${(r.entry_utc||'').slice(5,16).replace('T',' ')}</td>
-      <td>${r.city}</td><td>${r.target_date}</td><td>${r.bucket}</td><td>${r.price}</td>
+      <td>${r.city}</td><td>${r.target_date}</td>
+      <td class="${sideCls}"><b>${r.side}</b></td>
+      <td>${r.bucket}</td><td>${tierTxt}</td><td>${r.price}</td>
       <td>${trig!==null?(trig*100).toFixed(0)+'%':'–'}</td>
+      <td class="hit">${pot!==null?'+'+pot.toFixed(2)+' $':'–'}</td>
       <td>${badge(r.status)}</td>
       <td class="${cls}">${r.pnl?((+r.pnl>=0?'+':'')+(+r.pnl).toFixed(2)+' $'):'–'}</td>`;
     tb.appendChild(tr);
