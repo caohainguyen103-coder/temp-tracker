@@ -1,2 +1,1 @@
-entry_utc,event_slug,market_slug,city,target_date,side,bucket,price,shares,stake,fee,trigger_ask,status,payout,pnl,settle_utc
-2026-07-17T15:01:26Z,highest-temperature-in-tel-aviv-on-july-18-2026,highest-temperature-in-tel-aviv-on-july-18-2026-34c,tel-aviv,2026-07-18,NO,34°C,0.31,32.26,10.0,0.345,0.7,open,,,
+entry_utc,event_slug,market_slug,city,target_date,side,bucket,tier,price,shares,stake,fee,trigger_ask,potential_profit,status,payout,pnl,settle_utc
