@@ -16,7 +16,16 @@ vì snapshot chỉ chụp 2 lần/ngày) — theo dõi khách quan, không kết
 Quy tắc (cố định từ ngày dựng — không chỉnh giữa chừng):
   - Mỗi lần chạy (mỗi 30 phút): lấy trực tiếp mọi market "Highest
     temperature in ... on ...?" đang mở (active, chưa closed) trên Polymarket.
+  - CHỈ xét market có ngày mục tiêu (target_date) SAU ngày hôm nay (UTC).
+    Bỏ qua market của NGÀY HÔM NAY — vào cuối ngày, giá đám đông tiến gần
+    100% đơn giản vì nhiệt độ thực tế đã gần như biết rồi (sắp phân giải),
+    không phải "quá tự tin" thật sự -> fade NO lúc đó là rủi ro đuôi (tail
+    risk) chứ không kiểm tra đúng giả thuyết. (Lỗi thực tế bắt được ở lần
+    chạy thử đầu tiên 2026-07-17: 32 lệnh vào giá 0.001-0.01, x10000 đòn
+    bẩy, ăn hết 335$ ngân sách chỉ trong 1 lần quét — đã sửa bằng luật này.)
   - Ô mục tiêu = BẤT KỲ ô nào có giá ask hiện tại (đám đông) >= 0.70.
+  - Giá NO phải nằm trong [0.02, 0.98] — loại các trường hợp giá cực đoan
+    gần 0 hoặc gần 1 (đòn bẩy vô lý / gần như đã phân giải).
   - Cược NO ô đó với giá = 1 - bid (không có bid thì 1 - ask).
   - Mỗi Ô (theo market slug riêng của từng ô, không phải event) chỉ vào
     ĐÚNG 1 lần trong suốt vòng đời — quét lại nhiều lần sau đó sẽ bỏ qua.
@@ -42,6 +51,7 @@ TRADE_FIELDS9 = [
 BUDGET = 1500.0
 STAKE = 10.0
 THRESHOLD = 0.70   # nguong dam dong "tin chac" kich hoat fade NO
+MIN_PRICE, MAX_PRICE = 0.02, 0.98  # loai gia NO cuc doan (don bay vo ly)
 FEE_RATE = 0.05
 
 
@@ -108,6 +118,7 @@ def settle(trades):
 
 def enter(trades, now, events=None):
     have_slugs = {t["market_slug"] for t in trades}
+    today = now[:10]
     if events is None:
         events = collect.fetch_temperature_events()
     candidates = []
@@ -115,15 +126,15 @@ def enter(trades, now, events=None):
         slug = ev.get("slug", "")
         target = C.date_from_event(ev)
         city = C.city_from_ticker(ev.get("ticker") or slug) or ""
-        if not target:
-            continue
+        if not target or target <= today:
+            continue  # bo qua market cua HOM NAY tro ve truoc (xem docstring)
         for b in parse_buckets(ev):
             if not b["slug"] or b["slug"] in have_slugs:
                 continue
             if b["ask"] is None or b["ask"] < THRESHOLD:
                 continue
             price = round(1 - b["bid"], 3) if b["bid"] is not None else round(1 - b["ask"], 3)
-            if not (0 < price < 1):
+            if not (MIN_PRICE <= price <= MAX_PRICE):
                 continue
             candidates.append({
                 "event_slug": slug, "market_slug": b["slug"], "city": city,
