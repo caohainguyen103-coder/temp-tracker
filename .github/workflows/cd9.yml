@@ -1,0 +1,40 @@
+# Chiến dịch 9 chạy RIÊNG, quét mỗi 30 phút — tách khỏi lịch 2 lần/ngày của
+# các chiến dịch thời tiết khác (daily.yml) vì cần bắt kịp lúc giá đám đông
+# vừa chạm ngưỡng 70c, không đợi tới lần chụp snapshot kế tiếp.
+name: Chien dich 9 - Fade dam dong >=70c (quet moi 30 phut)
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cd9-scan
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Lay code
+        uses: actions/checkout@v4
+
+      - name: Cai Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Chien dich 9 - quet + vao lenh ao
+        run: python paper_trade9.py
+
+      - name: Luu du lieu vao repo
+        run: |
+          git config user.name "temp-tracker-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git pull --rebase || true
+          git add data/trades9.csv
+          git diff --cached --quiet || git commit -m "CD9 quet $(date -u +%Y-%m-%dT%H:%M)"
+          git push
