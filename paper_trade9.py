@@ -49,11 +49,20 @@ v7 (17/07) — PHÍA NO thêm 1 điều kiện: phải tuột cách đỉnh từ
   chạm 40% rồi tuột còn 39% đã kích hoạt mua NO — tuột 1 điểm % gần như
   không có ý nghĩa gì (nhiễu bình thường), không phải tín hiệu "đám đông
   đổi ý" thật sự. Giờ ví dụ đỉnh 40% phải tuột về 35% trở xuống mới mua.
-v8 (18/07, ĐANG DÙNG) — PHÍA NO thêm 1 sàn: giá sau khi tuột phải CÒN TRÊN
+v8 (18/07) — PHÍA NO thêm 1 sàn: giá sau khi tuột phải CÒN TRÊN
   10% (chỉ nhận khoảng 10%<giá<40%). Dưới 10% coi như đã gần chắc chắn bị
   loại, mua NO lúc đó gần như không còn lời (giá NO đã quá cao, gần $1),
   không đáng bù rủi ro/phí — bỏ qua để tiết kiệm ngân sách cho tín hiệu
   còn giá trị hơn.
+v9 (18/07, ĐANG DÙNG) — PHÍA NO đổi từ "1 lần duy nhất khi tuột <40c" sang
+  KHOẢNG GIÁ giống hệt PHÍA YES: sau khi từng đạt đỉnh 40-70c, giá tuột qua
+  khoảng [20,30) mua NO 1 lần, tuột tiếp qua khoảng [10,20) mua thêm NO
+  1 lần nữa (tối đa 2 lệnh/ô cho phía NO). Lý do: "chỉ cần tuột" quá dễ xảy
+  ra, không phân biệt được mức độ — chia khoảng giúp bot mua thêm khi tín
+  hiệu càng lúc càng mạnh (giá càng rớt sâu), giống cách phía YES mua thêm
+  khi giá càng lúc càng cao. Đã bỏ NO_MIN_DROP_GAP/NO_DROP_FLOOR (2 khoảng
+  20-29c/10-19c đã tự nhiên đảm bảo cách đỉnh 40-70 ít nhất 10 điểm % và có
+  sàn 10% sẵn trong định nghĩa khoảng).
 Đây là chiến dịch THỬ NGHIỆM, CHƯA có backtest lịch sử — theo dõi khách
 quan, không kết luận sớm, không chỉnh luật giữa chừng nếu không có lý do.
 Kết quả: data/trades9.csv | Lịch sử giá: data/cd9_price_hist.csv
@@ -85,25 +94,32 @@ STAKE = 10.0
 YES_RANGES = [(0.60, 0.70, "60-69c"), (0.70, 0.80, "70-79c"),
               (0.80, 0.90, "80-89c"), (0.90, 0.97, "90-97c")]
 NO_PEAK_LOW, NO_PEAK_HIGH = 0.40, 0.70  # dinh gia tung dat de duoc tinh la "ung vien that su"
-NO_DROP_BELOW = 0.40            # sau do phai tuot xuong duoi muc nay moi mua NO
-NO_MIN_DROP_GAP = 0.05           # va phai each dinh it nhat tung nay (tranh tuot 1-2 diem % vo nghia)
-NO_DROP_FLOOR = 0.10             # va gia sau khi tuot phai CON TREN muc nay (duoi 10% thi bo qua,
-                                 # coi nhu da gan chac chan / het gia tri thong tin them)
+# PHIA NO: sau khi dat dinh 40-70c, gia phai TUOT QUA cac khoang duoi day.
+# Giong YES: moi khoang mua DUNG 1 LAN/o. [lo, hi) tru khoang cuoi la [lo, hi].
+NO_DROP_RANGES = [(0.20, 0.30, "20-29c"), (0.10, 0.20, "10-19c")]
 MIN_PRICE, MAX_PRICE = 0.02, 0.98  # loai gia cuc doan (don bay vo ly)
 FEE_RATE = 0.05
 HIST_KEEP_DAYS = 3  # don rac: bo entry lich su cu hon x ngay so voi target_date
 
 
-def yes_range_label(ask):
-    """Tra ve nhan khoang gia YES ma ask dang roi vao, hoac None neu <60c."""
-    for i, (lo, hi, label) in enumerate(YES_RANGES):
-        if i == len(YES_RANGES) - 1:
+def _range_label(ask, ranges):
+    """Tra ve nhan khoang gia ma ask dang roi vao trong danh sach ranges, hoac None."""
+    for i, (lo, hi, label) in enumerate(ranges):
+        if i == len(ranges) - 1:
             if lo <= ask <= hi:
                 return label
         else:
             if lo <= ask < hi:
                 return label
     return None
+
+
+def yes_range_label(ask):
+    return _range_label(ask, YES_RANGES)
+
+
+def no_drop_range_label(ask):
+    return _range_label(ask, NO_DROP_RANGES)
 
 
 def parse_buckets(event):
@@ -248,24 +264,23 @@ def enter(trades, now, events=None, price_hist=None):
                         candidates.append(_mk_candidate(
                             slug, city, target, b, "YES", rlabel, price, ask, ask))
 
-            # --- PHIA NO: tung la ung vien that su (dinh 40-70c) roi tuot xuong duoi 40c,
-            # phai tuot each dinh it nhat NO_MIN_DROP_GAP (tranh tuot 1-2 diem % vo nghia),
-            # va gia sau khi tuot phai CON TREN NO_DROP_FLOOR (duoi 10% thi bo qua) ---
-            if (prev_max is not None and NO_PEAK_LOW <= prev_max <= NO_PEAK_HIGH
-                    and NO_DROP_FLOOR < ask < NO_DROP_BELOW
-                    and ask <= prev_max - NO_MIN_DROP_GAP):
-                key = (b["slug"], "NO", "dropped")
-                if key not in have_keys:
-                    price = round(1 - b["bid"], 3) if b["bid"] is not None else round(1 - ask, 3)
-                    if MIN_PRICE <= price <= MAX_PRICE:
-                        candidates.append(_mk_candidate(
-                            slug, city, target, b, "NO", "dropped", price, ask, prev_max))
+            # --- PHIA NO: tung la ung vien that su (dinh 40-70c), roi TUOT QUA tung
+            # khoang gia [20,30) va [10,20), moi khoang mua DUNG 1 LAN/o (giong YES) ---
+            if prev_max is not None and NO_PEAK_LOW <= prev_max <= NO_PEAK_HIGH:
+                dlabel = no_drop_range_label(ask)
+                if dlabel is not None:
+                    key = (b["slug"], "NO", dlabel)
+                    if key not in have_keys:
+                        price = round(1 - b["bid"], 3) if b["bid"] is not None else round(1 - ask, 3)
+                        if MIN_PRICE <= price <= MAX_PRICE:
+                            candidates.append(_mk_candidate(
+                                slug, city, target, b, "NO", dlabel, price, ask, prev_max))
 
     save_price_hist(price_hist, today)
 
-    # tin hieu manh hon vao truoc khi het tien ao: YES 90-97 > 80-89 > 70-79 > 60-69 > NO
+    # tin hieu manh hon vao truoc khi het tien ao: YES 90-97>80-89>70-79>60-69, roi NO 10-19>20-29
     order = {("YES", "90-97c"): 0, ("YES", "80-89c"): 1, ("YES", "70-79c"): 2,
-             ("YES", "60-69c"): 3, ("NO", "dropped"): 4}
+             ("YES", "60-69c"): 3, ("NO", "10-19c"): 4, ("NO", "20-29c"): 5}
     candidates.sort(key=lambda x: order.get((x["side"], str(x["tier"])), 9))
     added = 0
     for c in candidates:
@@ -283,7 +298,7 @@ def enter(trades, now, events=None, price_hist=None):
             tier_txt = c["tier"]  # da la nhan khoang gia san, vd "60-79c"
             info = f"dam dong dang tin {c['trigger_ask']*100:.0f}%"
         else:
-            tier_txt = "tuot < 40c"
+            tier_txt = c["tier"]  # da la nhan khoang gia san, vd "20-29c"
             info = f"tung dat dinh {c['peak_ask']*100:.0f}%, gio con {c['trigger_ask']*100:.0f}%"
         trades.append({
             "entry_utc": now, "event_slug": c["event_slug"],
@@ -323,7 +338,7 @@ def main():
                     if t["status"] == "open")
     won = sum(1 for t in trades if t["status"] == "won")
     lost = sum(1 for t in trades if t["status"] == "lost")
-    print(f"\n[CHIEN DICH 9 v8 — chi ngay T: YES 4 khoang 60-69/70-79/80-89/90-97c + NO tuot tu dinh 40-70c, each dinh >=5 diem %, con trong khoang 10-40c]")
+    print(f"\n[CHIEN DICH 9 v9 — chi ngay T: YES 4 khoang 60-69/70-79/80-89/90-97c + NO (sau dinh 40-70c) 2 khoang 20-29/10-19c]")
     print(f"Chot {n_settled}, vao moi {n_new} | {won} thang / {lost} thua | "
           f"lai/lo {realized:+.2f} | kha dung {BUDGET + realized - open_cost:.2f}/{BUDGET:.0f}")
 
