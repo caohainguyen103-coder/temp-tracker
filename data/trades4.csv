@@ -33,3 +33,7 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-07-18T07:11:09Z,highest-temperature-in-karachi-on-july-20-2026,karachi,2026-07-20,2,NO,32°C,0.67,14.93,10.0,0.1651,31.7,33°C,open,,,,mo_rong
 2026-07-18T07:11:09Z,highest-temperature-in-miami-on-july-19-2026,miami,2026-07-19,1,NO,90-91°F,0.66,15.15,10.0,0.17,32.4,92-93°F,open,,,,mo_rong
 2026-07-18T07:11:09Z,highest-temperature-in-madrid-on-july-20-2026,madrid,2026-07-20,2,NO,36°C,0.65,15.38,10.0,0.1749,36.3,37°C,open,,,,mo_rong
+2026-07-18T07:12:27Z,highest-temperature-in-warsaw-on-july-20-2026,warsaw,2026-07-20,2,NO,22°C,0.67,14.93,10.0,0.1651,21.6,21°C,open,,,,mo_rong
+2026-07-18T07:12:27Z,highest-temperature-in-manila-on-july-20-2026,manila,2026-07-20,2,NO,32°C,0.64,15.62,10.0,0.1799,32.2,33°C,open,,,,mo_rong
+2026-07-18T07:12:27Z,highest-temperature-in-los-angeles-on-july-19-2026,los-angeles,2026-07-19,1,NO,76-77°F,0.64,15.62,10.0,0.1799,25.2,78-79°F,open,,,,mo_rong
+2026-07-18T07:12:27Z,highest-temperature-in-ankara-on-july-20-2026,ankara,2026-07-20,2,NO,34°C,0.57,17.54,10.0,0.215,33.5,35°C,open,,,,mo_rong
