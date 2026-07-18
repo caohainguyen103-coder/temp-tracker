@@ -17,8 +17,8 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-07-16T10:53:03Z,highest-temperature-in-dallas-on-july-17-2026,dallas,2026-07-17,1,NO,94-95°F,0.73,13.7,10.0,0.135,34.2,92-93°F,lost,0.0,-10.13,2026-07-18T07:11:09Z
 2026-07-16T10:53:03Z,highest-temperature-in-atlanta-on-july-17-2026,atlanta,2026-07-17,1,NO,92-93°F,0.73,13.7,10.0,0.135,33.6,90-91°F,won,13.7,3.56,2026-07-18T07:11:09Z
 2026-07-16T10:53:03Z,highest-temperature-in-miami-on-july-17-2026,miami,2026-07-17,1,NO,92-93°F,0.67,14.93,10.0,0.1651,33.4,94-95°F,lost,0.0,-10.17,2026-07-18T07:11:09Z
-2026-07-16T10:53:03Z,highest-temperature-in-denver-on-july-17-2026,denver,2026-07-17,1,NO,94-95°F,0.65,15.38,10.0,0.1749,34.8,92-93°F,open,,,
-2026-07-16T10:53:03Z,highest-temperature-in-mexico-city-on-july-17-2026,mexico-city,2026-07-17,1,NO,24°C,0.56,17.86,10.0,0.22,24.3,24°C,open,,,
+2026-07-16T10:53:03Z,highest-temperature-in-denver-on-july-17-2026,denver,2026-07-17,1,NO,94-95°F,0.65,15.38,10.0,0.1749,34.8,92-93°F,won,15.38,5.21,2026-07-18T15:33:39Z
+2026-07-16T10:53:03Z,highest-temperature-in-mexico-city-on-july-17-2026,mexico-city,2026-07-17,1,NO,24°C,0.56,17.86,10.0,0.22,24.3,24°C,lost,0.0,-10.22,2026-07-18T15:33:39Z
 2026-07-16T10:53:03Z,highest-temperature-in-tokyo-on-july-18-2026,tokyo,2026-07-18,2,NO,30°C,0.66,15.15,10.0,0.17,30.2,30°C,open,,,
 2026-07-16T10:53:03Z,highest-temperature-in-taipei-on-july-18-2026,taipei,2026-07-18,2,NO,37°C,0.66,15.15,10.0,0.17,36.6,37°C,open,,,
 2026-07-16T10:53:03Z,highest-temperature-in-busan-on-july-18-2026,busan,2026-07-18,2,NO,29°C,0.72,13.89,10.0,0.14,28.9,29°C,open,,,

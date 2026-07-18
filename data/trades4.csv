@@ -10,7 +10,7 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-07-16T09:44:29Z,highest-temperature-in-karachi-on-july-18-2026,karachi,2026-07-18,2,NO,32°C,0.69,14.49,10.0,0.155,31.8,33°C,open,,,,mo_rong
 2026-07-16T09:44:29Z,highest-temperature-in-wuhan-on-july-17-2026,wuhan,2026-07-17,1,NO,36°C,0.66,15.15,10.0,0.17,35.8,37°C,won,15.15,4.98,2026-07-18T07:11:09Z,mo_rong
 2026-07-16T09:44:29Z,highest-temperature-in-jeddah-on-july-17-2026,jeddah,2026-07-17,1,NO,37°C,0.66,15.15,10.0,0.17,37.4,38°C,won,15.15,4.98,2026-07-18T07:11:09Z,mo_rong
-2026-07-16T09:44:29Z,highest-temperature-in-denver-on-july-17-2026,denver,2026-07-17,1,NO,94-95°F,0.65,15.38,10.0,0.1749,34.7,92-93°F,open,,,,mo_rong
+2026-07-16T09:44:29Z,highest-temperature-in-denver-on-july-17-2026,denver,2026-07-17,1,NO,94-95°F,0.65,15.38,10.0,0.1749,34.7,92-93°F,won,15.38,5.21,2026-07-18T15:33:39Z,mo_rong
 2026-07-16T09:44:29Z,highest-temperature-in-miami-on-july-17-2026,miami,2026-07-17,1,NO,92-93°F,0.67,14.93,10.0,0.1651,33.4,94-95°F,lost,0.0,-10.17,2026-07-18T07:11:09Z,mo_rong
 2026-07-17T07:42:56Z,highest-temperature-in-shenzhen-on-july-18-2026,shenzhen,2026-07-18,1,NO,32°C,0.74,13.51,10.0,0.13,31.8,31°C,open,,,,goc
 2026-07-17T07:42:56Z,highest-temperature-in-chicago-on-july-18-2026,chicago,2026-07-18,1,NO,90-91°F,0.72,13.89,10.0,0.14,32.6,88-89°F,open,,,,goc
