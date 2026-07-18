@@ -1,5 +1,1 @@
-<<<<<<< HEAD
 entry_utc,event_slug,market_slug,city,target_date,side,bucket,tier,price,shares,stake,fee,trigger_ask,peak_ask,potential_profit,status,payout,pnl,settle_utc
-=======
-entry_utc,event_slug,market_slug,city,target_date,side,bucket,tier,price,shares,stake,fee,trigger_ask,peak_ask,potential_profit,status,payout,pnl,settle_utc
->>>>>>> bfe97ab (VPS quet 2026-07-18T15:40)
