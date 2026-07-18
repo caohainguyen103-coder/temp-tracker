@@ -9,6 +9,17 @@
 cd /root/temp-tracker
 i=0
 while true; do
+  # Tu phuc hoi neu git dang ket giua chung 1 lan rebase/merge do (vd: web
+  # upload code dung luc VPS dang push) - tranh phai SSH vao go tay sua.
+  if [ -d .git/rebase-merge ] || [ -d .git/rebase-apply ]; then
+    echo "[GIT] Dang ket giua rebase do - tu huy va thu lai vong sau"
+    git rebase --abort 2>/dev/null || true
+  fi
+  if [ -f .git/MERGE_HEAD ]; then
+    echo "[GIT] Dang ket giua merge do - tu huy va thu lai vong sau"
+    git merge --abort 2>/dev/null || true
+  fi
+
   # Keo thay doi moi nhat (vd: ket qua chot lenh tu daily.yml, code moi)
   git pull --rebase -q || true
 
