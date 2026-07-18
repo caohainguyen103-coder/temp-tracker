@@ -1,0 +1,15 @@
+# Dich vu systemd chay bot temp-tracker lien tuc, tu khoi dong lai khi loi
+# hoac khi VPS reboot. Cai boi vps_setup.sh.
+[Unit]
+Description=Temp-tracker bot (CD9 moi 2 phut, CD10 moi gio)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+WorkingDirectory=/root/temp-tracker
+ExecStart=/bin/bash /root/vps_loop.sh
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
