@@ -1,0 +1,40 @@
+# Chiến dịch 10: ensemble GFS ~31 thành viên vs giá thị trường.
+# Chạy mỗi giờ — GFS ensemble cập nhật 4 lần/ngày nên quét dày hơn không có
+# thông tin mới; mỗi giờ là đủ để bắt giá thị trường dịch chuyển.
+name: Chien dich 10 - Ensemble GFS vs gia (quet moi gio)
+
+on:
+  schedule:
+    - cron: "12 * * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cd10-scan
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Lay code
+        uses: actions/checkout@v4
+
+      - name: Cai Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Chien dich 10 - quet + vao lenh ao
+        run: python paper_trade10.py
+
+      - name: Luu du lieu vao repo
+        run: |
+          git config user.name "temp-tracker-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git pull --rebase || true
+          git add data/trades10.csv data/stations.json
+          git diff --cached --quiet || git commit -m "CD10 quet $(date -u +%Y-%m-%dT%H:%M)"
+          git push
