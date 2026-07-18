@@ -297,6 +297,26 @@
 </div>
 
 <div class="panel">
+  <div class="ptitle">🔒 Chiến dịch 12 — Arbitrage mua trọn bộ ô, không thể thua <span class="chip">MỚI 18/07 · $1500 ảo</span>
+    <span style="margin-left:auto;font-weight:400;font-size:12px;color:var(--mut)">Chọn ngày <select id="p12-day"><option value="all">tất cả</option></select></span></div>
+  <p class="pdesc">Ngách duy nhất <b>không có kịch bản thua</b>: mỗi thị trường nhiệt độ chắc chắn có đúng 1 ô thắng trả $1/cổ phần. Khi <b>tổng giá mua của TẤT CẢ các ô &lt; $1</b>, bot mua đều mỗi ô cùng số cổ phần (~$100/bộ) — dù kết quả ra ô nào cũng nhận về đúng $1/cổ phần, lời phần chênh lệch được <b>khóa chắc ngay lúc mua</b>. Chỉ vào khi lời ròng sau phí ≥ $0.30/bộ, đủ giá cho mọi ô (thiếu 1 ô là bỏ), ≥3 ô, còn 0-2 ngày tới ngày mục tiêu, mỗi event mua 1 bộ. Backtest 8 ngày thấy 14 lần với ảnh chụp 2 lần/ngày — quét 2 phút trên VPS kỳ vọng bắt nhiều hơn vì cơ hội kiểu này thường chỉ tồn tại vài phút rồi bị hớt. Lãi nhỏ nhưng là lãi <i>chắc chắn 100%</i>.</p>
+  <div class="cards" style="margin-bottom:14px">
+    <div class="card"><b id="p12-balance">–</b><span>số dư khả dụng (ảo)</span></div>
+    <div class="card"><b id="p12-pnl">–</b><span>lãi đã chốt</span></div>
+    <div class="card"><b id="p12-locked">–</b><span>lời khóa chắc đang chờ chốt</span></div>
+    <div class="card"><b id="p12-open">–</b><span>bộ đang mở</span></div>
+  </div>
+  <div class="pdesc" id="p12-sum" style="color:var(--txt);font-weight:600"></div>
+  <table id="paper12daily"><thead><tr>
+    <th>Ngày mua</th><th>Số bộ</th><th>Tổng vốn bỏ</th><th>Đã chốt</th><th>Đang mở</th><th>Lãi đã chốt</th><th>Lũy kế</th>
+  </tr></thead><tbody></tbody></table>
+  <div class="note" style="margin-bottom:14px">Bảng trên: tổng từng ngày. Bảng dưới: từng bộ chi tiết (chọn ngày để xem đủ).</div>
+  <table id="paper12"><thead><tr>
+    <th>Mua lúc</th><th>Thành phố</th><th>Ngày mục tiêu</th><th>Số ô</th><th>Tổng giá bộ</th><th>Cổ phần/ô</th><th>Vốn bỏ</th><th>Lời khóa chắc</th><th>Trạng thái</th><th>Lãi/lỗ</th>
+  </tr></thead><tbody></tbody></table>
+</div>
+
+<div class="panel">
   <div class="ptitle">📈 Vốn ảo theo ngày — chiến lược nào sống, chiến lược nào chết</div>
   <div style="position:relative;width:100%;height:260px"><canvas id="equityChart"></canvas></div>
   <div class="note">Mỗi đường = một túi tiền ảo riêng: chiến dịch 1–3 bắt đầu $200, chiến dịch 4 bắt đầu $1000 (chỉ tính lãi/lỗ ĐÃ CHỐT). Đường đi lên đều = chiến lược đáng tin · đường lao dốc = chiến lược vừa cứu bạn khỏi mất tiền thật.</div>
@@ -408,10 +428,10 @@ const badge=s=>{const m={open:['b-open','đang mở'],won:['b-won','THẮNG'],lo
   const x=m[s]||['b-void',s];return `<span class="badge ${x[0]}">${x[1]}</span>`;};
 
 let SNAPS=[],RES={},chart=null,chartEq=null;
-let PAPER_ROWS=[],ARB_ROWS=[],CRYPTO_ROWS=[],PAPER4_ROWS=[],PAPER5_ROWS=[],PAPER6_ROWS=[],PAPER7_ROWS=[],PAPER8_ROWS=[],PAPER9_ROWS=[],PAPER10_ROWS=[],PAPER11_ROWS=[];
+let PAPER_ROWS=[],ARB_ROWS=[],CRYPTO_ROWS=[],PAPER4_ROWS=[],PAPER5_ROWS=[],PAPER6_ROWS=[],PAPER7_ROWS=[],PAPER8_ROWS=[],PAPER9_ROWS=[],PAPER10_ROWS=[],PAPER11_ROWS=[],PAPER12_ROWS=[];
 function renderEquity(){
   const days=new Set();
-  const day1={A:{},C:{},W:{},W4:{},W5:{},W6:{},W7:{},W8:{},W9:{},W11:{}};
+  const day1={A:{},C:{},W:{},W4:{},W5:{},W6:{},W7:{},W8:{},W9:{},W11:{},W12:{}};
   ARB_ROWS.forEach(t=>{if(t.status==='open')return;
     const d=(t.settle_utc||t.entry_utc||'').slice(0,10);if(!d)return;
     days.add(d);day1.A[d]=(day1.A[d]||0)+(num(t.locked_profit)||0);});
@@ -433,6 +453,8 @@ function renderEquity(){
     days.add(d);day1.W9[d]=(day1.W9[d]||0)+(num(t.pnl)||0);});
   PAPER11_ROWS.forEach(t=>{if(t.status==='open'||!t.settle_utc)return;const d=t.settle_utc.slice(0,10);
     days.add(d);day1.W11[d]=(day1.W11[d]||0)+(num(t.pnl)||0);});
+  PAPER12_ROWS.forEach(t=>{if(t.status==='open'||!t.settle_utc)return;const d=t.settle_utc.slice(0,10);
+    days.add(d);day1.W12[d]=(day1.W12[d]||0)+(num(t.pnl)||0);});
   const axis=[...days].sort();
   if(!axis.length)return;
   const line=(k,start)=>{let run=start??200;return axis.map(d=>{run+=(day1[k][d]||0);return +run.toFixed(2);});};
@@ -449,16 +471,17 @@ function renderEquity(){
       {label:'🛡 CD7 — NO GFS 70-100c ($1500)',data:line('W7',1500),borderColor:'#2dd4bf',backgroundColor:'#2dd4bf',tension:.25,pointRadius:3},
       {label:'⚽ CD8 — The thao vs Pinnacle ($500)',data:line('W8',500),borderColor:'#60a5fa',backgroundColor:'#60a5fa',tension:.25,pointRadius:3},
       {label:'🎯 CD9 — YES 60/70c + NO tuot dinh 40-70c, chi ngay T ($1500)',data:line('W9',1500),borderColor:'#f97316',backgroundColor:'#f97316',tension:.25,pointRadius:3},
-      {label:'✂️ CD11 — YES 65-74/85-97c + NO nhu CD9 ($1500)',data:line('W11',1500),borderColor:'#e879f9',backgroundColor:'#e879f9',tension:.25,pointRadius:3}]},
+      {label:'✂️ CD11 — YES 65-74/85-97c + NO nhu CD9 ($1500)',data:line('W11',1500),borderColor:'#e879f9',backgroundColor:'#e879f9',tension:.25,pointRadius:3},
+      {label:'🔒 CD12 — Arbitrage tron bo ($1500)',data:line('W12',1500),borderColor:'#4ade80',backgroundColor:'#4ade80',tension:.25,pointRadius:3}]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{labels:{color:'#eef2fb',boxWidth:14}}},
       scales:{y:{grid:{color:'#232d4d'},ticks:{color:'#8a94b0',callback:v=>'$'+v}},
         x:{grid:{display:false},ticks:{color:'#8a94b0'}}}}
   });
 }
-const TOTALS={arb:0,crypto:0,weather:0,weather4:0,weather5:0,weather6:0,weather7:0,weather8:0,weather9:0,weather10:0,weather11:0};
+const TOTALS={arb:0,crypto:0,weather:0,weather4:0,weather5:0,weather6:0,weather7:0,weather8:0,weather9:0,weather10:0,weather11:0,weather12:0};
 function updateTotal(){
-  const t=TOTALS.arb+TOTALS.crypto+TOTALS.weather+TOTALS.weather4+TOTALS.weather5+TOTALS.weather6+TOTALS.weather7+TOTALS.weather8+TOTALS.weather9+TOTALS.weather10+TOTALS.weather11;
+  const t=TOTALS.arb+TOTALS.crypto+TOTALS.weather+TOTALS.weather4+TOTALS.weather5+TOTALS.weather6+TOTALS.weather7+TOTALS.weather8+TOTALS.weather9+TOTALS.weather10+TOTALS.weather11+TOTALS.weather12;
   const el=document.getElementById('c-total');
   el.textContent=(t>=0?'+$':'-$')+Math.abs(t).toFixed(2);
   el.style.color=t>=0?'var(--good)':'var(--bad)';
@@ -487,7 +510,7 @@ async function load(){
     const o=document.createElement('option');o.value=d;o.textContent=d;sel.appendChild(o);
     const o2=document.createElement('option');o2.value=d;o2.textContent=d;ld.appendChild(o2);
   });
-  loadOpps(); loadPaper(); loadPaper4(); loadPaper5(); loadPaper6(); loadPaper7(); loadPaper8(); loadPaper9(); loadPaper10(); loadPaper11(); loadArb(); loadCrypto(); render();
+  loadOpps(); loadPaper(); loadPaper4(); loadPaper5(); loadPaper6(); loadPaper7(); loadPaper8(); loadPaper9(); loadPaper10(); loadPaper11(); loadPaper12(); loadArb(); loadCrypto(); render();
 }
 
 async function loadOpps(){
@@ -1152,6 +1175,93 @@ function renderPaper11(){
   });
 }
 
+function loadPaper12(){
+  return fetch('data/trades12.csv',{cache:'no-store'}).then(r=>r.text()).catch(()=>'').then(txt=>{
+    const sel=document.getElementById('p12-day');
+    if(txt.includes('event_slug')){
+      const rows=parseCSV(txt);PAPER12_ROWS=rows;
+      if(sel){
+        const days=[...new Set(rows.map(r=>(r.entry_utc||'').slice(0,10)).filter(Boolean))].sort().reverse();
+        days.forEach(d=>{const o=document.createElement('option');o.value=d;o.textContent=d;sel.appendChild(o);});
+      }
+    }
+    renderPaper12();
+  });
+}
+function renderPaper12(){
+  const budget=1500;
+  const tb=document.querySelector('#paper12 tbody'),td=document.querySelector('#paper12daily tbody');
+  tb.innerHTML='';td.innerHTML='';
+  const rows=PAPER12_ROWS;
+  if(!rows.length){
+    tb.innerHTML='<tr><td colspan="10" style="color:var(--mut)">Chưa bắt được bộ nào — cơ hội arbitrage hiếm và chỉ tồn tại vài phút, bot quét mỗi 2 phút trên VPS chờ tổng giá bộ < $1.</td></tr>';
+    td.innerHTML='<tr><td colspan="7" style="color:var(--mut)">Chưa có dữ liệu ngày nào.</td></tr>';
+    document.getElementById('p12-balance').textContent='$'+budget.toFixed(2);
+    document.getElementById('p12-pnl').textContent='+0.00 $';
+    document.getElementById('p12-locked').textContent='+0.00 $';
+    document.getElementById('p12-open').textContent='0';
+    return;
+  }
+  let realized=0,openCost=0,lockedWait=0,open=0,won=0;
+  rows.forEach(r=>{
+    if(r.status==='open'){open++;openCost+=(num(r.cost)||0)+(num(r.fee)||0);lockedWait+=num(r.locked_profit)||0;}
+    else{realized+=num(r.pnl)||0;if(r.status==='won')won++;}
+  });
+  TOTALS.weather12=realized;updateTotal();renderEquity();
+  document.getElementById('p12-balance').textContent='$'+(budget+realized-openCost).toFixed(2);
+  const pp=document.getElementById('p12-pnl');
+  pp.textContent=(realized>=0?'+':'')+realized.toFixed(2)+' $';
+  pp.style.color=realized>=0?'var(--good)':'var(--bad)';
+  const pl=document.getElementById('p12-locked');
+  pl.textContent='+'+lockedWait.toFixed(2)+' $';
+  pl.style.color='var(--good)';
+  document.getElementById('p12-open').textContent=open;
+  const pSum=document.getElementById('p12-sum');
+  if(pSum)pSum.innerHTML=`🔒 ${rows.length} bộ đã mua · ✅ ${won} đã chốt · ⏳ ${open} đang chờ kết quả — lãi đã chốt <b style="color:var(--good)">+${realized.toFixed(2)} $</b> · lời khóa chắc đang chờ <b style="color:var(--good)">+${lockedWait.toFixed(2)} $</b>`;
+  const selEl=document.getElementById('p12-day');
+  const day=selEl?selEl.value:'all';
+  const shown=day==='all'?rows:rows.filter(r=>(r.entry_utc||'').slice(0,10)===day);
+  const byDay={};
+  shown.forEach(r=>{
+    const d=(r.entry_utc||'').slice(0,10);if(!d)return;
+    const x=byDay[d]||(byDay[d]={n:0,cost:0,done:0,open:0,pnl:0});
+    x.n++;x.cost+=num(r.cost)||0;
+    if(r.status==='open')x.open++;
+    else{x.pnl+=num(r.pnl)||0;x.done++;}
+  });
+  const cumAll={};let cum=0;
+  [...new Set(rows.map(r=>(r.entry_utc||'').slice(0,10)).filter(Boolean))].sort().forEach(d=>{
+    rows.forEach(r=>{if((r.entry_utc||'').slice(0,10)===d&&r.status!=='open')cum+=num(r.pnl)||0;});
+    cumAll[d]=cum;
+  });
+  const dayKeys=Object.keys(byDay).sort().reverse();
+  if(!dayKeys.length)td.innerHTML='<tr><td colspan="7" style="color:var(--mut)">Không có bộ trong ngày này.</td></tr>';
+  dayKeys.forEach(d=>{
+    const x=byDay[d];
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><b>${d}</b></td><td>${x.n}</td><td>$${x.cost.toFixed(0)}</td>
+      <td class="hit">${x.done}</td><td>${x.open}</td>
+      <td class="${x.pnl>=0?'hit':'miss'}">${(x.pnl>=0?'+':'')+x.pnl.toFixed(2)} $</td>
+      <td class="${(cumAll[d]||0)>=0?'hit':'miss'}">${((cumAll[d]||0)>=0?'+':'')+(cumAll[d]||0).toFixed(2)} $</td>`;
+    td.appendChild(tr);
+  });
+  const list=day==='all'?shown.slice(-20):shown;
+  if(!list.length)tb.innerHTML='<tr><td colspan="10" style="color:var(--mut)">Không có bộ trong ngày này.</td></tr>';
+  list.slice().reverse().forEach(r=>{
+    const cls=r.status==='won'?'hit':(r.status==='lost'?'miss':'');
+    const lp=num(r.locked_profit);
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${(r.entry_utc||'').slice(5,16).replace('T',' ')}</td>
+      <td>${r.city}</td><td>${r.target_date}</td>
+      <td>${r.n_buckets}</td><td>${r.sum_ask}</td><td>${r.shares}</td>
+      <td>$${(num(r.cost)||0).toFixed(2)}</td>
+      <td class="hit">${lp!==null?'+'+lp.toFixed(2)+' $':'–'}</td>
+      <td>${badge(r.status)}</td>
+      <td class="${cls}">${r.pnl?((+r.pnl>=0?'+':'')+(+r.pnl).toFixed(2)+' $'):'–'}</td>`;
+    tb.appendChild(tr);
+  });
+}
+
 function loadPaper10(){
   return fetch('data/trades10.csv',{cache:'no-store'}).then(r=>r.text()).catch(()=>'').then(txt=>{
     const sel=document.getElementById('p10-day');
@@ -1380,6 +1490,7 @@ document.getElementById('p8-day').addEventListener('change',renderPaper8);
 document.getElementById('p9-day').addEventListener('change',renderPaper9);
 document.getElementById('p10-day').addEventListener('change',renderPaper10);
 document.getElementById('p11-day').addEventListener('change',renderPaper11);
+document.getElementById('p12-day').addEventListener('change',renderPaper12);
 load();
 </script>
 </body>
