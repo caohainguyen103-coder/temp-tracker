@@ -1,1 +1,6 @@
 entry_utc,event_slug,market_slug,city,target_date,side,bucket,tier,price,shares,stake,fee,trigger_ask,peak_ask,potential_profit,status,payout,pnl,settle_utc
+2026-07-18T11:25:39Z,highest-temperature-in-lucknow-on-july-18-2026,highest-temperature-in-lucknow-on-july-18-2026-31c,lucknow,2026-07-18,YES,31°C,85-97c,0.935,10.7,10.0,0.0325,0.935,0.935,0.67,open,,,
+2026-07-18T11:25:39Z,highest-temperature-in-tel-aviv-on-july-18-2026,highest-temperature-in-tel-aviv-on-july-18-2026-35c,tel-aviv,2026-07-18,YES,35°C,85-97c,0.93,10.75,10.0,0.035,0.93,0.93,0.71,open,,,
+2026-07-18T11:25:39Z,highest-temperature-in-warsaw-on-july-18-2026,highest-temperature-in-warsaw-on-july-18-2026-26c,warsaw,2026-07-18,YES,26°C,85-97c,0.92,10.87,10.0,0.04,0.92,0.92,0.83,open,,,
+2026-07-18T11:25:39Z,highest-temperature-in-helsinki-on-july-18-2026,highest-temperature-in-helsinki-on-july-18-2026-25c,helsinki,2026-07-18,YES,25°C,65-74c,0.69,14.49,10.0,0.155,0.69,0.69,4.33,open,,,
+2026-07-18T11:25:39Z,highest-temperature-in-jeddah-on-july-18-2026,highest-temperature-in-jeddah-on-july-18-2026-39c,jeddah,2026-07-18,YES,39°C,65-74c,0.74,13.51,10.0,0.13,0.74,0.74,3.38,open,,,
