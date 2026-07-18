@@ -1,11 +1,11 @@
-# Chiến dịch 9 chạy RIÊNG, quét mỗi 5 phút — tách khỏi lịch 2 lần/ngày của
-# các chiến dịch thời tiết khác (daily.yml) vì cần bắt kịp lúc giá đám đông
-# vừa chạm ngưỡng 70c, không đợi tới lần chụp snapshot kế tiếp.
-name: Chien dich 9 - Fade dam dong >=70c (quet moi 5 phut)
+# Ban sao 2/3 cua cd9.yml — GitHub hay bo qua cron */5, nen tach 3 workflow
+# moi cai quet 15 phut lech nhau 5 phut de gop lai van phu moi 5 phut.
+# Cung concurrency group voi cd9.yml nen khong bao gio chay de len nhau.
+name: Chien dich 9b - quet lech 5 phut
 
 on:
   schedule:
-    - cron: "0,15,30,45 * * * *"
+    - cron: "5,20,35,50 * * * *"
   workflow_dispatch: {}
 
 permissions:
