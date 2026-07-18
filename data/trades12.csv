@@ -3,3 +3,4 @@ entry_utc,event_slug,city,target_date,lead_days,n_buckets,sum_ask,shares,cost,fe
 2026-07-18T14:41:26Z,highest-temperature-in-warsaw-on-july-18-2026,warsaw,2026-07-18,0,11,0.993,100.7,100.0,0.3581,0.34,open,,,
 2026-07-18T15:22:23Z,highest-temperature-in-london-on-july-18-2026,london,2026-07-18,0,11,0.823,121.51,100.0,3.5913,17.92,open,,,
 2026-07-18T18:38:01Z,highest-temperature-in-lucknow-on-july-19-2026,lucknow,2026-07-19,1,11,0.949,105.37,100.0,3.9418,1.43,open,,,
+2026-07-18T19:08:59Z,highest-temperature-in-nyc-on-july-18-2026,nyc,2026-07-18,0,11,0.961,104.06,100.0,0.5277,3.53,open,,,
