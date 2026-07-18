@@ -63,6 +63,7 @@ v9 (18/07, ĐANG DÙNG) — PHÍA NO đổi từ "1 lần duy nhất khi tuột 
   khi giá càng lúc càng cao. Đã bỏ NO_MIN_DROP_GAP/NO_DROP_FLOOR (2 khoảng
   20-29c/10-19c đã tự nhiên đảm bảo cách đỉnh 40-70 ít nhất 10 điểm % và có
   sàn 10% sẵn trong định nghĩa khoảng).
+v9.1 (18/07) — loại thị trường Los Angeles theo yêu cầu (EXCLUDE_CITIES).
 Đây là chiến dịch THỬ NGHIỆM, CHƯA có backtest lịch sử — theo dõi khách
 quan, không kết luận sớm, không chỉnh luật giữa chừng nếu không có lý do.
 Kết quả: data/trades9.csv | Lịch sử giá: data/cd9_price_hist.csv
@@ -98,6 +99,7 @@ NO_PEAK_LOW, NO_PEAK_HIGH = 0.40, 0.70  # dinh gia tung dat de duoc tinh la "ung
 # Giong YES: moi khoang mua DUNG 1 LAN/o. [lo, hi) tru khoang cuoi la [lo, hi].
 NO_DROP_RANGES = [(0.20, 0.30, "20-29c"), (0.10, 0.20, "10-19c")]
 MIN_PRICE, MAX_PRICE = 0.02, 0.98  # loai gia cuc doan (don bay vo ly)
+EXCLUDE_CITIES = {"los-angeles"}  # v9.1: bo hoan toan thi truong nay
 FEE_RATE = 0.05
 HIST_KEEP_DAYS = 3  # don rac: bo entry lich su cu hon x ngay so voi target_date
 
@@ -230,6 +232,8 @@ def enter(trades, now, events=None, price_hist=None):
         city = C.city_from_ticker(ev.get("ticker") or slug) or ""
         if not target:
             continue
+        if city in EXCLUDE_CITIES:
+            continue  # v9.1: bo qua thi truong bi loai
         is_today = (target == today)
 
         for b in parse_buckets(ev):

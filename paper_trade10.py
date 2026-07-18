@@ -36,6 +36,7 @@ EDGE_MIN = 0.08      # lech toi thieu giua P_model va gia de vao lenh
 MIN_MEMBERS = 10     # it hon 10 thanh vien ensemble -> khong tin, bo qua
 MAX_LEAD_DAYS = 2    # chi vao lenh khi con 0-2 ngay toi ngay muc tieu
 MIN_PRICE, MAX_PRICE = 0.02, 0.98
+EXCLUDE_CITIES = {"los-angeles"}  # 18/07: bo hoan toan thi truong nay
 
 TRADE_FIELDS10 = [
     "entry_utc", "event_slug", "market_slug", "city", "target_date", "lead_days",
@@ -151,6 +152,8 @@ def enter(trades, now, events=None, ensemble_fetcher=None, station_resolver=None
         city = C.city_from_ticker(ev.get("ticker") or slug) or ""
         if not target:
             continue
+        if city in EXCLUDE_CITIES:
+            continue  # bo qua thi truong bi loai
         try:
             lead = (C.parse_iso_date(target) - today).days
         except ValueError:
