@@ -317,6 +317,26 @@
 </div>
 
 <div class="panel">
+  <div class="ptitle">💥 Chiến dịch 13 — NO khi hàng nặng ký sụp đổ (đỉnh ≥80% tuột về ~15%) <span class="chip risk">MỚI 18/07 · $1500 ảo</span>
+    <span style="margin-left:auto;font-weight:400;font-size:12px;color:var(--mut)">Chọn ngày <select id="p13-day"><option value="all">tất cả</option></select></span></div>
+  <p class="pdesc">Chỉ mua phía NO, không có YES. Khác CD9 (đỉnh 40-70% là "ứng viên vừa phải" rút lui — tín hiệu nhẹ, xảy ra thường xuyên): CD13 chỉ vào khi ô từng đạt đỉnh giá <b>≥80%</b> (đám đông gần như chắc chắn) rồi <b>sụp hẳn xuống khoảng 10-19¢</b> — một ô được định giá gần thắng mà bị bỏ rơi thường phản ánh tin tức/dự báo đổi rất rõ ràng, không phải nhiễu. Tuột sâu tiếp xuống 2-9¢ thì mua thêm 1 lần nữa. Chỉ market ngày HÔM NAY, loại Los Angeles, $10/lệnh, quét mỗi 2 phút trên VPS. <b>Chưa có backtest cho đúng ngưỡng đỉnh ≥80% này</b> — đây là giả thuyết hợp lý (khác điều kiện đỉnh 40-70% đã kiểm chứng ở CD9/CD11), theo dõi khách quan tiến cứu.</p>
+  <div class="cards" style="margin-bottom:14px">
+    <div class="card"><b id="p13-balance">–</b><span>số dư khả dụng (ảo)</span></div>
+    <div class="card"><b id="p13-pnl">–</b><span>lãi/lỗ đã chốt</span></div>
+    <div class="card"><b id="p13-record">–</b><span>thắng / thua</span></div>
+    <div class="card"><b id="p13-open">–</b><span>lệnh đang mở</span></div>
+  </div>
+  <div class="pdesc" id="p13-sum" style="color:var(--txt);font-weight:600"></div>
+  <table id="paper13daily"><thead><tr>
+    <th>Ngày vào lệnh</th><th>Số lệnh đã cược</th><th>Tổng cược</th><th>Thắng</th><th>Thua</th><th>Đang mở</th><th>Lãi/lỗ đã chốt</th><th>Lũy kế</th>
+  </tr></thead><tbody></tbody></table>
+  <div class="note" style="margin-bottom:14px">Bảng trên: tổng từng ngày. Bảng dưới: lệnh chi tiết (chọn ngày để xem đủ).</div>
+  <table id="paper13"><thead><tr>
+    <th>Vào lệnh</th><th>Thành phố</th><th>Ngày mục tiêu</th><th>Ô</th><th>Mốc</th><th>Giá</th><th>Đỉnh từng đạt</th><th>Hiện còn</th><th>Nếu thắng</th><th>Trạng thái</th><th>Lãi/lỗ</th>
+  </tr></thead><tbody></tbody></table>
+</div>
+
+<div class="panel">
   <div class="ptitle">📈 Vốn ảo theo ngày — chiến lược nào sống, chiến lược nào chết</div>
   <div style="position:relative;width:100%;height:260px"><canvas id="equityChart"></canvas></div>
   <div class="note">Mỗi đường = một túi tiền ảo riêng: chiến dịch 1–3 bắt đầu $200, chiến dịch 4 bắt đầu $1000 (chỉ tính lãi/lỗ ĐÃ CHỐT). Đường đi lên đều = chiến lược đáng tin · đường lao dốc = chiến lược vừa cứu bạn khỏi mất tiền thật.</div>
@@ -428,10 +448,10 @@ const badge=s=>{const m={open:['b-open','đang mở'],won:['b-won','THẮNG'],lo
   const x=m[s]||['b-void',s];return `<span class="badge ${x[0]}">${x[1]}</span>`;};
 
 let SNAPS=[],RES={},chart=null,chartEq=null;
-let PAPER_ROWS=[],ARB_ROWS=[],CRYPTO_ROWS=[],PAPER4_ROWS=[],PAPER5_ROWS=[],PAPER6_ROWS=[],PAPER7_ROWS=[],PAPER8_ROWS=[],PAPER9_ROWS=[],PAPER10_ROWS=[],PAPER11_ROWS=[],PAPER12_ROWS=[];
+let PAPER_ROWS=[],ARB_ROWS=[],CRYPTO_ROWS=[],PAPER4_ROWS=[],PAPER5_ROWS=[],PAPER6_ROWS=[],PAPER7_ROWS=[],PAPER8_ROWS=[],PAPER9_ROWS=[],PAPER10_ROWS=[],PAPER11_ROWS=[],PAPER12_ROWS=[],PAPER13_ROWS=[];
 function renderEquity(){
   const days=new Set();
-  const day1={A:{},C:{},W:{},W4:{},W5:{},W6:{},W7:{},W8:{},W9:{},W11:{},W12:{}};
+  const day1={A:{},C:{},W:{},W4:{},W5:{},W6:{},W7:{},W8:{},W9:{},W11:{},W12:{},W13:{}};
   ARB_ROWS.forEach(t=>{if(t.status==='open')return;
     const d=(t.settle_utc||t.entry_utc||'').slice(0,10);if(!d)return;
     days.add(d);day1.A[d]=(day1.A[d]||0)+(num(t.locked_profit)||0);});
@@ -455,6 +475,8 @@ function renderEquity(){
     days.add(d);day1.W11[d]=(day1.W11[d]||0)+(num(t.pnl)||0);});
   PAPER12_ROWS.forEach(t=>{if(t.status==='open'||!t.settle_utc)return;const d=t.settle_utc.slice(0,10);
     days.add(d);day1.W12[d]=(day1.W12[d]||0)+(num(t.pnl)||0);});
+  PAPER13_ROWS.forEach(t=>{if(t.status==='open'||!t.settle_utc)return;const d=t.settle_utc.slice(0,10);
+    days.add(d);day1.W13[d]=(day1.W13[d]||0)+(num(t.pnl)||0);});
   const axis=[...days].sort();
   if(!axis.length)return;
   const line=(k,start)=>{let run=start??200;return axis.map(d=>{run+=(day1[k][d]||0);return +run.toFixed(2);});};
@@ -472,16 +494,17 @@ function renderEquity(){
       {label:'⚽ CD8 — The thao vs Pinnacle ($500)',data:line('W8',500),borderColor:'#60a5fa',backgroundColor:'#60a5fa',tension:.25,pointRadius:3},
       {label:'🎯 CD9 — YES 60/70c + NO tuot dinh 40-70c, chi ngay T ($1500)',data:line('W9',1500),borderColor:'#f97316',backgroundColor:'#f97316',tension:.25,pointRadius:3},
       {label:'✂️ CD11 — YES 65-74/85-97c + NO nhu CD9 ($1500)',data:line('W11',1500),borderColor:'#e879f9',backgroundColor:'#e879f9',tension:.25,pointRadius:3},
-      {label:'🔒 CD12 — Arbitrage tron bo ($1500)',data:line('W12',1500),borderColor:'#4ade80',backgroundColor:'#4ade80',tension:.25,pointRadius:3}]},
+      {label:'🔒 CD12 — Arbitrage tron bo ($1500)',data:line('W12',1500),borderColor:'#4ade80',backgroundColor:'#4ade80',tension:.25,pointRadius:3},
+      {label:'💥 CD13 — NO dinh >=80% sup ve ~15% ($1500)',data:line('W13',1500),borderColor:'#fb923c',backgroundColor:'#fb923c',tension:.25,pointRadius:3}]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{labels:{color:'#eef2fb',boxWidth:14}}},
       scales:{y:{grid:{color:'#232d4d'},ticks:{color:'#8a94b0',callback:v=>'$'+v}},
         x:{grid:{display:false},ticks:{color:'#8a94b0'}}}}
   });
 }
-const TOTALS={arb:0,crypto:0,weather:0,weather4:0,weather5:0,weather6:0,weather7:0,weather8:0,weather9:0,weather10:0,weather11:0,weather12:0};
+const TOTALS={arb:0,crypto:0,weather:0,weather4:0,weather5:0,weather6:0,weather7:0,weather8:0,weather9:0,weather10:0,weather11:0,weather12:0,weather13:0};
 function updateTotal(){
-  const t=TOTALS.arb+TOTALS.crypto+TOTALS.weather+TOTALS.weather4+TOTALS.weather5+TOTALS.weather6+TOTALS.weather7+TOTALS.weather8+TOTALS.weather9+TOTALS.weather10+TOTALS.weather11+TOTALS.weather12;
+  const t=TOTALS.arb+TOTALS.crypto+TOTALS.weather+TOTALS.weather4+TOTALS.weather5+TOTALS.weather6+TOTALS.weather7+TOTALS.weather8+TOTALS.weather9+TOTALS.weather10+TOTALS.weather11+TOTALS.weather12+TOTALS.weather13;
   const el=document.getElementById('c-total');
   el.textContent=(t>=0?'+$':'-$')+Math.abs(t).toFixed(2);
   el.style.color=t>=0?'var(--good)':'var(--bad)';
@@ -510,7 +533,7 @@ async function load(){
     const o=document.createElement('option');o.value=d;o.textContent=d;sel.appendChild(o);
     const o2=document.createElement('option');o2.value=d;o2.textContent=d;ld.appendChild(o2);
   });
-  loadOpps(); loadPaper(); loadPaper4(); loadPaper5(); loadPaper6(); loadPaper7(); loadPaper8(); loadPaper9(); loadPaper10(); loadPaper11(); loadPaper12(); loadArb(); loadCrypto(); render();
+  loadOpps(); loadPaper(); loadPaper4(); loadPaper5(); loadPaper6(); loadPaper7(); loadPaper8(); loadPaper9(); loadPaper10(); loadPaper11(); loadPaper12(); loadPaper13(); loadArb(); loadCrypto(); render();
 }
 
 async function loadOpps(){
@@ -1175,6 +1198,94 @@ function renderPaper11(){
   });
 }
 
+function loadPaper13(){
+  return fetch('data/trades13.csv',{cache:'no-store'}).then(r=>r.text()).catch(()=>'').then(txt=>{
+    const sel=document.getElementById('p13-day');
+    if(txt.includes('market_slug')){
+      const rows=parseCSV(txt);PAPER13_ROWS=rows;
+      if(sel){
+        const days=[...new Set(rows.map(r=>(r.entry_utc||'').slice(0,10)).filter(Boolean))].sort().reverse();
+        days.forEach(d=>{const o=document.createElement('option');o.value=d;o.textContent=d;sel.appendChild(o);});
+      }
+    }
+    renderPaper13();
+  });
+}
+function renderPaper13(){
+  const budget=1500;
+  const tb=document.querySelector('#paper13 tbody'),td=document.querySelector('#paper13daily tbody');
+  tb.innerHTML='';td.innerHTML='';
+  const rows=PAPER13_ROWS;
+  if(!rows.length){
+    tb.innerHTML='<tr><td colspan="11" style="color:var(--mut)">Chưa có lệnh — bot quét mỗi 2 phút trên VPS, chỉ vào khi ô từng đạt đỉnh ≥80% rồi sụp qua 10-19¢/2-9¢. Tín hiệu hiếm nên có thể lâu mới bắt được.</td></tr>';
+    td.innerHTML='<tr><td colspan="8" style="color:var(--mut)">Chưa có dữ liệu ngày nào.</td></tr>';
+    document.getElementById('p13-balance').textContent='$'+budget.toFixed(2);
+    document.getElementById('p13-pnl').textContent='+0.00 $';
+    document.getElementById('p13-record').textContent='0 / 0';
+    document.getElementById('p13-open').textContent='0';
+    return;
+  }
+  let realized=0,openCost=0,won=0,lost=0,open=0;
+  rows.forEach(r=>{
+    if(r.status==='open'){open++;openCost+=(num(r.stake)||0)+(num(r.fee)||0);}
+    else{realized+=num(r.pnl)||0;if(r.status==='won')won++;if(r.status==='lost')lost++;}
+  });
+  TOTALS.weather13=realized;updateTotal();renderEquity();
+  document.getElementById('p13-balance').textContent='$'+(budget+realized-openCost).toFixed(2);
+  const pp=document.getElementById('p13-pnl');
+  pp.textContent=(realized>=0?'+':'')+realized.toFixed(2)+' $';
+  pp.style.color=realized>=0?'var(--good)':'var(--bad)';
+  document.getElementById('p13-record').textContent=won+' / '+lost;
+  document.getElementById('p13-open').textContent=open;
+  const pSum=document.getElementById('p13-sum');
+  if(pSum)pSum.innerHTML=`✅ ${won} thắng · ❌ ${lost} thua · ⏳ ${open} đang mở — lãi/lỗ đã chốt <b style="color:${realized>=0?'var(--good)':'var(--bad)'}">${(realized>=0?'+':'')+realized.toFixed(2)} $</b>${(budget+realized-openCost)<11?' · <span style="color:var(--gold)">⚠ hết ngân sách ảo</span>':''}`;
+  const selEl=document.getElementById('p13-day');
+  const day=selEl?selEl.value:'all';
+  const shown=day==='all'?rows:rows.filter(r=>(r.entry_utc||'').slice(0,10)===day);
+  const byDay={};
+  shown.forEach(r=>{
+    const d=(r.entry_utc||'').slice(0,10);if(!d)return;
+    const x=byDay[d]||(byDay[d]={n:0,stake:0,won:0,lost:0,open:0,pnl:0});
+    x.n++;x.stake+=num(r.stake)||0;
+    if(r.status==='open')x.open++;
+    else{x.pnl+=num(r.pnl)||0;if(r.status==='won')x.won++;if(r.status==='lost')x.lost++;}
+  });
+  const cumAll={};let cum=0;
+  [...new Set(rows.map(r=>(r.entry_utc||'').slice(0,10)).filter(Boolean))].sort().forEach(d=>{
+    rows.forEach(r=>{if((r.entry_utc||'').slice(0,10)===d&&r.status!=='open')cum+=num(r.pnl)||0;});
+    cumAll[d]=cum;
+  });
+  const dayKeys=Object.keys(byDay).sort().reverse();
+  if(!dayKeys.length)td.innerHTML='<tr><td colspan="8" style="color:var(--mut)">Không có lệnh trong ngày này.</td></tr>';
+  dayKeys.forEach(d=>{
+    const x=byDay[d];
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td><b>${d}</b></td><td>${x.n}</td><td>$${x.stake.toFixed(0)}</td>
+      <td class="hit">${x.won}</td><td class="miss">${x.lost}</td><td>${x.open}</td>
+      <td class="${x.pnl>=0?'hit':'miss'}">${(x.pnl>=0?'+':'')+x.pnl.toFixed(2)} $</td>
+      <td class="${(cumAll[d]||0)>=0?'hit':'miss'}">${((cumAll[d]||0)>=0?'+':'')+(cumAll[d]||0).toFixed(2)} $</td>`;
+    td.appendChild(tr);
+  });
+  const list=day==='all'?shown.slice(-20):shown;
+  if(!list.length)tb.innerHTML='<tr><td colspan="11" style="color:var(--mut)">Không có lệnh trong ngày này.</td></tr>';
+  list.slice().reverse().forEach(r=>{
+    const cls=r.status==='won'?'hit':(r.status==='lost'?'miss':'');
+    const trig=num(r.trigger_ask);
+    const peak=num(r.peak_ask);
+    const pot=num(r.potential_profit);
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${(r.entry_utc||'').slice(5,16).replace('T',' ')}</td>
+      <td>${r.city}</td><td>${r.target_date}</td>
+      <td>${r.bucket}</td><td>${r.tier||'–'}</td><td>${r.price}</td>
+      <td>${peak!==null?(peak*100).toFixed(0)+'%':'–'}</td>
+      <td>${trig!==null?(trig*100).toFixed(0)+'%':'–'}</td>
+      <td class="hit">${pot!==null?'+'+pot.toFixed(2)+' $':'–'}</td>
+      <td>${badge(r.status)}</td>
+      <td class="${cls}">${r.pnl?((+r.pnl>=0?'+':'')+(+r.pnl).toFixed(2)+' $'):'–'}</td>`;
+    tb.appendChild(tr);
+  });
+}
+
 function loadPaper12(){
   return fetch('data/trades12.csv',{cache:'no-store'}).then(r=>r.text()).catch(()=>'').then(txt=>{
     const sel=document.getElementById('p12-day');
@@ -1491,6 +1602,7 @@ document.getElementById('p9-day').addEventListener('change',renderPaper9);
 document.getElementById('p10-day').addEventListener('change',renderPaper10);
 document.getElementById('p11-day').addEventListener('change',renderPaper11);
 document.getElementById('p12-day').addEventListener('change',renderPaper12);
+document.getElementById('p13-day').addEventListener('change',renderPaper13);
 load();
 </script>
 </body>
