@@ -20,11 +20,12 @@ while true; do
     exec /bin/bash /root/vps_loop.sh
   fi
 
-  # CD9 + CD11 + CD12 + CD13: quet moi vong (2 phut/lan)
+  # CD9 + CD11 + CD12 + CD13 + CD14: quet moi vong (2 phut/lan)
   python3 paper_trade9.py || echo "[LOI] paper_trade9 that bai, thu lai vong sau"
   python3 paper_trade11.py || echo "[LOI] paper_trade11 that bai, thu lai vong sau"
   python3 paper_trade12.py || echo "[LOI] paper_trade12 that bai, thu lai vong sau"
   python3 paper_trade13.py || echo "[LOI] paper_trade13 that bai, thu lai vong sau"
+  python3 paper_trade14.py || echo "[LOI] paper_trade14 that bai, thu lai vong sau"
 
   # CD10: quet 1 lan moi 30 vong (~60 phut)
   if [ $((i % 30)) -eq 0 ]; then
@@ -34,7 +35,8 @@ while true; do
   # Day ket qua len GitHub (chi commit khi co thay doi)
   git add data/trades9.csv data/cd9_price_hist.csv data/trades10.csv \
           data/trades11.csv data/cd11_price_hist.csv data/trades12.csv \
-          data/trades13.csv data/cd13_price_hist.csv data/stations.json 2>/dev/null
+          data/trades13.csv data/cd13_price_hist.csv data/trades14.csv \
+          data/cd14_price_hist.csv data/stations.json 2>/dev/null
   if ! git diff --cached --quiet; then
     git commit -q -m "VPS quet $(date -u +%Y-%m-%dT%H:%M)"
     git push -q || { git pull --rebase -q || true; git push -q || true; }
