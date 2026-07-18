@@ -1,1 +1,2 @@
 entry_utc,event_slug,market_slug,city,target_date,side,bucket,tier,price,shares,stake,fee,trigger_ask,peak_ask,potential_profit,status,payout,pnl,settle_utc
+2026-07-18T17:17:33Z,highest-temperature-in-toronto-on-july-18-2026,highest-temperature-in-toronto-on-july-18-2026-25c,toronto,2026-07-18,NO,25°C,A-mat-moc-70,0.599,16.69,10.0,0.2004,0.577,0.757,6.49,open,,,
