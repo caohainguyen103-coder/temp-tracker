@@ -64,6 +64,12 @@ v9 (18/07, ĐANG DÙNG) — PHÍA NO đổi từ "1 lần duy nhất khi tuột 
   20-29c/10-19c đã tự nhiên đảm bảo cách đỉnh 40-70 ít nhất 10 điểm % và có
   sàn 10% sẵn trong định nghĩa khoảng).
 v9.1 (18/07) — loại thị trường Los Angeles theo yêu cầu (EXCLUDE_CITIES).
+v9.2 (18/07) — PHÍA YES thêm 1 chặn: nếu 1 ô ĐÃ mua ở CẢ 2 khoảng 70-79c
+  VÀ 80-89c (tức giá đã leo nhanh, đám đông cực kỳ tự tin) thì KHÔNG mua
+  thêm ở khoảng 90-97c nữa. Lý do: ca Madrid 35°C leo 60-69 -> 80-89 -> 90-97
+  (3 lệnh chồng cùng 1 ô) rồi sụp về 0% — mốc 90-97 vừa đắt nhất (lời tiềm
+  năng thấp nhất) vừa là lệnh chồng thêm rủi ro lên 1 ô đã cược 2 lần rồi,
+  không giúp tăng thêm gì đáng kể ngoài rủi ro tập trung.
 Đây là chiến dịch THỬ NGHIỆM, CHƯA có backtest lịch sử — theo dõi khách
 quan, không kết luận sớm, không chỉnh luật giữa chừng nếu không có lý do.
 Kết quả: data/trades9.csv | Lịch sử giá: data/cd9_price_hist.csv
@@ -261,8 +267,16 @@ def enter(trades, now, events=None, price_hist=None):
             # --- PHIA YES: theo cua nang ky, khoang gia, 1 lan/khoang/o, chi ngay T ---
             rlabel = yes_range_label(ask)
             if rlabel is not None:
+                # v9.2: da mua ca 70-79c va 80-89c roi thi khong mua them 90-97c
+                # (gia leo qua nhanh -> da chong 2 lenh, mua them chi tang rui ro
+                # tap trung ma loi tiem nang lai thap nhat trong 4 khoang)
+                skip_top = (
+                    rlabel == "90-97c"
+                    and (b["slug"], "YES", "70-79c") in have_keys
+                    and (b["slug"], "YES", "80-89c") in have_keys
+                )
                 key = (b["slug"], "YES", rlabel)
-                if key not in have_keys:
+                if key not in have_keys and not skip_top:
                     price = round(ask, 3)
                     if MIN_PRICE <= price <= MAX_PRICE:
                         candidates.append(_mk_candidate(
@@ -342,7 +356,7 @@ def main():
                     if t["status"] == "open")
     won = sum(1 for t in trades if t["status"] == "won")
     lost = sum(1 for t in trades if t["status"] == "lost")
-    print(f"\n[CHIEN DICH 9 v9 — chi ngay T: YES 4 khoang 60-69/70-79/80-89/90-97c + NO (sau dinh 40-70c) 2 khoang 20-29/10-19c]")
+    print(f"\n[CHIEN DICH 9 v9.2 — chi ngay T: YES 4 khoang 60-69/70-79/80-89/90-97c (bo 90-97c neu da co ca 70-79+80-89) + NO (sau dinh 40-70c) 2 khoang 20-29/10-19c]")
     print(f"Chot {n_settled}, vao moi {n_new} | {won} thang / {lost} thua | "
           f"lai/lo {realized:+.2f} | kha dung {BUDGET + realized - open_cost:.2f}/{BUDGET:.0f}")
 
