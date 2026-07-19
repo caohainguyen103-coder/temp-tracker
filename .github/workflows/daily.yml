@@ -61,6 +61,9 @@ jobs:
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
 
+      - name: Chien dich 16 - NO o dam dong tin nhat 30-70c (1500 do ao)
+        run: python paper_trade16.py
+
       - name: Luu du lieu vao repo
         run: |
           git config user.name "temp-tracker-bot"
