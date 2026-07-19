@@ -57,3 +57,6 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-07-19T09:35:08Z,highest-temperature-in-cape-town-on-july-20-2026,cape-town,2026-07-20,1,NO,16°C,0.67,14.93,10.0,0.1651,16.5,17°C,open,,,,mo_rong
 2026-07-19T09:35:08Z,highest-temperature-in-buenos-aires-on-july-20-2026,buenos-aires,2026-07-20,1,NO,14°C,0.68,14.71,10.0,0.16,14.0,13°C,open,,,,mo_rong
 2026-07-19T09:35:08Z,highest-temperature-in-denver-on-july-20-2026,denver,2026-07-20,1,NO,100-101°F,0.64,15.62,10.0,0.1799,38.6,98-99°F,open,,,,mo_rong
+2026-07-19T15:34:38Z,highest-temperature-in-singapore-on-july-21-2026,singapore,2026-07-21,2,NO,31°C,0.64,15.62,10.0,0.1799,31.0,32°C,open,,,,mo_rong
+2026-07-19T15:34:38Z,highest-temperature-in-wellington-on-july-21-2026,wellington,2026-07-21,2,NO,12°C,0.61,16.39,10.0,0.195,11.5,13°C,open,,,,mo_rong
+2026-07-19T15:34:38Z,highest-temperature-in-wuhan-on-july-20-2026,wuhan,2026-07-20,1,NO,33°C,0.59,16.95,10.0,0.205,33.4,>=34°C,open,,,,mo_rong
