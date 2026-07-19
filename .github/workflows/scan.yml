@@ -32,11 +32,15 @@ jobs:
         run: |
           git config user.name "temp-tracker-bot"
           git config user.email "actions@users.noreply.github.com"
-          git pull --rebase || true
+          # Commit truoc khi pull (xem giai thich chi tiet trong daily.yml):
+          # scan.py da ghi thang vao data/ nen dang co thay doi chua commit -
+          # pull --rebase luc nay se bi loi "unstaged changes". Commit xong
+          # roi moi pull thi an toan.
           git add data/
           git diff --cached --quiet || git commit -m "quet co hoi $(date -u +%Y-%m-%dT%H:%M)"
           # VPS tu day day len GitHub moi ~60s nen de bi dung do khi push -
-          # thu lai toi 6 lan, moi lan pull --rebase truoc khi push lai.
+          # thu lai toi 6 lan, moi lan pull --rebase (tu huy neu ket) roi
+          # push lai.
           for i in 1 2 3 4 5 6; do
             if git push; then
               echo "Push thanh cong (lan $i)"
@@ -44,5 +48,5 @@ jobs:
             fi
             echo "Push that bai (lan $i) - co the dung do VPS - thu pull --rebase roi push lai"
             sleep $((RANDOM % 8 + 4))
-            git pull --rebase || true
+            git pull --rebase || { git rebase --abort 2>/dev/null || true; }
           done

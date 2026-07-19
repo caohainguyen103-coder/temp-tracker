@@ -62,12 +62,17 @@ jobs:
         run: |
           git config user.name "temp-tracker-bot"
           git config user.email "actions@users.noreply.github.com"
-          git pull --rebase || true
+          # QUAN TRONG: commit truoc khi pull. Cac buoc collect.py/verify.py/
+          # paper_trade*.py o tren da ghi thang vao data/ nen luc nay dang co
+          # thay doi CHUA COMMIT trong working dir - neu pull --rebase truoc
+          # se bi loi "cannot pull with rebase: You have unstaged changes"
+          # (git tu choi rebase khi con thay doi chua commit). Commit xong
+          # roi moi pull thi rebase luon an toan.
           git add data/
           git diff --cached --quiet || git commit -m "du lieu $(date -u +%Y-%m-%dT%H:%M)"
           # VPS tu day day len GitHub moi ~60s nen de bi dung do khi push -
-          # thu lai toi 6 lan, moi lan pull --rebase truoc khi push lai,
-          # tranh mat trang toan bo ket qua da tinh (vd verify.py) chi vi
+          # thu lai toi 6 lan, moi lan pull --rebase (tu huy neu ket) roi
+          # push lai, tranh mat trang ket qua da tinh (vd verify.py) chi vi
           # push 1 lan bi tu choi do khong phai fast-forward.
           for i in 1 2 3 4 5 6; do
             if git push; then
@@ -76,5 +81,5 @@ jobs:
             fi
             echo "Push that bai (lan $i) - co the dung do VPS - thu pull --rebase roi push lai"
             sleep $((RANDOM % 8 + 4))
-            git pull --rebase || true
+            git pull --rebase || { git rebase --abort 2>/dev/null || true; }
           done
