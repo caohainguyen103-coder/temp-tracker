@@ -9,17 +9,16 @@ KHÔNG dùng tiền thật. Tiền ảo $1500. Chỉ ngày T. Chạy trên VPS m
   tuột tiếp qua 10-19c mua thêm 1 lần.
 
   THÊM LUẬT ĐẢO CHIỀU: nếu đã vào NO trên 1 ô mà thị trường BIẾN ĐỘNG NGƯỢC
-  — giá ask bật tăng trở lại >= 18 điểm % so với giá lúc vào lệnh NO — thì
+  — giá ask bật tăng trở lại >= 25 điểm % so với giá lúc vào lệnh NO — thì
   coi như tín hiệu "tuột giá" đã sai (đám đông đổi ý lần nữa, ô này có thể
   thắng thật), lập tức MUA YES ô đó với vốn GẤP 3 ($30 thay vì $10) để vừa
   bù rủi ro lệnh NO đang kẹt vừa ăn theo đà đảo chiều. Mỗi ô chỉ đảo 1 lần.
   Mốc so sánh = giá trigger của lệnh NO ĐẦU TIÊN trên ô đó.
 
-  Vì sao 18 điểm %: đủ lớn để loại nhiễu thường (giá lắc 5-10 điểm là chuyện
-  binh thường trong ngày), đủ nhỏ để còn kịp vào trước khi giá chạy hết đà.
-  CHƯA có backtest cho luật đảo chiều này — kiểm chứng tiến cứu.
-
-v1 (19/07): bản đầu tiên.
+v1 (19/07): bản đầu tiên, ngưỡng đảo 18 điểm %.
+v2 (19/07): nâng ngưỡng đảo 18 -> 25 điểm % theo yêu cầu (chờ đà bật thật
+  sự rõ ràng mới đảo, tránh đảo nhầm theo nhiễu lớn). Ví dụ cụ thể: vào NO
+  lúc giá 25% -> giá phải bật lên >= 50% mới mua YES x3.
 Kết quả: data/trades15.csv | Lịch sử giá: data/cd15_price_hist.csv
 """
 import csv
@@ -45,7 +44,7 @@ PRICE_HIST_FIELDS = [
 BUDGET = 1500.0
 STAKE = 10.0
 REVERSAL_STAKE = 30.0        # x3 von khi dao chieu YES
-REVERSAL_JUMP = 0.18         # gia ask bat tang >= 18 diem % so voi luc vao NO
+REVERSAL_JUMP = 0.25         # v2: gia ask bat tang >= 25 diem % so voi luc vao NO
 NO_PEAK_LOW, NO_PEAK_HIGH = 0.40, 0.70
 NO_DROP_RANGES = [(0.20, 0.30, "20-29c"), (0.10, 0.20, "10-19c")]
 MIN_PRICE, MAX_PRICE = 0.02, 0.98
@@ -295,7 +294,7 @@ def main():
                     if t["status"] == "open")
     won = sum(1 for t in trades if t["status"] == "won")
     lost = sum(1 for t in trades if t["status"] == "lost")
-    print(f"\n[CHIEN DICH 15 v1 — NO nhu CD9 + dao chieu YES x3 khi gia bat nguoc >= {REVERSAL_JUMP*100:.0f} diem]")
+    print(f"\n[CHIEN DICH 15 v2 — NO nhu CD9 + dao chieu YES x3 khi gia bat nguoc >= {REVERSAL_JUMP*100:.0f} diem]")
     print(f"Chot {n_settled}, vao moi {n_new} | {won} thang / {lost} thua | "
           f"lai/lo {realized:+.2f} | kha dung {BUDGET + realized - open_cost:.2f}/{BUDGET:.0f}")
 
