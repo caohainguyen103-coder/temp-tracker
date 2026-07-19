@@ -35,4 +35,14 @@ jobs:
           git pull --rebase || true
           git add data/
           git diff --cached --quiet || git commit -m "quet co hoi $(date -u +%Y-%m-%dT%H:%M)"
-          git push
+          # VPS tu day day len GitHub moi ~60s nen de bi dung do khi push -
+          # thu lai toi 6 lan, moi lan pull --rebase truoc khi push lai.
+          for i in 1 2 3 4 5 6; do
+            if git push; then
+              echo "Push thanh cong (lan $i)"
+              break
+            fi
+            echo "Push that bai (lan $i) - co the dung do VPS - thu pull --rebase roi push lai"
+            sleep $((RANDOM % 8 + 4))
+            git pull --rebase || true
+          done
