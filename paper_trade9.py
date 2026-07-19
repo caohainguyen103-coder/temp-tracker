@@ -72,6 +72,12 @@ v9.2 (18/07) — PHÍA YES thêm 1 chặn: nếu 1 ô ĐÃ mua ở CẢ 2 khoả
   không giúp tăng thêm gì đáng kể ngoài rủi ro tập trung.
 Đây là chiến dịch THỬ NGHIỆM, CHƯA có backtest lịch sử — theo dõi khách
 quan, không kết luận sớm, không chỉnh luật giữa chừng nếu không có lý do.
+
+*** NOTE 19/07: GIỮ LẠI TEST THÊM 2 NGÀY (đến hết 21/07) rồi đánh giá.
+Số liệu đến 19/07 (159 lệnh chốt): NO thắng 93.2% (41/44), LỜI +39.48$ —
+phía duy nhất toàn hệ thống vượt ngưỡng hòa vốn rõ. YES thắng 73% nhưng
+lỗ -90.85$, thủ phạm chính là khoảng 60-69c (thắng 51.4%, lỗ -68$).
+Hướng sau 21/07: cân nhắc bỏ khoảng YES 60-69c, giữ nguyên phía NO. ***
 Kết quả: data/trades9.csv | Lịch sử giá: data/cd9_price_hist.csv
 """
 import csv

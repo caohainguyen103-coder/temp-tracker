@@ -16,6 +16,12 @@ KHÔNG dùng tiền thật. Tiền ảo $1500.
 
 LỊCH SỬ SỬA LUẬT:
   v1 (18/07): bản đầu tiên. EDGE_MIN=0.08, MIN_MEMBERS=10, lead 0-2.
+  v2 (19/07): bản v1 vào QUÁ NHIỀU lệnh (145 lệnh mở sau ~1 ngày, giam
+    1496/1500$ vốn ảo, chưa chốt được lệnh nào). Sửa 2 thứ:
+    - Thêm ngân sách: 1500 -> 3000.
+    - Thêm giới hạn: tối đa MAX_NEW_PER_RUN=10 lệnh mới/lần quét (ưu tiên
+      lệch to nhất) + tối đa MAX_OPEN=120 lệnh đang mở toàn cục — tránh
+      rải vốn loãng ra hàng trăm tín hiệu yếu.
 """
 import csv
 import json
@@ -29,12 +35,14 @@ TRADES10_CSV = C.DATA_DIR + "/trades10.csv"
 ENSEMBLE_API = "https://ensemble-api.open-meteo.com/v1/ensemble"
 ENSEMBLE_MODEL = "gfs025"   # GFS ensemble 0.25 do, ~31 thanh vien
 
-BUDGET = 1500.0
+BUDGET = 3000.0      # v2: them ngan sach (cu 1500, bi giam het von)
 STAKE = 10.0
 FEE_RATE = 0.05
 EDGE_MIN = 0.08      # lech toi thieu giua P_model va gia de vao lenh
 MIN_MEMBERS = 10     # it hon 10 thanh vien ensemble -> khong tin, bo qua
 MAX_LEAD_DAYS = 2    # chi vao lenh khi con 0-2 ngay toi ngay muc tieu
+MAX_NEW_PER_RUN = 10 # v2: toi da 10 lenh moi/lan quet (uu tien lech to nhat)
+MAX_OPEN = 120       # v2: toi da 120 lenh dang mo toan cuc
 MIN_PRICE, MAX_PRICE = 0.02, 0.98
 EXCLUDE_CITIES = {"los-angeles"}  # 18/07: bo hoan toan thi truong nay
 
@@ -218,7 +226,14 @@ def enter(trades, now, events=None, ensemble_fetcher=None, station_resolver=None
 
     candidates.sort(key=lambda x: -x["edge"])  # lech to vao truoc khi het tien
     added = 0
+    n_open = sum(1 for t in trades if t["status"] == "open")
     for c in candidates:
+        if added >= MAX_NEW_PER_RUN:
+            print(f"  [GIOI HAN] (CD10 v2) da vao {MAX_NEW_PER_RUN} lenh/lan quet, dung")
+            break
+        if n_open + added >= MAX_OPEN:
+            print(f"  [GIOI HAN] (CD10 v2) dang mo {n_open + added} lenh >= tran {MAX_OPEN}, dung")
+            break
         key = (c["market_slug"], c["side"])
         if key in have:
             continue
@@ -270,7 +285,7 @@ def main():
                     if t["status"] == "open")
     won = sum(1 for t in trades if t["status"] == "won")
     lost = sum(1 for t in trades if t["status"] == "lost")
-    print(f"\n[CHIEN DICH 10 v1 — ensemble GFS ~31 thanh vien, lech >= {EDGE_MIN*100:.0f}%, lead 0-{MAX_LEAD_DAYS} ngay]")
+    print(f"\n[CHIEN DICH 10 v2 — ensemble GFS, lech >= {EDGE_MIN*100:.0f}%, max {MAX_NEW_PER_RUN} lenh/quet, tran {MAX_OPEN} lenh mo, $3000 ao]")
     print(f"Chot {n_settled}, vao moi {n_new} | {won} thang / {lost} thua | "
           f"lai/lo {realized:+.2f} | kha dung {BUDGET + realized - open_cost:.2f}/{BUDGET:.0f}")
 

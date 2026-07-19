@@ -38,9 +38,8 @@ while true; do
     exec /bin/bash /root/vps_loop.sh
   fi
 
-  # CD9 + CD11 + CD12 + CD14: gop chung 1 lan goi API/vong (~15-30s/lan)
-  # thay vi 4 file rieng tung tu goi API rieng (tung la 4 lan goi/vong) -
-  # giu tong tai len Polymarket gan nhu khong doi du quet nhanh hon nhieu.
+  # CD9 + CD12 + CD14: gop chung 1 lan goi API/vong (~15-30s/lan).
+  # (19/07: bo CD11 — NO trung 100% CD9, YES la ao anh backtest, lo -89.75$)
   python3 vps_scan_all.py || echo "[LOI] vps_scan_all that bai, thu lai vong sau"
 
   # CD10: quet 1 lan/gio, theo dong ho UTC (khong dem vong nua vi vong lap
@@ -56,7 +55,7 @@ while true; do
   now_ts=$(date +%s)
   if [ $((now_ts - last_commit_ts)) -ge $COMMIT_EVERY_SEC ]; then
     git add data/trades9.csv data/cd9_price_hist.csv data/trades10.csv \
-            data/trades11.csv data/cd11_price_hist.csv data/trades12.csv \
+            data/trades12.csv \
             data/trades14.csv data/cd14_price_hist.csv data/stations.json 2>/dev/null
     if ! git diff --cached --quiet; then
       git commit -q -m "VPS quet $(date -u +%Y-%m-%dT%H:%M:%S)"

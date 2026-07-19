@@ -1,16 +1,23 @@
 # -*- coding: utf-8 -*-
 """
-paper_trade6.py — CHIẾN DỊCH 6: MUA YES Ô ĐÁM ĐÔNG TIN NHẤT, tiền ảo $1500.
-KHÔNG dùng tiền thật. LUẬT ĐÓNG BĂNG từ 16/07/2026 — không chỉnh giữa chừng.
+paper_trade6.py — CHIẾN DỊCH 6: MUA YES Ô ĐÁM ĐÔNG TIN NHẤT, tiền ảo $3000.
+KHÔNG dùng tiền thật.
 
 Cơ sở: hiện tượng favorite-longshot bias — đám đông có xu hướng trả thiếu
 cho "cửa nặng ký". Backtest 09-15/07 (243 lệnh): +273$, ngày tệ nhất -0.35$.
 
-Quy tắc:
-  - Ô mục tiêu = ô được thị trường định giá CAO NHẤT (đám đông tin nhất).
-  - MUA YES ô đó khi giá ask trong [0.30, 0.70]. Ngoài khoảng -> bỏ.
+Quy tắc v1 (16/07, đóng băng): mua YES ô đám đông tin nhất khi ask trong
+[0.30, 0.70]. KẾT QUẢ THỰC TẾ đến 19/07: thắng chỉ 32.8% (39/119), lỗ
+-306.97$ — tệ nhất toàn hệ thống. Lý do: vùng 30-70c với ask trung bình
+~45c cần thắng >=45% mới hòa, nhưng ô "tin nhất" ở vùng giá thấp nghĩa là
+đám đông cũng KHÔNG chắc — không có favorite thật sự để hưởng bias.
+
+v2 (19/07): CHỈ TIN CHỢ KHI CHỢ TỰ TIN THẬT — nâng ngưỡng vào lệnh lên
+ask >= 0.62 (tối đa 0.97 để tránh giá cực đoan). Thêm ngân sách $1500 ->
+$3000 vì bản cũ hết vốn ảo (115 lệnh mở giam gần hết tiền).
+
   - Vào ở mọi lần chụp (trong ngày, T+1, T+2). Mỗi event chỉ vào 1 lần.
-  - $10/lệnh, ngân sách $1500, phí taker 5% x p x (1-p) như thật.
+  - $10/lệnh, phí taker 5% x p x (1-p) như thật.
   - Thắng khi ô phân giải = ô đã mua.
 Kết quả: data/trades6.csv
 """
@@ -21,10 +28,10 @@ import common as C
 import paper_trade as P
 
 TRADES6_CSV = C.DATA_DIR + "/trades6.csv"
-BUDGET = 1500.0
+BUDGET = 3000.0   # v2: them ngan sach (cu 1500, het von vi 115 lenh mo)
 STAKE = 10.0
-MIN_ASK6 = 0.30
-MAX_ASK6 = 0.70
+MIN_ASK6 = 0.62   # v2: chi tin cho khi cho tu tin that (cu 0.30)
+MAX_ASK6 = 0.97   # v2: mo tran len 97c, van chan gia cuc doan (cu 0.70)
 FEE_RATE = 0.05
 
 
@@ -108,7 +115,7 @@ def main():
                     if t["status"] == "open")
     won = sum(1 for t in trades if t["status"] == "won")
     lost = sum(1 for t in trades if t["status"] == "lost")
-    print(f"\n[CHIEN DICH 6 — YES o dam dong 30-70c, $1500 ao]")
+    print(f"\n[CHIEN DICH 6 v2 — YES o dam dong 62-97c, $3000 ao]")
     print(f"Chot {n_settled}, vao moi {n_new} | {won} thang / {lost} thua | "
           f"lai/lo {realized:+.2f} | kha dung {BUDGET + realized - open_cost:.2f}/{BUDGET:.0f}")
 

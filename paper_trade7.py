@@ -13,6 +13,11 @@ Quy tắc:
   - Vào ở T+1 hoặc T+2 (KHÔNG vào trong ngày). Mỗi event 1 lần.
   - $10/lệnh, ngân sách $1500, phí taker 5% x p x (1-p) như thật.
   - Thắng khi ô phân giải KHÁC ô GFS chỉ.
+
+*** NOTE 19/07: DỰ KIẾN BỎ chiến dịch này — cho TEST THÊM 2 NGÀY (đến hết
+21/07) rồi quyết định. Số liệu đến 19/07: thắng 84.6% (66/78) nhưng giá NO
+trung bình ~87.6c cần thắng ~91% mới hòa -> lỗ -35.73$. Nếu sau 21/07 vẫn
+dưới ngưỡng hòa vốn thì gỡ khỏi daily.yml. ***
 Kết quả: data/trades7.csv
 """
 import os

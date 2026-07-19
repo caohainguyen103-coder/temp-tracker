@@ -1,6 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-vps_scan_all.py — Gop CD9 + CD11 + CD12 + CD14 vao 1 LAN GOI API DUY NHAT.
+vps_scan_all.py — Gop CD9 + CD12 + CD14 vao 1 LAN GOI API DUY NHAT.
+
+19/07: BO CD11 khoi vong quet. Ly do: phan NO cua CD11 trung 100% voi CD9
+(dang giu lam doi chung), con phan YES "2 khoang vang 65-75/85-97c" da duoc
+chung minh la ao anh cua backtest thua mau (snapshot 2 lan/ngay khong thay
+cac o chi luot qua vung gia vai phut) — thuc te thang 72.1% (can ~78% hoa
+von), lo -89.75$, nang nhat trong cac chien dich dang chay. Giu them khong
+cho thong tin moi. Du lieu data/trades11.csv giu nguyen lam lich su.
 
 TAI SAO CAN FILE NAY (18/07):
 Truoc day vps_loop.sh chay 4 file rieng (paper_trade9/11/12/14.py) moi
@@ -25,7 +32,6 @@ from datetime import datetime, timezone
 import common as C
 import collect
 import paper_trade9 as P9
-import paper_trade11 as P11
 import paper_trade12 as P12
 import paper_trade14 as P14
 
@@ -53,12 +59,11 @@ def main():
     events = collect.fetch_temperature_events()
 
     s9, n9 = _run(P9, P9.TRADES9_CSV, P9.TRADE_FIELDS9, now, events)
-    s11, n11 = _run(P11, P11.TRADES11_CSV, P11.TRADE_FIELDS11, now, events)
     s12, n12 = _run(P12, P12.TRADES12_CSV, P12.TRADE_FIELDS12, now, events)
     s14, n14 = _run(P14, P14.TRADES14_CSV, P14.TRADE_FIELDS14, now, events)
 
     print(f"[SCAN ALL] {now} | {len(events)} event nhiet do | "
-          f"CD9 chot{s9}/moi{n9} | CD11 chot{s11}/moi{n11} | "
+          f"CD9 chot{s9}/moi{n9} | "
           f"CD12 chot{s12}/moi{n12} | CD14 chot{s14}/moi{n14}")
 
 

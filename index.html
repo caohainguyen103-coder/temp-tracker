@@ -120,8 +120,8 @@
 </div>
 
 <div class="panel">
-  <div class="ptitle">🌡️ Chiến dịch 3 — Mô hình thời tiết cãi thị trường <span class="chip risk">rủi ro vừa · $200 ảo</span></div>
-  <p class="pdesc">Khi trung vị 5 mô hình (ECMWF, GFS, ICON, UKMO, best-match) chỉ vào ô nhiệt độ KHÁC ô đám đông tin, và giá ô đó ≤ 30¢ → mua ảo $5. Thua nhiều lần nhỏ, thắng ít lần to — câu hỏi là tổng có dương không.</p>
+  <div class="ptitle">🌡️ Chiến dịch 3 — Mô hình thời tiết cãi thị trường <span class="chip" style="background:rgba(138,148,176,.2);color:var(--mut)">⛔ ĐÃ DỪNG 19/07</span></div>
+  <p class="pdesc"><b>Đã dừng 19/07</b> cùng CD1/CD2 theo đợt tinh gọn (kết quả cuối: 4 thắng / 59 thua, -197.04$ — mô hình cãi chợ thua áp đảo). Số liệu dưới là lịch sử, không vào lệnh mới. Luật cũ: trung vị 5 mô hình chỉ ô KHÁC ô đám đông tin và giá ≤ 30¢ → mua ảo $5.</p>
   <div class="cards" style="margin-bottom:14px">
     <div class="card"><b id="p-balance">–</b><span>số dư khả dụng (ảo)</span></div>
     <div class="card"><b id="p-pnl">–</b><span>lãi/lỗ đã chốt</span></div>
@@ -158,7 +158,7 @@
 <div class="panel">
   <div class="ptitle">🎲 Chiến dịch 5 — Cược ngược GFS <span class="chip risk">rủi ro cao · $1000 ảo</span>
     <span style="margin-left:auto;font-weight:400;font-size:12px;color:var(--mut)">Chọn ngày <select id="p5-day"><option value="all">tất cả</option></select></span></div>
-  <p class="pdesc">GFS là mô hình đo tệ nhất (lệch TB 1.89°C, trúng ô ~16%). Chiến dịch này cược <b>NO vào chính ô GFS chỉ vào</b> — đánh TẤT CẢ lệnh thắng lời ≥ $3 cho mỗi $10 (giá NO ≤ 77¢), không lọc gì thêm, không giới hạn số lệnh/ngày. ⚠ Backtest 09–16/07: <b style="color:var(--bad)">−51.83$</b> trên 114 lệnh đã chốt — chạy để kiểm chứng bằng dữ liệu mới.</p>
+  <p class="pdesc">GFS là mô hình đo tệ nhất (lệch TB 1.89°C, trúng ô ~16%). Chiến dịch này cược <b>NO vào chính ô GFS chỉ vào</b> — đánh lệnh thắng lời ≥ $3 cho mỗi $10 (giá NO ≤ 77¢). <b style="color:#4ade80">v2 (19/07): thêm bộ lọc đồng thuận</b> — trong 5 nguồn (Polymarket, ECMWF, GFS, ICON, UKMO), nếu ≥ 3 nguồn cùng chỉ vào đúng ô định NO thì <b>bỏ qua</b> (không cược ngược khi nhiều nguồn độc lập đồng ý — khả năng ô đó trúng thật rất cao). Lý do sửa: đến 19/07 thắng 61.1% nhưng cần ~68% mới hòa vốn, lỗ -23.79$.</p>
   <div class="cards" style="margin-bottom:14px">
     <div class="card"><b id="p5-balance">–</b><span>số dư khả dụng (ảo)</span></div>
     <div class="card"><b id="p5-pnl">–</b><span>lãi/lỗ đã chốt</span></div>
@@ -177,9 +177,9 @@
 </div>
 
 <div class="panel">
-  <div class="ptitle">👑 Chiến dịch 6 — Mua YES ô đám đông tin nhất <span class="chip risk">LUẬT ĐÓNG BĂNG 16/07 · $1500 ảo</span>
+  <div class="ptitle">👑 Chiến dịch 6 — Mua YES ô đám đông tin nhất <span class="chip risk">SỬA LUẬT 19/07 · $3000 ảo</span>
     <span style="margin-left:auto;font-weight:400;font-size:12px;color:var(--mut)">Chọn ngày <select id="p6-day"><option value="all">tất cả</option></select></span></div>
-  <p class="pdesc">Mua YES vào ô được chợ định giá cao nhất, chỉ khi giá 30–70¢, ở mọi lần chụp. Cơ sở: đám đông trả thiếu cho cửa nặng ký (favorite-longshot bias). Backtest 09–15/07: <b style="color:var(--good)">+273$</b>/243 lệnh, ngày tệ nhất −0.35$. Đây là kiểm chứng tiến cứu — không chỉnh luật trong 4 tuần.</p>
+  <p class="pdesc">Mua YES vào ô được chợ định giá cao nhất. <b style="color:#4ade80">v2 (19/07): chỉ tin chợ khi chợ tự tin thật</b> — nâng ngưỡng vào lệnh từ 30–70¢ lên <b>62–97¢</b>, và thêm ngân sách $1500 → $3000 (bản cũ hết vốn vì 115 lệnh mở). Lý do sửa: luật cũ thắng chỉ 32.8% (39/119), lỗ -306.97$ — vùng giá thấp nghĩa là chính đám đông cũng không chắc, không có "cửa nặng ký" thật để hưởng favorite-longshot bias. Lệnh trước 19/07 trong bảng thuộc luật cũ.</p>
   <div class="cards" style="margin-bottom:14px">
     <div class="card"><b id="p6-balance">–</b><span>số dư khả dụng (ảo)</span></div>
     <div class="card"><b id="p6-pnl">–</b><span>lãi/lỗ đã chốt</span></div>
@@ -199,7 +199,7 @@
 <div class="panel">
   <div class="ptitle">🛡️ Chiến dịch 7 — NO ô GFS, giá NO 70–100¢ <span class="chip risk">LUẬT ĐÓNG BĂNG 16/07 · $1500 ảo</span>
     <span style="margin-left:auto;font-weight:400;font-size:12px;color:var(--mut)">Chọn ngày <select id="p7-day"><option value="all">tất cả</option></select></span></div>
-  <p class="pdesc">Cược NO vào ô GFS chỉ (mô hình đo tệ nhất, trúng ~16%), chỉ nhận lệnh giá NO 70–100¢, vào trước ngày mục tiêu 1–2 ngày. Backtest 09–14/07: <b style="color:var(--good)">+115$</b>/227 lệnh, dương cả 5/5 ngày, dao động ±12$. Kiểm chứng tiến cứu — không chỉnh luật trong 4 tuần.</p>
+  <p class="pdesc">Cược NO vào ô GFS chỉ (mô hình đo tệ nhất, trúng ~16%), chỉ nhận lệnh giá NO 70–100¢, vào trước ngày mục tiêu 1–2 ngày. <b style="color:#fbbf24">⏳ NOTE 19/07: dự kiến BỎ — test thêm 2 ngày (đến hết 21/07) rồi quyết định.</b> Số liệu đến 19/07: thắng 84.6% (66/78) nhưng giá NO trung bình ~87.6¢ cần thắng ~91% mới hòa vốn → lỗ -35.73$.</p>
   <div class="cards" style="margin-bottom:14px">
     <div class="card"><b id="p7-balance">–</b><span>số dư khả dụng (ảo)</span></div>
     <div class="card"><b id="p7-pnl">–</b><span>lãi/lỗ đã chốt</span></div>
@@ -239,7 +239,7 @@
 <div class="panel">
   <div class="ptitle">🎯 Chiến dịch 9 — Theo đám đông 2 đầu, chỉ ngày mục tiêu là HÔM NAY <span class="chip risk">SỬA LUẬT 17/07 · $1500 ảo</span>
     <span style="margin-left:auto;font-weight:400;font-size:12px;color:var(--mut)">Chọn ngày <select id="p9-day"><option value="all">tất cả</option></select></span></div>
-  <p class="pdesc">Quét trực tiếp giá Polymarket mỗi 5 phút, <b>chỉ xét market có ngày mục tiêu = HÔM NAY (ngày T)</b> — cho cả 2 phía. <b>Phía YES</b>: chia giá thành 4 khoảng 60-69¢ / 70-79¢ / 80-89¢ / 90-97¢, mỗi khoảng chỉ mua YES đúng 1 lần cho mỗi ô (dù quét lại bao nhiêu lần hay giá nhích thế nào trong khoảng đó) — nếu giá leo qua nhiều khoảng theo thời gian thì mua thêm ở khoảng mới, tối đa 4 lệnh/ô. <b>Phía NO</b>: ô nào <i>từng đạt đỉnh giá trong khoảng 40-70¢</i> (tức đám đông từng coi là ứng viên nghiêm túc), sau đó giá tuột qua khoảng 20-29¢ thì mua NO 1 lần, tuột tiếp qua khoảng 10-19¢ thì mua thêm NO 1 lần nữa (tối đa 2 lệnh/ô, giống cách phía YES mua thêm khi giá càng lúc càng cao) — dưới 10¢ thì bỏ qua vì coi như đã gần chắc chắn, mua NO lúc đó gần như không còn lời. Cơ sở: favorite-longshot bias. Mỗi lệnh ghi sẵn "nếu thắng được bao nhiêu" và với lệnh NO còn ghi rõ đỉnh giá từng đạt. Chưa có backtest lịch sử — đây là kiểm chứng tiến cứu, đã sửa luật vài lần trong ngày đầu (xem ghi chú code để biết lý do).</p>
+  <p class="pdesc">Quét trực tiếp giá Polymarket mỗi 5 phút, <b>chỉ xét market có ngày mục tiêu = HÔM NAY (ngày T)</b> — cho cả 2 phía. <b>Phía YES</b>: chia giá thành 4 khoảng 60-69¢ / 70-79¢ / 80-89¢ / 90-97¢, mỗi khoảng chỉ mua YES đúng 1 lần cho mỗi ô (dù quét lại bao nhiêu lần hay giá nhích thế nào trong khoảng đó) — nếu giá leo qua nhiều khoảng theo thời gian thì mua thêm ở khoảng mới, tối đa 4 lệnh/ô. <b>Phía NO</b>: ô nào <i>từng đạt đỉnh giá trong khoảng 40-70¢</i> (tức đám đông từng coi là ứng viên nghiêm túc), sau đó giá tuột qua khoảng 20-29¢ thì mua NO 1 lần, tuột tiếp qua khoảng 10-19¢ thì mua thêm NO 1 lần nữa (tối đa 2 lệnh/ô, giống cách phía YES mua thêm khi giá càng lúc càng cao) — dưới 10¢ thì bỏ qua vì coi như đã gần chắc chắn, mua NO lúc đó gần như không còn lời. Cơ sở: favorite-longshot bias. Mỗi lệnh ghi sẵn "nếu thắng được bao nhiêu" và với lệnh NO còn ghi rõ đỉnh giá từng đạt. Chưa có backtest lịch sử — đây là kiểm chứng tiến cứu, đã sửa luật vài lần trong ngày đầu (xem ghi chú code để biết lý do). <b style="color:#fbbf24">⏳ NOTE 19/07: giữ test thêm 2 ngày (đến hết 21/07) rồi đánh giá.</b> Số liệu đến 19/07: phía NO thắng 93.2% (41/44), lời +39.48$ — phía duy nhất toàn hệ thống vượt ngưỡng hòa vốn rõ; phía YES lỗ -90.85$, thủ phạm chính là khoảng 60-69¢ (thắng 51.4%). Hướng sau 21/07: cân nhắc bỏ khoảng YES 60-69¢, giữ nguyên NO.</p>
   <div class="cards" style="margin-bottom:14px">
     <div class="card"><b id="p9-balance">–</b><span>số dư khả dụng (ảo)</span></div>
     <div class="card"><b id="p9-pnl">–</b><span>lãi/lỗ đã chốt</span></div>
@@ -257,9 +257,9 @@
 </div>
 
 <div class="panel">
-  <div class="ptitle">🧮 Chiến dịch 10 — Xác suất ensemble GFS vs giá thị trường <span class="chip">MỚI 18/07 · $1500 ảo</span>
+  <div class="ptitle">🧮 Chiến dịch 10 — Xác suất ensemble GFS vs giá thị trường <span class="chip">SỬA 19/07 · $3000 ảo</span>
     <span style="margin-left:auto;font-weight:400;font-size:12px;color:var(--mut)">Chọn ngày <select id="p10-day"><option value="all">tất cả</option></select></span></div>
-  <p class="pdesc">Phương pháp mà nhiều bot thời tiết có lãi công khai đang dùng: lấy <b>GFS ensemble ~31 kịch bản dự báo chạy song song</b> (Open-Meteo, model gfs025), đếm bao nhiêu % kịch bản cho nhiệt độ cao nhất rơi vào từng ô → ra <b>xác suất mô hình</b> của ô đó. So với giá Polymarket: mô hình tin hơn chợ ≥ 8 điểm % → mua YES; chợ tin hơn mô hình ≥ 8 điểm % → mua NO. Khác CD3/CD5 ở chỗ dùng cả <i>phân phối xác suất</i> thay vì 1 con số dự báo điểm. Vào lệnh khi còn 0-2 ngày tới ngày mục tiêu, mỗi (ô, phía) chỉ vào 1 lần, $10/lệnh, cần ≥10 kịch bản hợp lệ. Chưa có backtest — kiểm chứng tiến cứu từ 18/07, chạy song song để so trực tiếp với CD9.</p>
+  <p class="pdesc">Phương pháp mà nhiều bot thời tiết có lãi công khai đang dùng: lấy <b>GFS ensemble ~31 kịch bản dự báo chạy song song</b> (Open-Meteo, model gfs025), đếm bao nhiêu % kịch bản cho nhiệt độ cao nhất rơi vào từng ô → ra <b>xác suất mô hình</b> của ô đó. So với giá Polymarket: mô hình tin hơn chợ ≥ 8 điểm % → mua YES; chợ tin hơn mô hình ≥ 8 điểm % → mua NO. Khác CD3/CD5 ở chỗ dùng cả <i>phân phối xác suất</i> thay vì 1 con số dự báo điểm. Vào lệnh khi còn 0-2 ngày tới ngày mục tiêu, mỗi (ô, phía) chỉ vào 1 lần, $10/lệnh, cần ≥10 kịch bản hợp lệ. Chưa có backtest — kiểm chứng tiến cứu từ 18/07, chạy song song để so trực tiếp với CD9. <b style="color:#4ade80">v2 (19/07): thêm ngân sách $1500 → $3000 + thêm giới hạn</b> (bản cũ vào quá nhiều lệnh: 145 lệnh mở giam 1496$/1500$ chỉ sau 1 ngày): tối đa <b>10 lệnh mới/lần quét</b> (ưu tiên lệch to nhất) và trần <b>120 lệnh đang mở</b> toàn cục.</p>
   <div class="cards" style="margin-bottom:14px">
     <div class="card"><b id="p10-balance">–</b><span>số dư khả dụng (ảo)</span></div>
     <div class="card"><b id="p10-pnl">–</b><span>lãi/lỗ đã chốt</span></div>
@@ -277,9 +277,9 @@
 </div>
 
 <div class="panel">
-  <div class="ptitle">✂️ Chiến dịch 11 — Bản tinh gọn của CD9 theo backtest 8 ngày <span class="chip">MỚI 18/07 · $1500 ảo</span>
+  <div class="ptitle">✂️ Chiến dịch 11 — Bản tinh gọn của CD9 theo backtest 8 ngày <span class="chip" style="background:rgba(138,148,176,.2);color:var(--mut)">⛔ ĐÃ DỪNG 19/07</span>
     <span style="margin-left:auto;font-weight:400;font-size:12px;color:var(--mut)">Chọn ngày <select id="p11-day"><option value="all">tất cả</option></select></span></div>
-  <p class="pdesc">Giống hệt CD9 nhưng <b>phía YES chỉ mua 2 khoảng giá đã kiểm chứng bằng backtest 09-17/07</b>: khoảng <b>65-74¢</b> (backtest 93% thắng) và <b>85-97¢</b> (backtest 100% thắng, 25/25) — mỗi khoảng mua đúng 1 lần/ô. Bỏ hẳn vùng giữa 75-85¢ vì backtest cho thấy vùng "tự tin nhưng chưa chắc chắn" này lỗ, và bỏ vùng 60-65¢ vì lãi kém. <b>Phía NO giữ nguyên CD9 v9</b>: ô từng đạt đỉnh 40-70¢ rồi tuột qua 20-29¢ mua NO 1 lần, tuột tiếp qua 10-19¢ mua thêm 1 lần. Chỉ xét market ngày HÔM NAY, loại Los Angeles, $10/lệnh, quét mỗi 2 phút trên VPS. Chạy song song với CD9 (giữ nguyên luật cũ) làm nhóm đối chứng — sau 1-2 tuần so trực tiếp xem bản gọn có thật sự đều hơn không.</p>
+  <p class="pdesc"><b>Đã dừng 19/07.</b> Kết quả cuối: 101 lệnh chốt, thắng 76.2%, <b style="color:var(--bad)">lỗ -89.75$</b> — nặng nhất trong các chiến dịch đang chạy. Lý do dừng: (1) hai khoảng YES "vàng" 65-74¢/85-97¢ hóa ra là <b>ảo ảnh của backtest thưa mẫu</b> — backtest chụp giá 2 lần/ngày chỉ thấy ô đứng vững trong vùng giá, còn bot thật quét 15s bắt cả ô chỉ lướt qua vài phút (ứng viên yếu, dễ rớt); thực tế thắng 72.1% trong khi cần ~78% mới hòa vốn. (2) Phía NO trùng 100% với CD9 đang giữ làm đối chứng — giữ thêm không cho thông tin mới. Số liệu dưới là lịch sử.</p>
   <div class="cards" style="margin-bottom:14px">
     <div class="card"><b id="p11-balance">–</b><span>số dư khả dụng (ảo)</span></div>
     <div class="card"><b id="p11-pnl">–</b><span>lãi/lỗ đã chốt</span></div>
