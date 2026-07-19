@@ -78,7 +78,7 @@
     <b>1.</b> Nhìn thẻ <b>"Lãi/lỗ ảo tổng"</b> — số xanh dương nghĩa là 3 chiến lược đang kiếm được tiền (ảo), số đỏ là đang lỗ.<br>
     <b>2.</b> Nhìn <b>biểu đồ cột vàng</b> — nguồn dự báo nào đứng đầu là nguồn đáng tin nhất (chọn "trước 1 ngày" để chấm điểm công bằng).<br>
     <b>3.</b> Quy tắc <b>vào lệnh trên hay dưới</b>: nếu nguồn đứng đầu chỉ vào khoảng nhiệt độ <b>THẤP hơn</b> khoảng Polymarket tin nhất → cơ hội ở cửa DƯỚI (mua ô thấp); chỉ vào khoảng <b>CAO hơn</b> → cửa TRÊN. Chỉ đáng chú ý khi giá ô đó ≤ 30¢.<br>
-    <b>4.</b> Đừng tự làm vội: chiến dịch 🌡️ bên dưới <b>đang tự động làm đúng quy tắc này bằng tiền ảo</b> — nhìn nó thắng hay thua vài tuần trước, rồi hãy quyết định có bắt chước bằng tiền thật hay không.
+    <b>4.</b> Đừng tự làm vội: các chiến dịch bên dưới <b>đang tự động thử nghiệm quy tắc bằng tiền ảo</b> — nhìn chúng thắng hay thua vài tuần trước, rồi hãy quyết định có bắt chước bằng tiền thật hay không.
   </div>
 </div>
 
@@ -88,50 +88,6 @@
   <div class="card"><b id="c-events">–</b><span>thị trường theo dõi</span></div>
   <div class="card"><b id="c-resolved">–</b><span>đã có kết quả</span></div>
   <div class="card"><b id="c-cities">–</b><span>thành phố</span></div>
-</div>
-
-<div class="panel">
-  <div class="ptitle">💰 Chiến dịch 1 — Arbitrage "mua trọn bộ" <span class="chip safe">gần như không rủi ro · $200 ảo</span></div>
-  <p class="pdesc">Bot quét 600 chợ mỗi giờ. Khi tổng giá mua MỌI kết cục &lt; $1 (sau phí), mua hết → chắc chắn nhận $1/bộ. Lợi nhuận khóa chặt ngay lúc mua.</p>
-  <div class="cards" style="margin-bottom:14px">
-    <div class="card"><b id="a-profit" style="color:var(--good)">–</b><span>lợi nhuận tích lũy (ảo)</span></div>
-    <div class="card"><b id="a-open">–</b><span>vị thế đang mở</span></div>
-    <div class="card"><b id="a-count">–</b><span>tổng lần bắt được</span></div>
-  </div>
-  <table id="opps"><thead><tr>
-    <th>Lúc (UTC)</th><th>Loại</th><th>Thị trường</th><th>Lãi ròng</th><th>Chi tiết</th>
-  </tr></thead><tbody></tbody></table>
-  <div class="note">Giá là đầu sổ lệnh — khớp thật có thể kém hơn. Cơ hội sống vài phút→vài giờ; muốn làm tay chỉ theo dòng &lt; 1 giờ tuổi và tự cộng lại giá.</div>
-</div>
-
-<div class="panel">
-  <div class="ptitle">🪙 Chiến dịch 2 — BTC/ETH vs thị trường quyền chọn <span class="chip risk">rủi ro vừa · $200 ảo</span></div>
-  <p class="pdesc">Xác suất "Bitcoin trên $X" được tính từ sàn quyền chọn Deribit (nơi chuyên nghiệp định giá). Khi Polymarket lệch ≥ 8 điểm % sau phí → mua ảo $10 đúng phía chênh lệch.</p>
-  <div class="cards" style="margin-bottom:14px">
-    <div class="card"><b id="k-balance">–</b><span>số dư khả dụng (ảo)</span></div>
-    <div class="card"><b id="k-pnl">–</b><span>lãi/lỗ đã chốt</span></div>
-    <div class="card"><b id="k-record">–</b><span>thắng / thua</span></div>
-    <div class="card"><b id="k-open">–</b><span>lệnh đang mở</span></div>
-  </div>
-  <div class="pdesc" id="k-sum" style="color:var(--txt);font-weight:600"></div><table id="crypto"><thead><tr>
-    <th>Vào lệnh</th><th>Coin</th><th>Phía</th><th>Giá</th><th>Deribit nói</th><th>Lệch</th><th>Trạng thái</th><th>Lãi/lỗ</th>
-  </tr></thead><tbody></tbody></table>
-  <div class="note">Mô hình bỏ qua skew quyền chọn nên chỉ bắt lệch rất lớn — có thể nhiều ngày không có lệnh nào. Không có lệnh = không có cơ hội đạt chuẩn, đó là thông tin tốt.</div>
-</div>
-
-<div class="panel">
-  <div class="ptitle">🌡️ Chiến dịch 3 — Mô hình thời tiết cãi thị trường <span class="chip" style="background:rgba(138,148,176,.2);color:var(--mut)">⛔ ĐÃ DỪNG 19/07</span></div>
-  <p class="pdesc"><b>Đã dừng 19/07</b> cùng CD1/CD2 theo đợt tinh gọn (kết quả cuối: 4 thắng / 59 thua, -197.04$ — mô hình cãi chợ thua áp đảo). Số liệu dưới là lịch sử, không vào lệnh mới. Luật cũ: trung vị 5 mô hình chỉ ô KHÁC ô đám đông tin và giá ≤ 30¢ → mua ảo $5.</p>
-  <div class="cards" style="margin-bottom:14px">
-    <div class="card"><b id="p-balance">–</b><span>số dư khả dụng (ảo)</span></div>
-    <div class="card"><b id="p-pnl">–</b><span>lãi/lỗ đã chốt</span></div>
-    <div class="card"><b id="p-record">–</b><span>thắng / thua</span></div>
-    <div class="card"><b id="p-open">–</b><span>lệnh đang mở</span></div>
-  </div>
-  <div class="pdesc" id="p-sum" style="color:var(--txt);font-weight:600"></div><table id="paper"><thead><tr>
-    <th>Vào lệnh</th><th>Thành phố</th><th>Ngày</th><th>Mua ô</th><th>Giá</th>
-    <th>Mô hình nói</th><th>Chợ tin</th><th>Trạng thái</th><th>Lãi/lỗ</th>
-  </tr></thead><tbody></tbody></table>
 </div>
 
 <div class="panel">
@@ -448,17 +404,10 @@ const badge=s=>{const m={open:['b-open','đang mở'],won:['b-won','THẮNG'],lo
   const x=m[s]||['b-void',s];return `<span class="badge ${x[0]}">${x[1]}</span>`;};
 
 let SNAPS=[],RES={},chart=null,chartEq=null;
-let PAPER_ROWS=[],ARB_ROWS=[],CRYPTO_ROWS=[],PAPER4_ROWS=[],PAPER5_ROWS=[],PAPER6_ROWS=[],PAPER7_ROWS=[],PAPER8_ROWS=[],PAPER9_ROWS=[],PAPER10_ROWS=[],PAPER11_ROWS=[],PAPER12_ROWS=[],PAPER14_ROWS=[];
+let PAPER4_ROWS=[],PAPER5_ROWS=[],PAPER6_ROWS=[],PAPER7_ROWS=[],PAPER8_ROWS=[],PAPER9_ROWS=[],PAPER10_ROWS=[],PAPER11_ROWS=[],PAPER12_ROWS=[],PAPER14_ROWS=[];
 function renderEquity(){
   const days=new Set();
-  const day1={A:{},C:{},W:{},W4:{},W5:{},W6:{},W7:{},W8:{},W9:{},W11:{},W12:{},W14:{}};
-  ARB_ROWS.forEach(t=>{if(t.status==='open')return;
-    const d=(t.settle_utc||t.entry_utc||'').slice(0,10);if(!d)return;
-    days.add(d);day1.A[d]=(day1.A[d]||0)+(num(t.locked_profit)||0);});
-  CRYPTO_ROWS.forEach(t=>{if(t.status==='open'||!t.settle_utc)return;const d=t.settle_utc.slice(0,10);
-    days.add(d);day1.C[d]=(day1.C[d]||0)+(num(t.pnl)||0);});
-  PAPER_ROWS.forEach(t=>{if(t.status==='open'||!t.settle_utc)return;const d=t.settle_utc.slice(0,10);
-    days.add(d);day1.W[d]=(day1.W[d]||0)+(num(t.pnl)||0);});
+  const day1={W4:{},W5:{},W6:{},W7:{},W8:{},W9:{},W11:{},W12:{},W14:{}};
   PAPER4_ROWS.forEach(t=>{if(t.status==='open'||!t.settle_utc)return;const d=t.settle_utc.slice(0,10);
     days.add(d);day1.W4[d]=(day1.W4[d]||0)+(num(t.pnl)||0);});
   PAPER5_ROWS.forEach(t=>{if(t.status==='open'||!t.settle_utc)return;const d=t.settle_utc.slice(0,10);
@@ -484,9 +433,6 @@ function renderEquity(){
   chartEq=new Chart(document.getElementById('equityChart'),{
     type:'line',
     data:{labels:axis.map(d=>d.slice(5)),datasets:[
-      {label:'💰 Arbitrage',data:line('A'),borderColor:'#34d399',backgroundColor:'#34d399',tension:.25,pointRadius:3},
-      {label:'🪙 Crypto',data:line('C'),borderColor:'#6ea8ff',backgroundColor:'#6ea8ff',tension:.25,pointRadius:3},
-      {label:'🌡️ Thời tiết',data:line('W'),borderColor:'#fb7185',backgroundColor:'#fb7185',tension:.25,pointRadius:3},
       {label:'🎯 CD4 — NO ≥1.35 ($1000)',data:line('W4',1000),borderColor:'#fbbf24',backgroundColor:'#fbbf24',tension:.25,pointRadius:3},
       {label:'🎲 CD5 — nguoc GFS ($1000)',data:line('W5',1000),borderColor:'#a78bfa',backgroundColor:'#a78bfa',tension:.25,pointRadius:3},
       {label:'👑 CD6 — YES dam dong ($1500)',data:line('W6',1500),borderColor:'#f472b6',backgroundColor:'#f472b6',tension:.25,pointRadius:3},
@@ -502,9 +448,9 @@ function renderEquity(){
         x:{grid:{display:false},ticks:{color:'#8a94b0'}}}}
   });
 }
-const TOTALS={arb:0,crypto:0,weather:0,weather4:0,weather5:0,weather6:0,weather7:0,weather8:0,weather9:0,weather10:0,weather11:0,weather12:0,weather14:0};
+const TOTALS={weather4:0,weather5:0,weather6:0,weather7:0,weather8:0,weather9:0,weather10:0,weather11:0,weather12:0,weather14:0};
 function updateTotal(){
-  const t=TOTALS.arb+TOTALS.crypto+TOTALS.weather+TOTALS.weather4+TOTALS.weather5+TOTALS.weather6+TOTALS.weather7+TOTALS.weather8+TOTALS.weather9+TOTALS.weather10+TOTALS.weather11+TOTALS.weather12+TOTALS.weather14;
+  const t=TOTALS.weather4+TOTALS.weather5+TOTALS.weather6+TOTALS.weather7+TOTALS.weather8+TOTALS.weather9+TOTALS.weather10+TOTALS.weather11+TOTALS.weather12+TOTALS.weather14;
   const el=document.getElementById('c-total');
   el.textContent=(t>=0?'+$':'-$')+Math.abs(t).toFixed(2);
   el.style.color=t>=0?'var(--good)':'var(--bad)';
@@ -533,127 +479,7 @@ async function load(){
     const o=document.createElement('option');o.value=d;o.textContent=d;sel.appendChild(o);
     const o2=document.createElement('option');o2.value=d;o2.textContent=d;ld.appendChild(o2);
   });
-  loadOpps(); loadPaper(); loadPaper4(); loadPaper5(); loadPaper6(); loadPaper7(); loadPaper8(); loadPaper9(); loadPaper10(); loadPaper11(); loadPaper12(); loadPaper14(); loadArb(); loadCrypto(); render();
-}
-
-async function loadOpps(){
-  let txt='';
-  try{ txt=await (await fetch('data/opportunities.csv',{cache:'no-store'})).text(); }catch(e){}
-  const tb=document.querySelector('#opps tbody');tb.innerHTML='';
-  if(!txt.includes('event_slug')){
-    tb.innerHTML='<tr><td colspan="5" style="color:var(--mut)">Chưa bắt được cơ hội nào có lãi ròng — bot quét tiếp mỗi giờ.</td></tr>';
-    return;
-  }
-  const kindVN={negrisk_buy_all:'Mua trọn bộ ✅',negrisk_sell_all:'Bán trọn bộ',
-    negrisk_gan_dat:'Gần đạt (theo dõi)',
-    crypto_btc:'BTC lệch giá',crypto_eth:'ETH lệch giá'};
-  parseCSV(txt).reverse().slice(0,15).forEach(r=>{
-    const slug=(r.event_slug||'').replace(/-\d+c(orbelow|orhigher)?$/,'');
-    const e=num(r.edge);
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${(r.scan_utc||'').slice(5,16).replace('T',' ')}</td>
-      <td>${kindVN[r.kind]||r.kind}</td>
-      <td><a target="_blank" href="https://polymarket.com/event/${slug}">${slug.slice(0,48)}</a></td>
-      <td class="hit">${e==null?'–':'+'+(100*e).toFixed(1)+'%'}</td>
-      <td style="color:var(--mut)">${r.detail||''}</td>`;
-    tb.appendChild(tr);
-  });
-}
-
-async function loadArb(){
-  let txt='';
-  try{ txt=await (await fetch('data/arb_trades.csv',{cache:'no-store'})).text(); }catch(e){}
-  let profit=0,open=0,count=0;
-  if(txt.includes('event_slug')){
-    const rows=parseCSV(txt);count=rows.length;ARB_ROWS=rows;
-    rows.forEach(r=>{ profit+=num(r.locked_profit)||0; if(r.status==='open')open++; });
-  }
-  TOTALS.arb=profit;updateTotal();renderEquity();
-  document.getElementById('a-profit').textContent='+$'+profit.toFixed(2);
-  document.getElementById('a-open').textContent=open;
-  document.getElementById('a-count').textContent=count;
-}
-
-async function loadCrypto(){
-  let txt='';
-  try{ txt=await (await fetch('data/crypto_trades.csv',{cache:'no-store'})).text(); }catch(e){}
-  const tb=document.querySelector('#crypto tbody');tb.innerHTML='';
-  if(!txt.includes('market_slug')){
-    tb.innerHTML='<tr><td colspan="8" style="color:var(--mut)">Chưa có lệnh — Polymarket đang định giá sát Deribit (lệch < 8%). Bot canh tiếp mỗi giờ.</td></tr>';
-    document.getElementById('k-balance').textContent='$200.00';
-    document.getElementById('k-pnl').textContent='+0.00 $';
-    document.getElementById('k-record').textContent='0 / 0';
-    document.getElementById('k-open').textContent='0';
-    return;
-  }
-  const rows=parseCSV(txt);
-  let realized=0,openCost=0,won=0,lost=0,open=0;
-  rows.forEach(r=>{
-    if(r.status==='open'){open++;openCost+=(num(r.stake)||0)+(num(r.fee)||0);}
-    else{realized+=num(r.pnl)||0;if(r.status==='won')won++;if(r.status==='lost')lost++;}
-  });
-  CRYPTO_ROWS=rows;
-  TOTALS.crypto=realized;updateTotal();renderEquity();
-  document.getElementById('k-balance').textContent='$'+(200+realized-openCost).toFixed(2);
-  const kp=document.getElementById('k-pnl');
-  kp.textContent=(realized>=0?'+':'')+realized.toFixed(2)+' $';
-  kp.style.color=realized>=0?'var(--good)':'var(--bad)';
-  document.getElementById('k-record').textContent=won+' / '+lost;
-  document.getElementById('k-open').textContent=open;
-  const kSum=document.getElementById('k-sum');
-  if(kSum)kSum.innerHTML=`✅ ${won} thắng · ❌ ${lost} thua · ⏳ ${open} đang mở — lãi/lỗ đã chốt <b style="color:${realized>=0?'var(--good)':'var(--bad)'}">${(realized>=0?'+':'')+realized.toFixed(2)} $</b>`;
-  const nowIso=new Date().toISOString();
-  rows.slice(-15).reverse().forEach(r=>{
-    const st=(r.status==='open'&&r.end_date&&r.end_date<nowIso)?'overdue':r.status;
-    const cls=r.status==='won'?'hit':(r.status==='lost'?'miss':'');
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${(r.entry_utc||'').slice(5,16).replace('T',' ')}</td>
-      <td>${r.ccy}</td><td>${r.side}</td><td>${r.price}</td>
-      <td>${r.model_prob?(100*num(r.model_prob)).toFixed(0)+'%':'–'}</td>
-      <td>+${(100*(num(r.edge)||0)).toFixed(0)}%</td>
-      <td>${badge(st)}</td>
-      <td class="${cls}">${r.pnl?((+r.pnl>=0?'+':'')+(+r.pnl).toFixed(2)+' $'):'–'}</td>`;
-    tb.appendChild(tr);
-  });
-}
-
-async function loadPaper(){
-  let txt='';
-  try{ txt=await (await fetch('data/trades.csv',{cache:'no-store'})).text(); }catch(e){}
-  const tb=document.querySelector('#paper tbody');tb.innerHTML='';
-  if(!txt.includes('event_slug')){
-    tb.innerHTML='<tr><td colspan="9" style="color:var(--mut)">Chưa có lệnh — hệ thống vào lệnh mỗi ngày ~19:10 giờ VN khi có ca đạt chuẩn.</td></tr>';
-    return;
-  }
-  const rows=parseCSV(txt);
-  let realized=0,openCost=0,won=0,lost=0,open=0;
-  rows.forEach(r=>{
-    if(r.status==='open'){open++;openCost+=(num(r.stake)||0)+(num(r.fee)||0);}
-    else{realized+=num(r.pnl)||0;if(r.status==='won')won++;if(r.status==='lost')lost++;}
-  });
-  PAPER_ROWS=rows;
-  TOTALS.weather=realized;updateTotal();renderEquity();
-  document.getElementById('p-balance').textContent='$'+(200+realized-openCost).toFixed(2);
-  const pp=document.getElementById('p-pnl');
-  pp.textContent=(realized>=0?'+':'')+realized.toFixed(2)+' $';
-  pp.style.color=realized>=0?'var(--good)':'var(--bad)';
-  document.getElementById('p-record').textContent=won+' / '+lost;
-  document.getElementById('p-open').textContent=open;
-  const pSum=document.getElementById('p-sum');
-  if(pSum)pSum.innerHTML=`✅ ${won} thắng · ❌ ${lost} thua · ⏳ ${open} đang mở — lãi/lỗ đã chốt <b style="color:${realized>=0?'var(--good)':'var(--bad)'}">${(realized>=0?'+':'')+realized.toFixed(2)} $</b>${(200+realized-openCost)<5?' · <span style=\"color:var(--gold)\">⚠ hết ngân sách ảo, bot ngừng vào lệnh mới</span>':''}`;
-  const todayIso=new Date().toISOString().slice(0,10);
-  rows.slice(-20).reverse().forEach(r=>{
-    const st=(r.status==='open'&&r.target_date&&r.target_date<todayIso)?'overdue':r.status;
-    const cls=r.status==='won'?'hit':(r.status==='lost'?'miss':'');
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${(r.entry_utc||'').slice(5,16).replace('T',' ')}</td>
-      <td>${r.city}</td><td>${(r.target_date||'').slice(5)}</td>
-      <td>${r.bucket}</td><td>${r.ask}</td>
-      <td>${r.model_median_c}°C</td><td>${r.pm_top_bucket}</td>
-      <td>${badge(st)}</td>
-      <td class="${cls}">${r.pnl?((+r.pnl>=0?'+':'')+(+r.pnl).toFixed(2)+' $'):'–'}</td>`;
-    tb.appendChild(tr);
-  });
+  loadPaper4(); loadPaper5(); loadPaper6(); loadPaper7(); loadPaper8(); loadPaper9(); loadPaper10(); loadPaper11(); loadPaper12(); loadPaper14(); render();
 }
 
 async function loadPaper4(){
