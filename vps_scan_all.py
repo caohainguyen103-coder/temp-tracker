@@ -34,6 +34,7 @@ import collect
 import paper_trade9 as P9
 import paper_trade12 as P12
 import paper_trade14 as P14
+import paper_trade15 as P15  # 19/07: NO nhu CD9 + dao chieu YES x3
 
 
 def _write(path, fields, trades):
@@ -61,10 +62,12 @@ def main():
     s9, n9 = _run(P9, P9.TRADES9_CSV, P9.TRADE_FIELDS9, now, events)
     s12, n12 = _run(P12, P12.TRADES12_CSV, P12.TRADE_FIELDS12, now, events)
     s14, n14 = _run(P14, P14.TRADES14_CSV, P14.TRADE_FIELDS14, now, events)
+    s15, n15 = _run(P15, P15.TRADES15_CSV, P15.TRADE_FIELDS15, now, events)
 
     print(f"[SCAN ALL] {now} | {len(events)} event nhiet do | "
           f"CD9 chot{s9}/moi{n9} | "
-          f"CD12 chot{s12}/moi{n12} | CD14 chot{s14}/moi{n14}")
+          f"CD12 chot{s12}/moi{n12} | CD14 chot{s14}/moi{n14} | "
+          f"CD15 chot{s15}/moi{n15}")
 
 
 if __name__ == "__main__":

@@ -56,7 +56,8 @@ while true; do
   if [ $((now_ts - last_commit_ts)) -ge $COMMIT_EVERY_SEC ]; then
     git add data/trades9.csv data/cd9_price_hist.csv data/trades10.csv \
             data/trades12.csv \
-            data/trades14.csv data/cd14_price_hist.csv data/stations.json 2>/dev/null
+            data/trades14.csv data/cd14_price_hist.csv \
+            data/trades15.csv data/cd15_price_hist.csv data/stations.json 2>/dev/null
     if ! git diff --cached --quiet; then
       git commit -q -m "VPS quet $(date -u +%Y-%m-%dT%H:%M:%S)"
       git push -q || { git pull --rebase -q || true; git push -q || true; }

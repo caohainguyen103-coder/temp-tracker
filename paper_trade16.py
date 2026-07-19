@@ -1,25 +1,27 @@
 # -*- coding: utf-8 -*-
 """
-paper_trade6.py — CHIẾN DỊCH 6: MUA YES Ô ĐÁM ĐÔNG TIN NHẤT, tiền ảo $3000.
-KHÔNG dùng tiền thật.
+paper_trade16.py — CHIẾN DỊCH 16: MUA NO Ô ĐÁM ĐÔNG TIN NHẤT KHI GIÁ 30-70¢.
+KHÔNG dùng tiền thật. Tiền ảo $1500. Chạy trong daily.yml cùng nhịp CD6.
 
-Cơ sở: hiện tượng favorite-longshot bias — đám đông có xu hướng trả thiếu
-cho "cửa nặng ký". Backtest 09-15/07 (243 lệnh): +273$, ngày tệ nhất -0.35$.
+Ý TƯỞNG (19/07, theo yêu cầu): ĐẢO NGƯỢC CD6 v1. CD6 v1 mua YES ô đám đông
+tin nhất khi ask 30-70¢ và thua tan nát: thắng chỉ 32.8% (39/119), lỗ
+-306.97$ — vì ở vùng giá đó chính đám đông cũng KHÔNG chắc, "ô tin nhất"
+van truot toi ~67% so lan. Vay dat cuoc NGUOC lai: mua NO chinh o do.
+Neu ty le truot ~67% giu nguyen, NO thang ~67% voi gia NO trung binh
+~55c (can ~57% hoa von) -> ky vong duong nhe.
 
-Quy tắc v1 (16/07, đóng băng): mua YES ô đám đông tin nhất khi ask trong
-[0.30, 0.70]. KẾT QUẢ THỰC TẾ đến 19/07: thắng chỉ 32.8% (39/119), lỗ
--306.97$ — tệ nhất toàn hệ thống. Lý do: vùng 30-70c với ask trung bình
-~45c cần thắng >=45% mới hòa, nhưng ô "tin nhất" ở vùng giá thấp nghĩa là
-đám đông cũng KHÔNG chắc — không có favorite thật sự để hưởng bias.
-
-v2 (19/07): CHỈ TIN CHỢ KHI CHỢ TỰ TIN THẬT — nâng ngưỡng vào lệnh lên
-ask >= 0.62 (tối đa 0.97 để tránh giá cực đoan). Thêm ngân sách $1500 ->
-$3000 vì bản cũ hết vốn ảo (115 lệnh mở giam gần hết tiền).
-
-  - Vào ở mọi lần chụp (trong ngày, T+1, T+2). Mỗi event chỉ vào 1 lần.
-  - $10/lệnh, phí taker 5% x p x (1-p) như thật.
-  - Thắng khi ô phân giải = ô đã mua.
-Kết quả: data/trades6.csv
+Quy tắc:
+  - Ô mục tiêu = ô được thị trường định giá CAO NHẤT (đám đông tin nhất).
+  - MUA NO ô đó khi ask của ô trong [0.30, 0.70]. Ngoài khoảng -> bỏ.
+  - Giá NO = 1 - bid của ô. Vào ở mọi lần chụp (trong ngày, T+1, T+2).
+    Mỗi event chỉ vào 1 lần.
+  - $10/lệnh, ngân sách $1500, phí taker 5% x p x (1-p) như thật.
+  - Thắng khi ô phân giải KHÁC ô đã NO.
+CHƯA có kiểm chứng tiến cứu — suy ra từ nghịch đảo kết quả CD6 v1, cần
+theo dõi khách quan (nghịch đảo 1 chiến lược lỗ KHÔNG tự động thành lời
+vì còn phí + spread bid/ask).
+v1 (19/07): bản đầu tiên.
+Kết quả: data/trades16.csv
 """
 import os
 from datetime import datetime, timezone
@@ -27,11 +29,11 @@ from datetime import datetime, timezone
 import common as C
 import paper_trade as P
 
-TRADES6_CSV = C.DATA_DIR + "/trades6.csv"
-BUDGET = 3000.0   # v2: them ngan sach (cu 1500, het von vi 115 lenh mo)
+TRADES16_CSV = C.DATA_DIR + "/trades16.csv"
+BUDGET = 1500.0
 STAKE = 10.0
-MIN_ASK6 = 0.62   # v2: chi tin cho khi cho tu tin that (cu 0.30)
-MAX_ASK6 = 0.97   # v2: mo tran len 97c, van chan gia cuc doan (cu 0.70)
+MIN_ASK16 = 0.30
+MAX_ASK16 = 0.70
 FEE_RATE = 0.05
 
 
@@ -67,25 +69,30 @@ def enter(trades, snaps, full, now):
             continue
         pick = ranked[0]
         ask = P.to_float(pick.get("ask"))
-        if ask is None or not (MIN_ASK6 <= ask <= MAX_ASK6):
+        bid = P.to_float(pick.get("bid"))
+        if ask is None or not (MIN_ASK16 <= ask <= MAX_ASK16):
             continue
-        shares = round(STAKE / ask, 2)
-        fee = round(FEE_RATE * ask * (1 - ask) * shares, 4)
+        price = round(1 - bid, 3) if bid is not None else round(1 - ask, 3)
+        if not (0 < price < 1):
+            continue
+        shares = round(STAKE / price, 2)
+        fee = round(FEE_RATE * price * (1 - price) * shares, 4)
         if cash_available(trades) < STAKE + fee:
-            print("  [HET TIEN AO] (CD6) cho lenh cu chot da")
+            print("  [HET TIEN AO] (CD16) cho lenh cu chot da")
             break
         have.add(s["event_slug"])
         trades.append({
             "entry_utc": now, "event_slug": s["event_slug"], "city": s["city"],
             "target_date": s["target_date"], "lead_days": s["lead_days"],
-            "side": "YES", "bucket": pick["label"], "ask": ask, "shares": shares,
+            "side": "NO", "bucket": pick["label"], "ask": price, "shares": shares,
             "stake": STAKE, "fee": fee,
-            "model_median_c": round(100 * P.to_float(pick.get("p") or 0), 1),  # ghi % dam dong
+            "model_median_c": round(100 * P.to_float(pick.get("p") or 0), 1),  # % dam dong
             "pm_top_bucket": pick["label"],
             "status": "open", "payout": "", "pnl": "", "settle_utc": "",
         })
-        print(f"  VAO LENH AO (CD6): {s['city']} {s['target_date']} YES "
-              f"'{pick['label']}' @{ask} x{shares} co phan | dat 10 an {10/ask:.2f}")
+        print(f"  VAO LENH AO (CD16): {s['city']} {s['target_date']} NO "
+              f"'{pick['label']}' @{price} x{shares} co phan | dat 10 an {10/price:.2f} "
+              f"(dam dong tin {100*P.to_float(pick.get('p') or 0):.0f}%)")
         added += 1
     return added
 
@@ -95,28 +102,17 @@ def main():
     snaps = C.read_csv(C.SNAPSHOTS_CSV)
     results = {r.get("event_slug"): r for r in C.read_csv(C.RESULTS_CSV)
                if r.get("event_slug")}
-    trades = C.read_csv(TRADES6_CSV)
+    trades = C.read_csv(TRADES16_CSV)
     for t in trades:
         t.setdefault("status", "open")
-        t.setdefault("side", "YES")
-
-    # v2: XOA cac lenh dang mo khong dat chuan v2 (ask < 0.62 — vao theo
-    # luat v1 cu). Lenh da chot giu nguyen lam lich su. Chay moi lan de
-    # bao dam khong con lenh nao lot chuan cu.
-    before = len(trades)
-    trades = [t for t in trades
-              if t["status"] != "open"
-              or (P.to_float(t.get("ask")) or 0) >= MIN_ASK6]
-    n_purged = before - len(trades)
-    if n_purged:
-        print(f"  [DON DEP v2] xoa {n_purged} lenh mo vao theo luat v1 (ask < {MIN_ASK6})")
+        t.setdefault("side", "NO")
 
     n_settled = P.settle(trades, results)
     n_new = enter(trades, snaps, P.load_full_snapshots(), now)
 
     os.makedirs(C.DATA_DIR, exist_ok=True)
     import csv
-    with open(TRADES6_CSV, "w", newline="", encoding="utf-8") as f:
+    with open(TRADES16_CSV, "w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=P.TRADE_FIELDS, extrasaction="ignore")
         w.writeheader()
         w.writerows(trades)
@@ -126,7 +122,7 @@ def main():
                     if t["status"] == "open")
     won = sum(1 for t in trades if t["status"] == "won")
     lost = sum(1 for t in trades if t["status"] == "lost")
-    print(f"\n[CHIEN DICH 6 v2 — YES o dam dong 62-97c, $3000 ao]")
+    print(f"\n[CHIEN DICH 16 v1 — NO o dam dong tin nhat khi ask 30-70c, $1500 ao]")
     print(f"Chot {n_settled}, vao moi {n_new} | {won} thang / {lost} thua | "
           f"lai/lo {realized:+.2f} | kha dung {BUDGET + realized - open_cost:.2f}/{BUDGET:.0f}")
 
