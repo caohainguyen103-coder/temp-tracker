@@ -47,3 +47,13 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-07-19T08:24:41Z,highest-temperature-in-manila-on-july-21-2026,manila,2026-07-21,2,NO,32°C,0.73,13.7,10.0,0.135,31.6,33°C,open,,,,goc
 2026-07-19T08:24:41Z,highest-temperature-in-ankara-on-july-21-2026,ankara,2026-07-21,2,NO,33°C,0.72,13.89,10.0,0.14,32.9,34°C,open,,,,goc
 2026-07-19T08:24:41Z,highest-temperature-in-dallas-on-july-20-2026,dallas,2026-07-20,1,NO,102-103°F,0.73,13.7,10.0,0.135,39.0,100-101°F,open,,,,goc
+2026-07-19T09:35:08Z,highest-temperature-in-los-angeles-on-july-20-2026,los-angeles,2026-07-20,1,NO,80-81°F,0.73,13.7,10.0,0.135,27.1,78-79°F,open,,,,goc
+2026-07-19T09:35:08Z,highest-temperature-in-milan-on-july-20-2026,milan,2026-07-20,1,NO,31°C,0.71,14.08,10.0,0.145,30.9,30°C,open,,,,mo_rong
+2026-07-19T09:35:08Z,highest-temperature-in-nyc-on-july-20-2026,nyc,2026-07-20,1,NO,82-83°F,0.7,14.29,10.0,0.15,28.1,80-81°F,open,,,,mo_rong
+2026-07-19T09:35:08Z,highest-temperature-in-miami-on-july-20-2026,miami,2026-07-20,1,NO,90-91°F,0.7,14.29,10.0,0.15,32.5,92-93°F,open,,,,mo_rong
+2026-07-19T09:35:08Z,highest-temperature-in-munich-on-july-21-2026,munich,2026-07-21,2,NO,22°C,0.7,14.29,10.0,0.15,21.6,23°C,open,,,,mo_rong
+2026-07-19T09:35:08Z,highest-temperature-in-shanghai-on-july-20-2026,shanghai,2026-07-20,1,NO,33°C,0.68,14.71,10.0,0.16,32.9,34°C,open,,,,mo_rong
+2026-07-19T09:35:08Z,highest-temperature-in-helsinki-on-july-20-2026,helsinki,2026-07-20,1,NO,21°C,0.68,14.71,10.0,0.16,20.6,20°C,open,,,,mo_rong
+2026-07-19T09:35:08Z,highest-temperature-in-cape-town-on-july-20-2026,cape-town,2026-07-20,1,NO,16°C,0.67,14.93,10.0,0.1651,16.5,17°C,open,,,,mo_rong
+2026-07-19T09:35:08Z,highest-temperature-in-buenos-aires-on-july-20-2026,buenos-aires,2026-07-20,1,NO,14°C,0.68,14.71,10.0,0.16,14.0,13°C,open,,,,mo_rong
+2026-07-19T09:35:08Z,highest-temperature-in-denver-on-july-20-2026,denver,2026-07-20,1,NO,100-101°F,0.64,15.62,10.0,0.1799,38.6,98-99°F,open,,,,mo_rong
