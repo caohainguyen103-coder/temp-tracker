@@ -12,3 +12,4 @@ entry_utc,event_slug,city,target_date,lead_days,n_buckets,sum_ask,shares,cost,fe
 2026-07-19T14:16:31Z,highest-temperature-in-cape-town-on-july-19-2026,cape-town,2026-07-19,0,11,0.979,102.15,100.0,1.633,0.52,open,,,
 2026-07-19T16:24:16Z,highest-temperature-in-buenos-aires-on-july-19-2026,buenos-aires,2026-07-19,0,11,0.959,104.28,100.0,3.1572,1.12,open,,,
 2026-07-20T03:15:17Z,highest-temperature-in-wuhan-on-july-20-2026,wuhan,2026-07-20,0,11,0.957,104.49,100.0,3.3964,1.09,open,,,
+2026-07-20T06:28:46Z,highest-temperature-in-singapore-on-july-20-2026,singapore,2026-07-20,0,11,0.986,101.42,100.0,0.8673,0.55,open,,,
