@@ -56,8 +56,8 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-07-18T07:11:09Z,highest-temperature-in-atlanta-on-july-19-2026,atlanta,2026-07-19,1,NO,92-93°F,0.64,15.62,10.0,0.1799,33.6,92-93°F,won,15.62,5.44,2026-07-20T06:37:36Z
 2026-07-18T07:11:09Z,highest-temperature-in-miami-on-july-19-2026,miami,2026-07-19,1,NO,90-91°F,0.66,15.15,10.0,0.17,32.4,92-93°F,lost,0.0,-10.17,2026-07-20T06:37:36Z
 2026-07-18T07:11:09Z,highest-temperature-in-chicago-on-july-19-2026,chicago,2026-07-19,1,NO,82-83°F,0.75,13.33,10.0,0.125,28.1,80-81°F,won,13.33,3.21,2026-07-20T06:37:36Z
-2026-07-18T07:11:09Z,highest-temperature-in-los-angeles-on-july-19-2026,los-angeles,2026-07-19,1,NO,76-77°F,0.64,15.62,10.0,0.1799,24.5,78-79°F,open,,,
-2026-07-18T07:11:09Z,highest-temperature-in-mexico-city-on-july-19-2026,mexico-city,2026-07-19,1,NO,26°C,0.65,15.38,10.0,0.1749,26.3,25°C,open,,,
+2026-07-18T07:11:09Z,highest-temperature-in-los-angeles-on-july-19-2026,los-angeles,2026-07-19,1,NO,76-77°F,0.64,15.62,10.0,0.1799,24.5,78-79°F,lost,0.0,-10.18,2026-07-20T10:35:56Z
+2026-07-18T07:11:09Z,highest-temperature-in-mexico-city-on-july-19-2026,mexico-city,2026-07-19,1,NO,26°C,0.65,15.38,10.0,0.1749,26.3,25°C,won,15.38,5.21,2026-07-20T10:35:56Z
 2026-07-18T07:11:09Z,highest-temperature-in-panama-city-on-july-19-2026,panama-city,2026-07-19,1,NO,31°C,0.71,14.08,10.0,0.145,31.0,32°C,won,14.08,3.94,2026-07-20T06:37:36Z
 2026-07-18T07:11:09Z,highest-temperature-in-ankara-on-july-20-2026,ankara,2026-07-20,2,NO,34°C,0.57,17.54,10.0,0.215,33.5,35°C,open,,,
 2026-07-18T07:11:09Z,highest-temperature-in-wellington-on-july-20-2026,wellington,2026-07-20,2,NO,11°C,0.74,13.51,10.0,0.13,11.2,12°C,open,,,
