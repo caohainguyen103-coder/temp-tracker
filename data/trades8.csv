@@ -14,3 +14,6 @@ entry_utc,market_slug,match,side_team,commence_utc,side,ask,shares,stake,fee,pin
 2026-07-20T06:37:36Z,mlb-nym-mil-2026-07-21,New York Mets vs. Milwaukee Brewers,Milwaukee Brewers,2026-07-20T23:41:00Z,NO,0.6,16.67,10.0,0.2,0.6512,,0.0512,open,,,
 2026-07-20T06:37:36Z,mlb-cin-sea-2026-07-21,Cincinnati Reds vs. Seattle Mariners,Seattle Mariners,2026-07-21T01:41:00Z,NO,0.53,18.87,10.0,0.235,0.58,,0.05,open,,,
 2026-07-20T10:35:57Z,mlb-cws-tex-2026-07-22,Chicago White Sox vs. Texas Rangers,Texas Rangers,2026-07-21T00:06:00Z,NO,0.51,19.61,10.0,0.245,0.6141,,0.1041,open,,,
+2026-07-20T17:10:14Z,mlb-min-cle-2026-07-22,Minnesota Twins vs. Cleveland Guardians,Minnesota Twins,2026-07-20T22:41:00Z,YES,0.47,21.28,10.0,0.265,0.5443,,0.0743,open,,,
+2026-07-20T17:10:14Z,mlb-lad-phi-2026-07-22,Los Angeles Dodgers vs. Philadelphia Phillies,Philadelphia Phillies,2026-07-20T23:11:00Z,NO,0.5,20.0,10.0,0.25,0.5664,,0.0664,open,,,
+2026-07-20T17:10:14Z,mlb-tb-tor-2026-07-22,Tampa Bay Rays vs. Toronto Blue Jays,Toronto Blue Jays,2026-07-20T23:08:00Z,NO,0.53,18.87,10.0,0.235,0.5946,,0.0646,open,,,
