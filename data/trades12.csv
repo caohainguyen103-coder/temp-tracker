@@ -17,3 +17,4 @@ entry_utc,event_slug,city,target_date,lead_days,n_buckets,sum_ask,shares,cost,fe
 2026-07-21T00:32:22Z,highest-temperature-in-shenzhen-on-july-21-2026,shenzhen,2026-07-21,0,11,0.959,104.28,100.0,3.7122,0.57,open,,,
 2026-07-21T03:23:40Z,highest-temperature-in-shanghai-on-july-21-2026,shanghai,2026-07-21,0,11,0.961,104.06,100.0,3.0754,0.98,open,,,
 2026-07-21T04:04:06Z,highest-temperature-in-san-francisco-on-july-21-2026,san-francisco,2026-07-21,0,11,0.952,105.04,100.0,1.8928,3.15,open,,,
+2026-07-21T06:24:58Z,highest-temperature-in-helsinki-on-july-21-2026,helsinki,2026-07-21,0,11,0.966,103.52,100.0,3.0714,0.45,open,,,
