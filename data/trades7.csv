@@ -157,7 +157,7 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-07-19T08:24:41Z,highest-temperature-in-miami-on-july-20-2026,miami,2026-07-20,1,NO,90-91°F,0.7,14.29,10.0,0.15,32.5,92-93°F,won,14.29,4.14,2026-07-21T09:44:03Z
 2026-07-19T08:24:41Z,highest-temperature-in-chicago-on-july-20-2026,chicago,2026-07-20,1,NO,90-91°F,0.92,10.87,10.0,0.04,32.9,84-85°F,won,10.87,0.83,2026-07-21T09:44:03Z
 2026-07-19T08:24:41Z,highest-temperature-in-los-angeles-on-july-20-2026,los-angeles,2026-07-20,1,NO,76-77°F,0.83,12.05,10.0,0.085,25.0,78-79°F,won,12.05,1.97,2026-07-21T09:44:03Z
-2026-07-19T08:24:41Z,highest-temperature-in-san-francisco-on-july-20-2026,san-francisco,2026-07-20,1,NO,68-69°F,0.96,10.42,10.0,0.02,20.1,72-73°F,open,,,
+2026-07-19T08:24:41Z,highest-temperature-in-san-francisco-on-july-20-2026,san-francisco,2026-07-20,1,NO,68-69°F,0.96,10.42,10.0,0.02,20.1,72-73°F,won,10.42,0.4,2026-07-21T17:01:02Z
 2026-07-19T08:24:41Z,highest-temperature-in-panama-city-on-july-20-2026,panama-city,2026-07-20,1,NO,28°C,0.84,11.9,10.0,0.08,27.6,30°C,won,11.9,1.82,2026-07-21T09:44:03Z
 2026-07-19T08:24:41Z,highest-temperature-in-london-on-july-21-2026,london,2026-07-21,2,NO,27°C,0.93,10.75,10.0,0.035,27.3,25°C,open,,,
 2026-07-19T08:24:41Z,highest-temperature-in-paris-on-july-21-2026,paris,2026-07-21,2,NO,28°C,0.98,10.2,10.0,0.01,27.8,26°C,open,,,

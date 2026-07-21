@@ -599,3 +599,4 @@ target_date,event_slug,city,unit,precision,station_kind,station_id,resolved_buck
 2026-07-20,highest-temperature-in-warsaw-on-july-20-2026,warsaw,C,whole,metar,EPWA,20°C,20.0,20.0,iem_metar,2026-07-21T09:42:34Z
 2026-07-20,highest-temperature-in-wellington-on-july-20-2026,wellington,C,whole,metar,NZWN,12°C,12.0,12.0,iem_metar,2026-07-21T09:42:34Z
 2026-07-20,highest-temperature-in-wuhan-on-july-20-2026,wuhan,C,whole,metar,ZHHH,33°C,33.0,33.0,iem_metar,2026-07-21T09:42:34Z
+2026-07-20,highest-temperature-in-san-francisco-on-july-20-2026,san-francisco,F,whole,metar,KSFO,70-71°F,22.2,72.0,iem_metar,2026-07-21T17:01:01Z
