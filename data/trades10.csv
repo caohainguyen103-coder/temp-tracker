@@ -306,3 +306,7 @@ entry_utc,event_slug,market_slug,city,target_date,lead_days,side,bucket,price,sh
 2026-07-21T16:00:06Z,highest-temperature-in-manila-on-july-23-2026,highest-temperature-in-manila-on-july-23-2026-33c,manila,2026-07-23,2,NO,33°C,0.62,16.13,10.0,0.19,0.0,0.38,0.38,31,5.94,open,,,
 2026-07-21T16:00:06Z,highest-temperature-in-houston-on-july-22-2026,highest-temperature-in-houston-on-july-22-2026-100-101f,houston,2026-07-22,1,NO,100-101°F,0.59,16.95,10.0,0.205,0.032,0.41,0.378,31,6.74,open,,,
 2026-07-21T16:00:06Z,highest-temperature-in-manila-on-july-22-2026,highest-temperature-in-manila-on-july-22-2026-33c,manila,2026-07-22,1,NO,33°C,0.6,16.67,10.0,0.2,0.032,0.4,0.368,31,6.47,open,,,
+2026-07-21T17:00:20Z,highest-temperature-in-london-on-july-21-2026,highest-temperature-in-london-on-july-21-2026-21c,london,2026-07-21,0,NO,21°C,0.202,49.5,10.0,0.399,0.0,0.798,0.798,31,39.1,open,,,
+2026-07-21T17:00:20Z,highest-temperature-in-toronto-on-july-21-2026,highest-temperature-in-toronto-on-july-21-2026-24c,toronto,2026-07-21,0,NO,24°C,0.43,23.26,10.0,0.2851,0.0,0.57,0.57,31,12.97,open,,,
+2026-07-21T17:00:20Z,highest-temperature-in-singapore-on-july-23-2026,highest-temperature-in-singapore-on-july-23-2026-28c,singapore,2026-07-23,2,YES,28°C,0.032,312.5,10.0,0.484,0.452,0.032,0.42,31,302.02,open,,,
+2026-07-21T17:00:20Z,highest-temperature-in-beijing-on-july-22-2026,highest-temperature-in-beijing-on-july-22-2026-28c,beijing,2026-07-22,1,NO,28°C,0.59,16.95,10.0,0.205,0.0,0.41,0.41,31,6.74,open,,,
