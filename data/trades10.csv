@@ -371,3 +371,7 @@ entry_utc,event_slug,market_slug,city,target_date,lead_days,side,bucket,price,sh
 2026-07-22T15:00:02Z,highest-temperature-in-hong-kong-on-july-24-2026,highest-temperature-in-hong-kong-on-july-24-2026-34c,hong-kong,2026-07-24,2,NO,34°C,0.64,15.62,10.0,0.1799,0.0,0.36,0.36,31,5.44,open,,,
 2026-07-22T15:00:02Z,highest-temperature-in-taipei-on-july-24-2026,highest-temperature-in-taipei-on-july-24-2026-36c,taipei,2026-07-24,2,NO,36°C,0.64,15.62,10.0,0.1799,0.0,0.36,0.36,31,5.44,open,,,
 2026-07-22T15:00:02Z,highest-temperature-in-chongqing-on-july-24-2026,highest-temperature-in-chongqing-on-july-24-2026-40c,chongqing,2026-07-24,2,NO,40°C,0.64,15.62,10.0,0.1799,0.0,0.36,0.36,31,5.44,open,,,
+2026-07-22T16:00:05Z,highest-temperature-in-paris-on-july-22-2026,highest-temperature-in-paris-on-july-22-2026-25c,paris,2026-07-22,0,NO,25°C,0.25,40.0,10.0,0.375,0.032,0.75,0.718,31,29.62,open,,,
+2026-07-22T16:00:05Z,highest-temperature-in-sao-paulo-on-july-22-2026,highest-temperature-in-sao-paulo-on-july-22-2026-23c,sao-paulo,2026-07-22,0,NO,23°C,0.431,23.2,10.0,0.2845,0.0,0.569,0.569,31,12.92,open,,,
+2026-07-22T16:00:05Z,highest-temperature-in-buenos-aires-on-july-22-2026,highest-temperature-in-buenos-aires-on-july-22-2026-14c,buenos-aires,2026-07-22,0,NO,14°C,0.48,20.83,10.0,0.26,0.0,0.52,0.52,31,10.57,open,,,
+2026-07-22T16:00:05Z,highest-temperature-in-london-on-july-22-2026,highest-temperature-in-london-on-july-22-2026-25c,london,2026-07-22,0,NO,25°C,0.26,38.46,10.0,0.37,0.226,0.74,0.514,31,28.09,open,,,
