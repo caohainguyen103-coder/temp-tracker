@@ -697,3 +697,4 @@ target_date,event_slug,city,unit,precision,station_kind,station_id,resolved_buck
 2026-07-22,highest-temperature-in-warsaw-on-july-22-2026,warsaw,C,whole,metar,EPWA,22°C,22.0,22.0,iem_metar,2026-07-23T09:23:22Z
 2026-07-22,highest-temperature-in-wellington-on-july-22-2026,wellington,C,whole,metar,NZWN,14°C,14.0,14.0,iem_metar,2026-07-23T09:23:22Z
 2026-07-22,highest-temperature-in-wuhan-on-july-22-2026,wuhan,C,whole,metar,ZHHH,29°C,29.0,29.0,iem_metar,2026-07-23T09:23:22Z
+2026-07-22,highest-temperature-in-denver-on-july-22-2026,denver,F,whole,geocode,denver,>=94°F,34.1,93.4,openmeteo_grid,2026-07-23T17:04:18Z

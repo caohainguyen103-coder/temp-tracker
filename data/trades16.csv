@@ -164,7 +164,7 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-07-21T09:44:06Z,highest-temperature-in-miami-on-july-22-2026,miami,2026-07-22,1,NO,92-93°F,0.46,21.74,10.0,0.27,55.5,92-93°F,lost,0.0,-10.27,2026-07-23T09:24:16Z
 2026-07-21T09:44:06Z,highest-temperature-in-chicago-on-july-22-2026,chicago,2026-07-22,1,NO,72-73°F,0.55,18.18,10.0,0.225,46.5,72-73°F,won,18.18,7.96,2026-07-23T09:24:16Z
 2026-07-21T09:44:06Z,highest-temperature-in-austin-on-july-22-2026,austin,2026-07-22,1,NO,104-105°F,0.58,17.24,10.0,0.21,43.0,104-105°F,won,17.24,7.03,2026-07-23T09:24:16Z
-2026-07-21T09:44:06Z,highest-temperature-in-denver-on-july-22-2026,denver,2026-07-22,1,NO,92-93°F,0.57,17.54,10.0,0.215,43.5,92-93°F,open,,,
+2026-07-21T09:44:06Z,highest-temperature-in-denver-on-july-22-2026,denver,2026-07-22,1,NO,92-93°F,0.57,17.54,10.0,0.215,43.5,92-93°F,won,17.54,7.32,2026-07-23T17:04:21Z
 2026-07-21T09:44:06Z,highest-temperature-in-houston-on-july-22-2026,houston,2026-07-22,1,NO,100-101°F,0.62,16.13,10.0,0.19,38.5,100-101°F,won,16.13,5.94,2026-07-23T09:24:16Z
 2026-07-21T09:44:06Z,highest-temperature-in-los-angeles-on-july-22-2026,los-angeles,2026-07-22,1,NO,78-79°F,0.63,15.87,10.0,0.185,37.5,78-79°F,won,15.87,5.68,2026-07-23T09:24:16Z
 2026-07-21T09:44:06Z,highest-temperature-in-san-francisco-on-july-22-2026,san-francisco,2026-07-22,1,NO,74-75°F,0.69,14.49,10.0,0.155,31.5,74-75°F,won,14.49,4.33,2026-07-23T09:24:16Z

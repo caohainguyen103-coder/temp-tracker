@@ -123,3 +123,5 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-07-23T09:24:13Z,highest-temperature-in-mexico-city-on-july-24-2026,mexico-city,2026-07-24,1,NO,27°C,0.68,14.71,10.0,0.16,26.9,28°C,open,,,,mo_rong
 2026-07-23T09:24:13Z,highest-temperature-in-amsterdam-on-july-24-2026,amsterdam,2026-07-24,1,NO,23°C,0.66,15.15,10.0,0.17,23.4,24°C,open,,,,mo_rong
 2026-07-23T09:24:13Z,highest-temperature-in-amsterdam-on-july-25-2026,amsterdam,2026-07-25,2,NO,25°C,0.66,15.15,10.0,0.17,24.8,24°C,open,,,,mo_rong
+2026-07-23T17:04:18Z,highest-temperature-in-houston-on-july-24-2026,houston,2026-07-24,1,NO,92-93°F,0.62,16.13,10.0,0.19,34.1,94-95°F,open,,,,mo_rong
+2026-07-23T17:04:18Z,highest-temperature-in-madrid-on-july-24-2026,madrid,2026-07-24,1,NO,33°C,0.6,16.67,10.0,0.2,33.0,34°C,open,,,,mo_rong
