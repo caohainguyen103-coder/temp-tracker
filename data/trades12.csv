@@ -46,3 +46,4 @@ entry_utc,event_slug,city,target_date,lead_days,n_buckets,sum_ask,shares,cost,fe
 2026-07-23T12:02:41Z,highest-temperature-in-moscow-on-july-23-2026,moscow,2026-07-23,0,11,0.948,105.49,100.0,2.8566,2.63,open,,,
 2026-07-23T14:58:59Z,highest-temperature-in-sao-paulo-on-july-23-2026,sao-paulo,2026-07-23,0,11,0.88,113.64,100.0,3.1025,10.54,open,,,
 2026-07-23T15:24:04Z,highest-temperature-in-amsterdam-on-july-23-2026,amsterdam,2026-07-23,0,11,0.972,102.88,100.0,0.269,2.61,open,,,
+2026-07-23T15:44:08Z,highest-temperature-in-seattle-on-july-24-2026,seattle,2026-07-24,1,11,0.938,106.61,100.0,4.039,2.57,open,,,
