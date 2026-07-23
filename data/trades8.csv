@@ -20,3 +20,4 @@ entry_utc,market_slug,match,side_team,commence_utc,side,ask,shares,stake,fee,pin
 2026-07-21T09:44:03Z,mlb-sd-atl-2026-07-23,San Diego Padres vs. Atlanta Braves,San Diego Padres,2026-07-21T23:16:00Z,YES,0.37,27.03,10.0,0.315,0.4358,,0.0658,open,,,
 2026-07-21T09:44:03Z,mlb-cin-sea-2026-07-22,Cincinnati Reds vs. Seattle Mariners,Cincinnati Reds,2026-07-22T01:41:00Z,YES,0.44,22.73,10.0,0.28,0.491,,0.051,open,,,
 2026-07-21T17:01:02Z,mlb-bal-bos-2026-07-22,Baltimore Orioles vs. Boston Red Sox,Baltimore Orioles,2026-07-21T23:11:00Z,YES,0.41,24.39,10.0,0.295,0.4758,,0.0658,open,,,
+2026-07-23T09:24:14Z,mlb-kc-det-2026-07-25,Kansas City Royals vs. Detroit Tigers,Detroit Tigers,2026-07-23T22:41:00Z,NO,0.57,17.54,10.0,0.215,0.6543,,0.0843,open,,,
