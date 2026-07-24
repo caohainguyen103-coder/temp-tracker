@@ -135,3 +135,8 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-07-24T09:18:06Z,highest-temperature-in-chongqing-on-july-26-2026,chongqing,2026-07-26,2,NO,40°C,0.72,13.89,10.0,0.14,39.8,41°C,open,,,,mo_rong
 2026-07-24T09:18:06Z,highest-temperature-in-london-on-july-25-2026,london,2026-07-25,1,NO,29°C,0.7,14.29,10.0,0.15,29.2,28°C,open,,,,mo_rong
 2026-07-24T09:18:06Z,highest-temperature-in-wuhan-on-july-25-2026,wuhan,2026-07-25,1,NO,36°C,0.7,14.29,10.0,0.15,36.2,37°C,open,,,,mo_rong
+2026-07-24T17:57:11Z,highest-temperature-in-madrid-on-july-25-2026,madrid,2026-07-25,1,NO,30°C,0.66,15.15,10.0,0.17,29.6,29°C,open,,,,mo_rong
+2026-07-24T17:57:11Z,highest-temperature-in-houston-on-july-25-2026,houston,2026-07-25,1,NO,94-95°F,0.66,15.15,10.0,0.17,35.2,92-93°F,open,,,,mo_rong
+2026-07-24T17:57:11Z,highest-temperature-in-istanbul-on-july-26-2026,istanbul,2026-07-26,2,NO,26°C,0.62,16.13,10.0,0.19,26.0,27°C,open,,,,mo_rong
+2026-07-24T17:57:11Z,highest-temperature-in-munich-on-july-25-2026,munich,2026-07-25,1,NO,30°C,0.61,16.39,10.0,0.195,29.7,31°C,open,,,,mo_rong
+2026-07-24T17:57:11Z,highest-temperature-in-madrid-on-july-26-2026,madrid,2026-07-26,2,NO,31°C,0.6,16.67,10.0,0.2,31.1,32°C,open,,,,mo_rong
