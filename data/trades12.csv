@@ -53,3 +53,4 @@ entry_utc,event_slug,city,target_date,lead_days,n_buckets,sum_ask,shares,cost,fe
 2026-07-24T12:55:44Z,highest-temperature-in-london-on-july-24-2026,london,2026-07-24,0,11,0.972,102.88,100.0,2.4204,0.46,open,,,
 2026-07-24T13:46:00Z,highest-temperature-in-paris-on-july-24-2026,paris,2026-07-24,0,11,0.935,106.95,100.0,2.2538,4.7,open,,,
 2026-07-24T16:52:15Z,highest-temperature-in-panama-city-on-july-24-2026,panama-city,2026-07-24,0,11,0.96,104.17,100.0,3.4443,0.73,open,,,
+2026-07-24T18:02:50Z,highest-temperature-in-houston-on-july-24-2026,houston,2026-07-24,0,11,0.969,103.2,100.0,2.8363,0.36,open,,,
