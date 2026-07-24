@@ -494,3 +494,8 @@ entry_utc,event_slug,market_slug,city,target_date,lead_days,side,bucket,price,sh
 2026-07-24T15:00:19Z,highest-temperature-in-sao-paulo-on-july-24-2026,highest-temperature-in-sao-paulo-on-july-24-2026-16c,sao-paulo,2026-07-24,0,YES,16°C,0.123,81.3,10.0,0.4385,0.516,0.123,0.393,31,70.86,open,,,
 2026-07-24T15:00:19Z,highest-temperature-in-taipei-on-july-25-2026,highest-temperature-in-taipei-on-july-25-2026-36c,taipei,2026-07-25,1,NO,36°C,0.61,16.39,10.0,0.195,0.0,0.39,0.39,31,6.2,open,,,
 2026-07-24T15:00:19Z,highest-temperature-in-chengdu-on-july-26-2026,highest-temperature-in-chengdu-on-july-26-2026-34c,chengdu,2026-07-26,2,YES,34°C,0.03,333.33,10.0,0.485,0.419,0.03,0.389,31,322.84,open,,,
+2026-07-24T16:00:06Z,highest-temperature-in-chongqing-on-july-25-2026,highest-temperature-in-chongqing-on-july-25-2026-37c,chongqing,2026-07-25,1,YES,37°C,0.028,357.14,10.0,0.486,0.484,0.028,0.456,31,346.65,open,,,
+2026-07-24T16:00:06Z,highest-temperature-in-panama-city-on-july-24-2026,highest-temperature-in-panama-city-on-july-24-2026-30c,panama-city,2026-07-24,0,NO,30°C,0.56,17.86,10.0,0.22,0.0,0.44,0.44,31,7.64,open,,,
+2026-07-24T16:00:06Z,highest-temperature-in-san-francisco-on-july-24-2026,highest-temperature-in-san-francisco-on-july-24-2026-70-71f,san-francisco,2026-07-24,0,NO,70-71°F,0.61,16.39,10.0,0.195,0.0,0.39,0.39,31,6.2,open,,,
+2026-07-24T16:00:06Z,highest-temperature-in-karachi-on-july-26-2026,highest-temperature-in-karachi-on-july-26-2026-32c,karachi,2026-07-26,2,YES,32°C,0.16,62.5,10.0,0.42,0.548,0.16,0.388,31,52.08,open,,,
+2026-07-24T16:00:06Z,highest-temperature-in-chengdu-on-july-25-2026,highest-temperature-in-chengdu-on-july-25-2026-39c,chengdu,2026-07-25,1,NO,39°C,0.62,16.13,10.0,0.19,0.0,0.38,0.38,31,5.94,open,,,
