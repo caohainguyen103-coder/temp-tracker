@@ -55,3 +55,4 @@ entry_utc,event_slug,city,target_date,lead_days,n_buckets,sum_ask,shares,cost,fe
 2026-07-24T16:52:15Z,highest-temperature-in-panama-city-on-july-24-2026,panama-city,2026-07-24,0,11,0.96,104.17,100.0,3.4443,0.73,open,,,
 2026-07-24T18:02:50Z,highest-temperature-in-houston-on-july-24-2026,houston,2026-07-24,0,11,0.969,103.2,100.0,2.8363,0.36,open,,,
 2026-07-24T20:08:50Z,highest-temperature-in-tel-aviv-on-july-25-2026,tel-aviv,2026-07-25,1,11,0.968,103.31,100.0,2.6911,0.62,open,,,
+2026-07-24T21:39:25Z,highest-temperature-in-wellington-on-july-25-2026,wellington,2026-07-25,1,11,0.989,101.11,100.0,0.5278,0.58,open,,,
