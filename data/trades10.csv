@@ -569,3 +569,6 @@ entry_utc,event_slug,market_slug,city,target_date,lead_days,side,bucket,price,sh
 2026-07-25T14:00:12Z,highest-temperature-in-istanbul-on-july-26-2026,highest-temperature-in-istanbul-on-july-26-2026-28c,istanbul,2026-07-26,1,NO,28°C,0.61,16.39,10.0,0.195,0.0,0.39,0.39,31,6.2,open,,,
 2026-07-25T14:00:12Z,highest-temperature-in-karachi-on-july-26-2026,highest-temperature-in-karachi-on-july-26-2026-35c,karachi,2026-07-26,1,NO,35°C,0.62,16.13,10.0,0.19,0.0,0.38,0.38,31,5.94,open,,,
 2026-07-25T14:00:12Z,highest-temperature-in-qingdao-on-july-27-2026,highest-temperature-in-qingdao-on-july-27-2026-29c,qingdao,2026-07-27,2,YES,29°C,0.04,250.0,10.0,0.48,0.419,0.04,0.379,31,239.52,open,,,
+2026-07-25T15:00:06Z,highest-temperature-in-london-on-july-25-2026,highest-temperature-in-london-on-july-25-2026-29c,london,2026-07-25,0,NO,29°C,0.11,90.91,10.0,0.445,0.323,0.89,0.567,31,80.47,open,,,
+2026-07-25T15:00:06Z,highest-temperature-in-madrid-on-july-25-2026,highest-temperature-in-madrid-on-july-25-2026-29c,madrid,2026-07-25,0,NO,29°C,0.19,52.63,10.0,0.405,0.387,0.81,0.423,31,42.23,open,,,
+2026-07-25T15:00:06Z,highest-temperature-in-buenos-aires-on-july-25-2026,highest-temperature-in-buenos-aires-on-july-25-2026-18c,buenos-aires,2026-07-25,0,NO,18°C,0.61,16.39,10.0,0.195,0.0,0.39,0.39,31,6.2,open,,,
