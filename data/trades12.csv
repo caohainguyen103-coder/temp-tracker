@@ -67,3 +67,4 @@ entry_utc,event_slug,city,target_date,lead_days,n_buckets,sum_ask,shares,cost,fe
 2026-07-25T08:55:49Z,highest-temperature-in-wuhan-on-july-25-2026,wuhan,2026-07-25,0,11,0.979,102.15,100.0,0.8381,1.31,open,,,
 2026-07-25T11:57:22Z,highest-temperature-in-houston-on-july-25-2026,houston,2026-07-25,0,11,0.952,105.04,100.0,3.1143,1.93,open,,,
 2026-07-25T13:33:21Z,highest-temperature-in-paris-on-july-25-2026,paris,2026-07-25,0,11,0.959,104.28,100.0,2.9568,1.32,open,,,
+2026-07-25T16:04:25Z,highest-temperature-in-buenos-aires-on-july-25-2026,buenos-aires,2026-07-25,0,11,0.962,103.95,100.0,2.8886,1.06,open,,,
