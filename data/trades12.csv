@@ -59,3 +59,4 @@ entry_utc,event_slug,city,target_date,lead_days,n_buckets,sum_ask,shares,cost,fe
 2026-07-24T22:40:10Z,highest-temperature-in-busan-on-july-25-2026,busan,2026-07-25,1,11,0.957,104.49,100.0,3.6566,0.83,open,,,
 2026-07-25T00:10:57Z,highest-temperature-in-taipei-on-july-25-2026,taipei,2026-07-25,0,11,0.955,104.71,100.0,3.7483,0.96,open,,,
 2026-07-25T00:36:06Z,highest-temperature-in-cape-town-on-july-25-2026,cape-town,2026-07-25,0,11,0.955,104.71,100.0,3.6495,1.06,open,,,
+2026-07-25T02:27:04Z,highest-temperature-in-shenzhen-on-july-25-2026,shenzhen,2026-07-25,0,11,0.945,105.82,100.0,3.2793,2.54,open,,,
