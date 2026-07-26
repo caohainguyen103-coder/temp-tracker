@@ -636,3 +636,8 @@ entry_utc,event_slug,market_slug,city,target_date,lead_days,side,bucket,price,sh
 2026-07-26T11:00:25Z,highest-temperature-in-singapore-on-july-28-2026,highest-temperature-in-singapore-on-july-28-2026-32c,singapore,2026-07-28,2,NO,32°C,0.59,16.95,10.0,0.205,0.0,0.41,0.41,31,6.74,open,,,
 2026-07-26T11:00:25Z,highest-temperature-in-singapore-on-july-28-2026,highest-temperature-in-singapore-on-july-28-2026-31c,singapore,2026-07-28,2,NO,31°C,0.6,16.67,10.0,0.2,0.0,0.4,0.4,31,6.47,open,,,
 2026-07-26T11:00:25Z,highest-temperature-in-sao-paulo-on-july-27-2026,highest-temperature-in-sao-paulo-on-july-27-2026-28c,sao-paulo,2026-07-27,1,YES,28°C,0.25,40.0,10.0,0.375,0.645,0.25,0.395,31,29.62,open,,,
+2026-07-26T12:00:10Z,highest-temperature-in-ankara-on-july-26-2026,highest-temperature-in-ankara-on-july-26-2026-24c,ankara,2026-07-26,0,NO,24°C,0.08,125.0,10.0,0.46,0.097,0.92,0.823,31,114.54,open,,,
+2026-07-26T12:00:10Z,highest-temperature-in-jeddah-on-july-26-2026,highest-temperature-in-jeddah-on-july-26-2026-40c,jeddah,2026-07-26,0,NO,40°C,0.12,83.33,10.0,0.44,0.226,0.88,0.654,31,72.89,open,,,
+2026-07-26T12:00:10Z,highest-temperature-in-london-on-july-26-2026,highest-temperature-in-london-on-july-26-2026-26c,london,2026-07-26,0,NO,26°C,0.1,100.0,10.0,0.45,0.258,0.9,0.642,31,89.55,open,,,
+2026-07-26T12:00:10Z,highest-temperature-in-buenos-aires-on-july-26-2026,highest-temperature-in-buenos-aires-on-july-26-2026-18c,buenos-aires,2026-07-26,0,YES,18°C,0.04,250.0,10.0,0.48,0.645,0.04,0.605,31,239.52,open,,,
+2026-07-26T12:00:10Z,highest-temperature-in-jeddah-on-july-26-2026,highest-temperature-in-jeddah-on-july-26-2026-41c,jeddah,2026-07-26,0,YES,41°C,0.08,125.0,10.0,0.46,0.677,0.08,0.597,31,114.54,open,,,
