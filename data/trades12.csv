@@ -81,3 +81,5 @@ entry_utc,event_slug,city,target_date,lead_days,n_buckets,sum_ask,shares,cost,fe
 2026-07-26T10:29:14Z,highest-temperature-in-jeddah-on-july-26-2026,jeddah,2026-07-26,0,11,0.967,103.41,100.0,2.2295,1.18,open,,,
 2026-07-26T11:55:10Z,highest-temperature-in-milan-on-july-26-2026,milan,2026-07-26,0,11,0.963,103.84,100.0,3.238,0.6,open,,,
 2026-07-26T13:51:01Z,highest-temperature-in-london-on-july-26-2026,london,2026-07-26,0,11,0.984,101.63,100.0,0.5969,1.03,open,,,
+2026-07-26T17:17:02Z,highest-temperature-in-paris-on-july-26-2026,paris,2026-07-26,0,11,0.971,102.99,100.0,0.8092,2.18,open,,,
+2026-07-26T17:17:02Z,highest-temperature-in-buenos-aires-on-july-26-2026,buenos-aires,2026-07-26,0,11,0.967,103.41,100.0,2.5894,0.82,open,,,
