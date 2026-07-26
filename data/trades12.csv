@@ -74,3 +74,4 @@ entry_utc,event_slug,city,target_date,lead_days,n_buckets,sum_ask,shares,cost,fe
 2026-07-26T07:07:33Z,highest-temperature-in-wuhan-on-july-26-2026,wuhan,2026-07-26,0,11,0.988,101.21,100.0,0.6143,0.6,open,,,
 2026-07-26T07:22:36Z,highest-temperature-in-hong-kong-on-july-26-2026,hong-kong,2026-07-26,0,11,0.977,102.35,100.0,1.7192,0.63,open,,,
 2026-07-26T07:37:43Z,highest-temperature-in-kuala-lumpur-on-july-26-2026,kuala-lumpur,2026-07-26,0,11,0.99,101.01,100.0,0.4373,0.57,open,,,
+2026-07-26T07:47:41Z,highest-temperature-in-madrid-on-july-26-2026,madrid,2026-07-26,0,11,0.959,104.28,100.0,2.5219,1.76,open,,,
