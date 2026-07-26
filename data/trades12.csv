@@ -85,3 +85,4 @@ entry_utc,event_slug,city,target_date,lead_days,n_buckets,sum_ask,shares,cost,fe
 2026-07-26T17:17:02Z,highest-temperature-in-buenos-aires-on-july-26-2026,buenos-aires,2026-07-26,0,11,0.967,103.41,100.0,2.5894,0.82,open,,,
 2026-07-26T17:27:07Z,highest-temperature-in-chicago-on-july-26-2026,chicago,2026-07-26,0,11,0.932,107.3,100.0,3.7008,3.6,open,,,
 2026-07-26T18:52:41Z,highest-temperature-in-denver-on-july-26-2026,denver,2026-07-26,0,11,0.957,104.49,100.0,3.2921,1.2,open,,,
+2026-07-26T19:02:56Z,highest-temperature-in-dallas-on-july-26-2026,dallas,2026-07-26,0,11,0.956,104.6,100.0,3.1218,1.48,open,,,
