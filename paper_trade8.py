@@ -27,12 +27,26 @@ Quy tac (co dinh, khach quan):
     khi outcome[0] KHONG xay ra (tuc doi/ket qua con lai thang).
   - Moi market (slug) chi vao 1 lenh, khong lap.
 
+v2 (26/07) — SUA LOI "lenh treo mai khong chot":
+  - Nguyen nhan cu: ghep tran Pinnacle <-> Polymarket CHI theo ten 2 doi,
+    khong so NGAY DAU. MLB 2 doi gap nhau 3-4 tran lien tiep trong 1 series,
+    lai co ca event cu bi hoan tu nhieu thang truoc con "mo" tren Polymarket
+    (vd mlb-stl-cin-2026-05-24). Ket qua: mua nham market cua tran khac ngay
+    / tran hoan — nhung market nay khong bao gio dong -> khong settle duoc.
+  - Sua 1: chi ghep khi gio dau Polymarket (event.startTime/gameStartTime)
+    lech gio dau Pinnacle (commence_time) <= MATCH_WINDOW_H (12h).
+  - Sua 2: settle() them luat VOID — lenh ma market khong tra ve tu API,
+    hoac qua VOID_AFTER_H (72h) sau gio dau ma van chua dong (tran hoan/
+    market mo coi) -> huy lenh, hoan von (pnl = 0), status = "void".
+  - Sua 3: xu ly resolve 50-50 (tran huy/hoa theo mo ta market): moi share
+    tra 0.5 cho ca 2 phia.
+
 Ket qua ghi vao data/trades8.csv.
 """
 import csv
 import json
 import os
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 import common as C
 import sports_common as S
@@ -51,6 +65,30 @@ STAKE = 10.0
 EDGE_MIN = 0.05          # canh toi thieu 5 diem % giua Pinnacle va Polymarket
 MIN_ASK, MAX_ASK = 0.02, 0.95
 DEFAULT_FEE_RATE = 0.05  # du phong neu market thieu feeSchedule
+MATCH_WINDOW_H = 12      # v2: gio dau 2 nguon phai lech <= 12h moi coi la cung tran
+VOID_AFTER_H = 72        # v2: qua 72h sau gio dau ma market chua dong -> void
+
+
+def _parse_utc(s):
+    """Parse chuoi thoi gian ISO ve datetime UTC; tra ve None neu hong."""
+    if not s:
+        return None
+    s = str(s).strip().replace(" ", "T")
+    try:
+        dt = datetime.fromisoformat(s.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt.astimezone(timezone.utc)
+
+
+def same_game(ev_start, pinnacle_commence, window_h=MATCH_WINDOW_H):
+    """v2: 2 moc gio dau phai lech <= window_h gio moi coi la cung 1 tran."""
+    a, b = _parse_utc(ev_start), _parse_utc(pinnacle_commence)
+    if a is None or b is None:
+        return False  # thieu gio dau -> KHONG ghep (an toan, tranh mua nham)
+    return abs((a - b).total_seconds()) <= window_h * 3600
 
 
 def cash_available(trades):
@@ -146,6 +184,11 @@ def enter(trades, now):
             rec = S.find_pinnacle_for_match(pinnacle, team_a_name, team_b_name)
             if not rec:
                 continue
+            # v2: bat buoc trung ngay/gio dau — tranh mua market tran khac
+            # ngay trong cung series, hoac event hoan cu con treo.
+            ev_start = ev.get("startTime") or ev.get("gameStartTime") or ""
+            if not same_game(ev_start, rec.get("commence_time")):
+                continue
             moneyline_markets = [
                 m for m in ev.get("markets", [])
                 if m.get("sportsMarketType") == "moneyline"
@@ -195,30 +238,58 @@ def enter(trades, now):
     return added
 
 
+def _void(t, now, reason):
+    """v2: huy lenh, hoan von ao (pnl = 0)."""
+    t["status"], t["payout"], t["pnl"] = "void", "", 0.0
+    t["settle_utc"] = now
+    print(f"  [CD8 VOID] {t.get('match','')} ({t['market_slug']}): {reason}")
+
+
 def settle(trades):
-    now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    now_dt = datetime.now(timezone.utc)
+    now = now_dt.strftime("%Y-%m-%dT%H:%M:%SZ")
     n = 0
     for t in trades:
         if t["status"] != "open":
             continue
+        commence = _parse_utc(t.get("commence_utc"))
+        stale = (commence is not None
+                 and now_dt - commence > timedelta(hours=VOID_AFTER_H))
         mkt = S.fetch_market_by_slug(t["market_slug"])
-        if not mkt or not mkt.get("closed"):
+        if not mkt:
+            # API khong tra ve market nay. Neu tran da qua lau -> mo coi, huy.
+            if stale:
+                _void(t, now, f"market bien mat, tran da qua >{VOID_AFTER_H}h")
+                n += 1
+            continue
+        if not mkt.get("closed"):
+            # Market van mo. Neu qua lau sau gio dau -> tran hoan / market
+            # mo coi khong ai resolve -> huy lenh cho sach so.
+            if stale:
+                _void(t, now, f"qua {VOID_AFTER_H}h sau gio dau van chua dong")
+                n += 1
             continue
         try:
-            prices = json.loads(mkt.get("outcomePrices") or "[]")  # ["1","0"] hoac ["0","1"]
+            prices = json.loads(mkt.get("outcomePrices") or "[]")  # ["1","0"] / ["0","1"] / ["0.5","0.5"]
             yes_price = float(prices[0])
         except (ValueError, IndexError, TypeError):
             continue
         stake, fee, shares = float(t["stake"]), float(t["fee"]), float(t["shares"])
         side = (t.get("side") or "YES").upper()
-        win = (yes_price >= 0.5) if side == "YES" else (yes_price < 0.5)
-        if win:
-            payout = shares * 1.0
-            t["status"], t["payout"] = "won", round(payout, 2)
+        if abs(yes_price - 0.5) < 0.01:
+            # v2: tran huy/hoa -> resolve 50-50, moi share tra 0.5 ca 2 phia
+            payout = shares * 0.5
+            t["status"], t["payout"] = "tie", round(payout, 2)
             t["pnl"] = round(payout - stake - fee, 2)
         else:
-            t["status"], t["payout"] = "lost", 0.0
-            t["pnl"] = round(-(stake + fee), 2)
+            win = (yes_price >= 0.5) if side == "YES" else (yes_price < 0.5)
+            if win:
+                payout = shares * 1.0
+                t["status"], t["payout"] = "won", round(payout, 2)
+                t["pnl"] = round(payout - stake - fee, 2)
+            else:
+                t["status"], t["payout"] = "lost", 0.0
+                t["pnl"] = round(-(stake + fee), 2)
         t["settle_utc"] = now
         n += 1
     return n
@@ -244,9 +315,11 @@ def main():
                     if t["status"] == "open")
     won = sum(1 for t in trades if t["status"] == "won")
     lost = sum(1 for t in trades if t["status"] == "lost")
+    voided = sum(1 for t in trades if t["status"] == "void")
     print(f"\n[CHIEN DICH 8 — The thao, canh Pinnacle >= 5%, $500 ao]")
     print(f"SO GIAO DICH AO: chot {n_settled}, vao moi {n_new}")
-    print(f"Da chot: {won} thang / {lost} thua | Lai/lo da chot: {realized:+.2f} USD")
+    print(f"Da chot: {won} thang / {lost} thua / {voided} huy | "
+          f"Lai/lo da chot: {realized:+.2f} USD")
     print(f"Tien trong lenh mo: {open_cost:.2f} | "
           f"So du kha dung: {BUDGET + realized - open_cost:.2f} / {BUDGET:.0f} USD")
 
