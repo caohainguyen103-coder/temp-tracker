@@ -202,3 +202,4 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-07-26T05:49:24Z,highest-temperature-in-manila-on-july-26-2026,manila,2026-07-26,0,YES,31°C,0.82,12.2,10.0,0.09,78.0,31°C,open,,,
 2026-07-26T05:49:24Z,highest-temperature-in-los-angeles-on-july-26-2026,los-angeles,2026-07-26,1,YES,78-79°F,0.66,15.15,10.0,0.17,64.5,78-79°F,open,,,
 2026-07-26T05:49:24Z,highest-temperature-in-wellington-on-july-27-2026,wellington,2026-07-27,1,YES,11°C,0.65,15.38,10.0,0.1749,64.5,11°C,open,,,
+2026-07-26T09:05:27Z,highest-temperature-in-tel-aviv-on-july-28-2026,tel-aviv,2026-07-28,2,YES,32°C,0.63,15.87,10.0,0.185,61.5,32°C,open,,,
