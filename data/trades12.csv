@@ -87,3 +87,4 @@ entry_utc,event_slug,city,target_date,lead_days,n_buckets,sum_ask,shares,cost,fe
 2026-07-26T18:52:41Z,highest-temperature-in-denver-on-july-26-2026,denver,2026-07-26,0,11,0.957,104.49,100.0,3.2921,1.2,open,,,
 2026-07-26T19:02:56Z,highest-temperature-in-dallas-on-july-26-2026,dallas,2026-07-26,0,11,0.956,104.6,100.0,3.1218,1.48,open,,,
 2026-07-26T23:29:44Z,highest-temperature-in-seattle-on-july-26-2026,seattle,2026-07-26,0,11,0.99,101.01,100.0,0.5323,0.48,open,,,
+2026-07-27T00:20:01Z,highest-temperature-in-taipei-on-july-27-2026,taipei,2026-07-27,0,11,0.947,105.6,100.0,3.7498,1.85,open,,,
