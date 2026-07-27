@@ -177,3 +177,9 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-07-27T12:49:11Z,highest-temperature-in-milan-on-july-29-2026,milan,2026-07-29,2,NO,35°C,0.7,14.29,10.0,0.15,35.1,34°C,open,,,,mo_rong
 2026-07-27T12:49:11Z,highest-temperature-in-helsinki-on-july-29-2026,helsinki,2026-07-29,2,NO,23°C,0.69,14.49,10.0,0.155,23.3,24°C,open,,,,mo_rong
 2026-07-27T12:49:11Z,highest-temperature-in-paris-on-july-28-2026,paris,2026-07-28,1,NO,31°C,0.69,14.49,10.0,0.155,31.1,32°C,open,,,,mo_rong
+2026-07-27T18:08:50Z,highest-temperature-in-chongqing-on-july-28-2026,chongqing,2026-07-28,1,NO,36°C,0.67,14.93,10.0,0.1651,35.8,37°C,open,,,,mo_rong
+2026-07-27T18:08:50Z,highest-temperature-in-mexico-city-on-july-28-2026,mexico-city,2026-07-28,1,NO,24°C,0.67,14.93,10.0,0.1651,23.9,25°C,open,,,,mo_rong
+2026-07-27T18:08:50Z,highest-temperature-in-milan-on-july-28-2026,milan,2026-07-28,1,NO,34°C,0.64,15.62,10.0,0.1799,34.0,33°C,open,,,,mo_rong
+2026-07-27T18:08:50Z,highest-temperature-in-panama-city-on-july-28-2026,panama-city,2026-07-28,1,NO,32°C,0.64,15.62,10.0,0.1799,31.5,33°C,open,,,,mo_rong
+2026-07-27T18:08:50Z,highest-temperature-in-miami-on-july-28-2026,miami,2026-07-28,1,NO,90-91°F,0.63,15.87,10.0,0.185,33.0,92-93°F,open,,,,mo_rong
+2026-07-27T18:08:50Z,highest-temperature-in-singapore-on-july-29-2026,singapore,2026-07-29,2,NO,31°C,0.63,15.87,10.0,0.185,30.6,32°C,open,,,,mo_rong
