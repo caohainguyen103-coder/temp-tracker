@@ -785,7 +785,7 @@ function renderPaperN(n,budget,rowsGetter){
   if(!list.length)tb.innerHTML='<tr><td colspan="9" style="color:var(--mut)">Không có lệnh trong ngày này.</td></tr>';
   list.slice().reverse().forEach(r=>{
     const st=(r.status==='open'&&r.target_date&&r.target_date<todayIso)?'overdue':r.status;
-    const cls=r.status==='won'?'hit':(r.status===h'lost'?'miss':'');
+    const cls=r.status==='won'?'hit':(r.status==='lost'?'miss':'');
     const price=num(r.ask);
     const odds=price?(10/price).toFixed(2):'–';
     const info=(n===6||n===16)?(r.model_median_c+'%'):(r.model_median_c+'°C');
