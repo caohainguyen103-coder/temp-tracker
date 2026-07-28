@@ -1105,7 +1105,7 @@ entry_utc,event_slug,market_slug,city,target_date,side,bucket,tier,price,shares,
 2026-07-27T16:53:48Z,highest-temperature-in-nyc-on-july-27-2026,highest-temperature-in-nyc-on-july-27-2026-84-85f,nyc,2026-07-27,YES,84-85°F,60-69c,0.6,16.67,10.0,0.2,0.6,0.6,6.47,won,16.67,6.47,2026-07-28T10:22:30Z
 2026-07-27T16:59:03Z,highest-temperature-in-sao-paulo-on-july-27-2026,highest-temperature-in-sao-paulo-on-july-27-2026-28c,sao-paulo,2026-07-27,YES,28°C,80-89c,0.87,11.49,10.0,0.065,0.87,0.87,1.43,won,11.49,1.43,2026-07-28T10:22:30Z
 2026-07-27T16:59:03Z,highest-temperature-in-nyc-on-july-27-2026,highest-temperature-in-nyc-on-july-27-2026-84-85f,nyc,2026-07-27,YES,84-85°F,70-79c,0.71,14.08,10.0,0.145,0.71,0.71,3.94,won,14.08,3.94,2026-07-28T10:22:30Z
-2026-07-27T16:59:03Z,highest-temperature-in-san-francisco-on-july-27-2026,highest-temperature-in-san-francisco-on-july-27-2026-68-69f,san-francisco,2026-07-27,YES,68-69°F,60-69c,0.6,16.67,10.0,0.2,0.6,0.6,6.47,open,,,
+2026-07-27T16:59:03Z,highest-temperature-in-san-francisco-on-july-27-2026,highest-temperature-in-san-francisco-on-july-27-2026-68-69f,san-francisco,2026-07-27,YES,68-69°F,60-69c,0.6,16.67,10.0,0.2,0.6,0.6,6.47,won,16.67,6.47,2026-07-28T17:14:51Z
 2026-07-27T17:04:12Z,highest-temperature-in-sao-paulo-on-july-27-2026,highest-temperature-in-sao-paulo-on-july-27-2026-28c,sao-paulo,2026-07-27,YES,28°C,90-97c,0.9,11.11,10.0,0.05,0.9,0.9,1.06,won,11.11,1.06,2026-07-28T10:22:30Z
 2026-07-27T17:04:12Z,highest-temperature-in-miami-on-july-27-2026,highest-temperature-in-miami-on-july-27-2026-90-91f,miami,2026-07-27,YES,90-91°F,70-79c,0.7,14.29,10.0,0.15,0.7,0.7,4.14,won,14.29,4.14,2026-07-28T10:22:30Z
 2026-07-28T10:22:26Z,highest-temperature-in-lucknow-on-july-28-2026,highest-temperature-in-lucknow-on-july-28-2026-34c,lucknow,2026-07-28,YES,34°C,90-97c,0.94,10.64,10.0,0.03,0.94,0.94,0.61,open,,,
@@ -1156,3 +1156,4 @@ entry_utc,event_slug,market_slug,city,target_date,side,bucket,tier,price,shares,
 2026-07-28T12:48:54Z,highest-temperature-in-amsterdam-on-july-28-2026,highest-temperature-in-amsterdam-on-july-28-2026-27c,amsterdam,2026-07-28,YES,27°C,70-79c,0.75,13.33,10.0,0.125,0.75,0.75,3.21,open,,,
 2026-07-28T12:58:43Z,highest-temperature-in-amsterdam-on-july-28-2026,highest-temperature-in-amsterdam-on-july-28-2026-27c,amsterdam,2026-07-28,YES,27°C,80-89c,0.85,11.76,10.0,0.075,0.85,0.85,1.68,open,,,
 2026-07-28T13:54:19Z,highest-temperature-in-munich-on-july-28-2026,highest-temperature-in-munich-on-july-28-2026-29c,munich,2026-07-28,YES,29°C,90-97c,0.96,10.42,10.0,0.02,0.96,0.96,0.4,open,,,
+2026-07-28T17:14:47Z,highest-temperature-in-nyc-on-july-28-2026,highest-temperature-in-nyc-on-july-28-2026-80-81f,nyc,2026-07-28,YES,80-81°F,80-89c,0.89,11.24,10.0,0.055,0.89,0.89,1.19,open,,,
