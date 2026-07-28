@@ -33,27 +33,22 @@ IEM = "https://mesonet.agron.iastate.edu/api/1"
 HKO = "https://data.weather.gov.hk/weatherAPI/opendata/opendata.php"
 GEOCODE = "https://geocoding-api.open-meteo.com/v1/search"
 
-# Tag id "Highest temperature" trên Polymarket (kiểm chứng 2026-07-09).
-# Nếu tag đổi, collect.py còn lớp dự phòng lọc theo tiêu đề event.
 TAG_HIGHEST_TEMPERATURE = "104596"
+TAG_LOWEST_TEMPERATURE = "104597"
 TAG_DAILY_TEMPERATURE = "103040"
 
-# Các mô hình dự báo lấy từ Open-Meteo (đã kiểm chứng tên biến trả về:
-# daily.temperature_2m_max_<model>). best_match = mô hình tốt nhất
-# Open-Meteo tự chọn cho từng vị trí.
 FORECAST_MODELS = [
-    "ecmwf_ifs025",   # ECMWF IFS (châu Âu) - thường chính xác nhất thế giới
-    "gfs_seamless",   # NOAA GFS (Mỹ)
-    "icon_seamless",  # DWD ICON (Đức)
-    "ukmo_seamless",  # UK Met Office (Anh)
-    "best_match",     # Open-Meteo tự chọn mô hình tốt nhất cho vị trí
+    "ecmwf_ifs025",
+    "gfs_seamless",
+    "icon_seamless",
+    "ukmo_seamless",
+    "best_match",
 ]
 
 UA = "polymarket-temp-tracker/1.0 (nghien cuu do chinh xac du bao; lien he qua GitHub)"
 
 
 def http_get_json(url, params=None, retries=3, timeout=30):
-    """GET JSON với retry + backoff. Trả về None nếu thất bại hẳn."""
     if params:
         url = url + ("&" if "?" in url else "?") + urllib.parse.urlencode(params)
     last_err = None
@@ -77,12 +72,6 @@ def c_to_f(c):
     return c * 9.0 / 5.0 + 32.0
 
 
-# ---------------------------------------------------------------------------
-# Parse bucket nhiệt độ từ groupItemTitle của market.
-# Các dạng đã thấy trên thị trường thật: "24°C", "23°C or below", "33°C or higher",
-# "14°C or below", "35°C or higher". Dạng °F (thị trường Mỹ trước đây):
-# "84°F", "82°F or below", "84-85°F", "86°F or higher", "86°F+".
-# ---------------------------------------------------------------------------
 BUCKET_RE = re.compile(
     r"^\s*(-?\d+)\s*(?:[-–]\s*(-?\d+)\s*)?°\s*([CF])\s*(or below|or lower|or higher|or above|\+)?\s*$",
     re.IGNORECASE,
@@ -90,8 +79,6 @@ BUCKET_RE = re.compile(
 
 
 def parse_bucket(title):
-    """Trả về dict {'lo','hi','unit','kind'} hoặc None.
-    kind: 'le' (<=), 'ge' (>=), 'eq' (đúng 1 độ), 'range' (khoảng)."""
     if not title:
         return None
     m = BUCKET_RE.match(title.strip())
@@ -111,9 +98,6 @@ def parse_bucket(title):
 
 
 def bucket_contains(bucket, value_native, precision="whole"):
-    """value_native: nhiệt độ thực đo theo ĐƠN VỊ GỐC của thị trường.
-    precision: 'whole' (làm tròn nguyên độ - Seoul/°F) hay 'decimal'
-    (1 chữ số thập phân, bucket N chứa [N, N+1) - Hong Kong)."""
     if value_native is None or bucket is None:
         return None
     if precision == "decimal":
@@ -123,7 +107,6 @@ def bucket_contains(bucket, value_native, precision="whole"):
         if bucket["kind"] == "ge":
             return v >= bucket["lo"]
         return bucket["lo"] <= v < bucket["hi"] + 1
-    # whole: giá trị phân giải là số nguyên
     v = round(value_native)
     if bucket["kind"] == "le":
         return v <= bucket["hi"]
@@ -133,8 +116,6 @@ def bucket_contains(bucket, value_native, precision="whole"):
 
 
 def bucket_mid_c(bucket, precision="whole"):
-    """Điểm giữa bucket, đổi về °C — dùng tính kỳ vọng (EV) của thị trường.
-    Bucket mở ('or below'/'or higher') lấy mép ± 0.5 độ (quy ước, có ghi chú)."""
     if bucket is None:
         return None
     if bucket["kind"] == "le":
@@ -143,7 +124,7 @@ def bucket_mid_c(bucket, precision="whole"):
         mid = bucket["lo"] + 0.5
     else:
         mid = (bucket["lo"] + bucket["hi"]) / 2.0
-        if precision == "decimal":  # bucket N = [N, N+1)
+        if precision == "decimal":
             mid += 0.5
     return f_to_c(mid) if bucket["unit"] == "F" else mid
 
@@ -161,15 +142,6 @@ def bucket_label(bucket):
     return f"{bucket['lo']}{u}"
 
 
-# ---------------------------------------------------------------------------
-# Xác định trạm quan trắc từ resolutionSource của event.
-# Đã kiểm chứng 2 loại nguồn phân giải:
-#  1) Wunderground: https://www.wunderground.com/history/daily/kr/incheon/RKSI
-#     -> mã ICAO ở cuối URL; dữ liệu gốc là METAR của trạm — IEM cung cấp
-#     đúng dữ liệu này miễn phí (max_tmpf theo °F).
-#  2) Hong Kong Observatory: https://www.weather.gov.hk/en/cis/climat.htm
-#     -> trạm HKO (22.302N 114.174E), "Absolute Daily Max" 1 chữ số thập phân.
-# ---------------------------------------------------------------------------
 def resolve_station(event, station_cache):
     src = (event.get("resolutionSource") or "").strip()
     desc = event.get("description") or ""
@@ -181,9 +153,6 @@ def resolve_station(event, station_cache):
             "precision": "decimal",
         }
 
-    # Mã trạm ICAO là ĐOẠN CUỐI của URL Wunderground, đúng 4 ký tự in hoa.
-    # (URL Mỹ có dạng .../daily/us/ny/new-york-city/KLGA — nếu lấy đoạn giữa
-    # sẽ dính tên thành phố; đã sửa sau khi phát hiện NYC bị gán nhầm trạm.)
     icao = None
     if "wunderground.com/history/daily/" in src:
         path = src.split("wunderground.com/history/daily/", 1)[1]
@@ -211,7 +180,6 @@ def resolve_station(event, station_cache):
             out["precision"] = "decimal" if "one decimal" in desc else "whole"
             return out
 
-    # Dự phòng: geocode theo tên thành phố trong ticker
     city = city_from_ticker(event.get("ticker") or event.get("slug") or "")
     if city:
         j = http_get_json(GEOCODE, {"name": city.replace("-", " "), "count": 1})
@@ -227,7 +195,9 @@ def resolve_station(event, station_cache):
     return None
 
 
-TICKER_RE = re.compile(r"highest-temperature-in-(.+?)-on-([a-z]+)-(\d{1,2})-(\d{4})")
+TICKER_RE = re.compile(
+    r"(?:highest|lowest)-temperature-in-(.+?)-on-([a-z]+)-(\d{1,2})-(\d{4})"
+)
 MONTHS = {m: i + 1 for i, m in enumerate(
     ["january", "february", "march", "april", "may", "june", "july",
      "august", "september", "october", "november", "december"])}
@@ -239,9 +209,8 @@ def city_from_ticker(ticker):
 
 
 def date_from_event(event):
-    """Ngày mục tiêu của thị trường (theo giờ địa phương thành phố)."""
     if event.get("eventDate"):
-        return event["eventDate"]  # đã kiểm chứng: "2026-07-09"
+        return event["eventDate"]
     m = TICKER_RE.match(event.get("ticker") or event.get("slug") or "")
     if m:
         mon = MONTHS.get(m.group(2))
@@ -255,7 +224,6 @@ def load_station_cache():
         with open(STATIONS_JSON, encoding="utf-8") as f:
             return json.load(f)
     except (OSError, ValueError):
-        # file chưa có hoặc rỗng/hỏng -> bắt đầu cache mới
         return {}
 
 
@@ -267,7 +235,6 @@ def save_station_cache(cache):
 
 def append_csv(path, fieldnames, rows):
     os.makedirs(DATA_DIR, exist_ok=True)
-    # coi file rỗng (0 byte) như chưa tồn tại để vẫn ghi dòng tiêu đề
     exists = os.path.exists(path) and os.path.getsize(path) > 0
     with open(path, "a", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")

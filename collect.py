@@ -15,6 +15,14 @@ Thiết kế quan trọng:
   thành phố — vì thị trường phân giải bằng số đo của trạm đó.
 - lead_days = ngày mục tiêu − ngày hiện tại tại trạm (theo múi giờ trạm).
   Phân tích pattern chủ yếu dùng lead_days >= 1 (dự báo trước ít nhất 1 ngày).
+
+v2 (CD12 mở rộng): thêm fetch_lowest_temperature_events() — quét thêm nhánh
+"Lowest temperature in ..." (tag 104597), cấu trúc bucket giống hệt "Highest
+temperature" (do cùng hệ thống Polymarket dựng), dùng để mở rộng chiến dịch
+12 (arbitrage trọn bộ ô) sang gấp đôi số sự kiện/ngày mà KHÔNG đổi logic
+arbitrage. Hàm collect snapshot chính (main) vẫn chỉ ghi "Highest temperature"
+như cũ để không ảnh hưởng các chiến dịch khác (CD9/CD10/...) đang dựa vào
+snapshots.csv với giả định đó là dữ liệu "highest".
 """
 import json
 from datetime import datetime, timezone
@@ -38,10 +46,12 @@ SNAPSHOT_FIELDS = [
 TITLE_RE = "Highest temperature in"
 
 
-def fetch_temperature_events():
-    """Lấy toàn bộ event nhiệt độ đang mở, phân trang đầy đủ."""
+def _fetch_events_by_tag_title(tags, title_substr):
+    """Ham dung chung: quet toan bo event dang mo theo danh sach tag, chi
+    giu lai event co tieu de chua title_substr (khong phan biet hoa/thuong)."""
     events, seen = [], set()
-    for tag in (C.TAG_HIGHEST_TEMPERATURE, C.TAG_DAILY_TEMPERATURE):
+    needle = title_substr.lower()
+    for tag in tags:
         offset = 0
         while True:
             page = C.http_get_json(f"{C.GAMMA}/events", {
@@ -53,13 +63,27 @@ def fetch_temperature_events():
             for ev in page:
                 if ev.get("slug") in seen:
                     continue
-                if TITLE_RE.lower() in (ev.get("title") or "").lower():
+                if needle in (ev.get("title") or "").lower():
                     seen.add(ev["slug"])
                     events.append(ev)
             if len(page) < 100:
                 break
             offset += 100
     return events
+
+
+def fetch_temperature_events():
+    """Lấy toàn bộ event nhiệt độ CAO NHẤT đang mở, phân trang đầy đủ."""
+    return _fetch_events_by_tag_title(
+        (C.TAG_HIGHEST_TEMPERATURE, C.TAG_DAILY_TEMPERATURE), TITLE_RE)
+
+
+def fetch_lowest_temperature_events():
+    """v2 (CD12 mở rộng): lấy toàn bộ event nhiệt độ THẤP NHẤT đang mở.
+    Cùng cấu trúc bucket/phí với 'highest temperature', chỉ khác tag +
+    tiêu đề — dùng để tăng gấp đôi số sự kiện/ngày cho chiến dịch arbitrage."""
+    return _fetch_events_by_tag_title(
+        (C.TAG_LOWEST_TEMPERATURE, C.TAG_DAILY_TEMPERATURE), "Lowest temperature in")
 
 
 def parse_markets(event):

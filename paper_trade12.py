@@ -19,6 +19,13 @@ LUẬT v1 (18/07):
     N*(1 - tổng_ask) - tổng phí. Chỉ vào khi lời ròng >= $0.30.
   - Mỗi event chỉ mua 1 bộ (không mua lại khi giá dip lần nữa).
   - Không loại thành phố nào (kể cả Los Angeles) vì kết quả ra sao cũng thắng.
+
+LUẬT v2 (28/07): mở rộng nguồn sự kiện — ngoài "Highest temperature" như cũ,
+  quét thêm "Lowest temperature" (tag riêng 104597, cùng hệ thống bucket +
+  cùng biểu phí weather_fees 5%). Logic vào/chốt lệnh giữ NGUYÊN, chỉ tăng số
+  event/ngày được xét (gần như gấp đôi, vì mỗi thành phố giờ có cả 2 market).
+  Dedup theo event_slug nên không trùng lệnh giữa 2 nhánh.
+
 Kết quả: data/trades12.csv (1 dòng = 1 bộ trọn ô, không phải 1 lệnh lẻ)
 """
 import csv
@@ -113,7 +120,9 @@ def enter(trades, now, events=None):
     have = {t["event_slug"] for t in trades}
     today = C.parse_iso_date(now[:10])
     if events is None:
-        events = collect.fetch_temperature_events()
+        # v2: gop ca 2 nhanh "highest" + "lowest" temperature. Dedup theo
+        # slug (2 nhanh khong bao gio trung slug voi nhau).
+        events = collect.fetch_temperature_events() + collect.fetch_lowest_temperature_events()
 
     candidates = []
     for ev in events:
@@ -172,7 +181,8 @@ def main():
         t.setdefault("status", "open")
 
     n_settled = settle(trades)
-    n_new = enter(trades, now)
+    events = collect.fetch_temperature_events() + collect.fetch_lowest_temperature_events()
+    n_new = enter(trades, now, events=events)
 
     os.makedirs(C.DATA_DIR, exist_ok=True)
     with open(TRADES12_CSV, "w", newline="", encoding="utf-8") as f:
@@ -184,7 +194,8 @@ def main():
     open_cost = sum(float(t["cost"]) + float(t["fee"]) for t in trades
                     if t["status"] == "open")
     won = sum(1 for t in trades if t["status"] == "won")
-    print(f"\n[CHIEN DICH 12 v1 — arbitrage tron bo, ~{SET_STAKE:.0f}$/bo, loi rong >= {MIN_NET}$]")
+    print(f"\n[CHIEN DICH 12 v2 — arbitrage tron bo (cao nhat + thap nhat), "
+          f"~{SET_STAKE:.0f}$/bo, loi rong >= {MIN_NET}$]")
     print(f"Chot {n_settled}, mua moi {n_new} bo | {won} bo da thang (khong the thua) | "
           f"lai da chot {realized:+.2f} | kha dung {BUDGET + realized - open_cost:.2f}/{BUDGET:.0f}")
 
