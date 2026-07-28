@@ -105,3 +105,4 @@ entry_utc,event_slug,city,target_date,lead_days,n_buckets,sum_ask,shares,cost,fe
 2026-07-28T08:02:15Z,highest-temperature-in-shenzhen-on-july-28-2026,shenzhen,2026-07-28,0,11,0.925,108.11,100.0,1.852,6.26,open,,,
 2026-07-28T08:36:28Z,highest-temperature-in-jeddah-on-july-28-2026,jeddah,2026-07-28,0,11,0.957,104.49,100.0,3.8487,0.64,open,,,
 2026-07-28T09:32:07Z,highest-temperature-in-wuhan-on-july-28-2026,wuhan,2026-07-28,0,11,0.089,1123.6,100.0,4.7734,1018.83,open,,,
+2026-07-28T09:37:22Z,highest-temperature-in-moscow-on-july-28-2026,moscow,2026-07-28,0,11,0.958,104.38,100.0,1.9482,2.43,open,,,
