@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 paper_trade12.py — CHIẾN DỊCH 12: ARBITRAGE MUA TRỌN BỘ Ô.
-KHÔNG dùng tiền thật. Tiền ảo $1500. Chạy trên VPS mỗi 2 phút.
+KHÔNG dùng tiền thật. Tiền ảo $3000 (tăng từ $1500 ở v2). Chạy trên VPS mỗi 2 phút.
 
 Ý TƯỞNG (ngách duy nhất KHÔNG THỂ LỖ về lý thuyết):
   Mỗi thị trường nhiệt độ có N ô, chắc chắn đúng 1 ô thắng và trả $1/cổ phần.
@@ -25,6 +25,9 @@ LUẬT v2 (28/07): mở rộng nguồn sự kiện — ngoài "Highest temperatu
   cùng biểu phí weather_fees 5%). Logic vào/chốt lệnh giữ NGUYÊN, chỉ tăng số
   event/ngày được xét (gần như gấp đôi, vì mỗi thành phố giờ có cả 2 market).
   Dedup theo event_slug nên không trùng lệnh giữa 2 nhánh.
+  Đồng thời tăng vốn ảo BUDGET 1500 -> 3000 vì trước đó vốn hay cạn sát đáy
+  (có lúc chỉ còn $4.54) vào các ngày nhiều kèo — số kèo/ngày sắp tới sẽ còn
+  tăng thêm do có thêm nhánh Lowest Temperature.
 
 Kết quả: data/trades12.csv (1 dòng = 1 bộ trọn ô, không phải 1 lệnh lẻ)
 """
@@ -43,7 +46,8 @@ TRADE_FIELDS12 = [
     "locked_profit", "status", "payout", "pnl", "settle_utc",
 ]
 
-BUDGET = 1500.0
+BUDGET = 3000.0     # v2: tang gap doi (1500 -> 3000) vi them nhanh Lowest
+                    # Temperature nen so keo/ngay tang gan gap doi theo
 SET_STAKE = 100.0   # von bo vao moi bo (xap xi, = shares * sum_ask)
 MIN_NET = 0.30      # loi rong toi thieu/bo de dang vao (tranh nhieu vi lam tron)
 MAX_LEAD_DAYS = 2
