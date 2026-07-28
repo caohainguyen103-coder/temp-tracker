@@ -99,3 +99,4 @@ entry_utc,event_slug,city,target_date,lead_days,n_buckets,sum_ask,shares,cost,fe
 2026-07-27T22:11:14Z,highest-temperature-in-denver-on-july-27-2026,denver,2026-07-27,0,11,0.954,104.82,100.0,1.1915,3.63,open,,,
 2026-07-28T04:09:19Z,highest-temperature-in-manila-on-july-28-2026,manila,2026-07-28,0,11,0.965,103.63,100.0,3.2383,0.39,open,,,
 2026-07-28T04:34:34Z,highest-temperature-in-tokyo-on-july-28-2026,tokyo,2026-07-28,0,11,0.331,302.11,100.0,3.7199,198.39,open,,,
+2026-07-28T05:20:02Z,highest-temperature-in-chengdu-on-july-28-2026,chengdu,2026-07-28,0,11,0.957,104.49,100.0,3.6305,0.86,open,,,
