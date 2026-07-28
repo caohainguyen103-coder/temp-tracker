@@ -198,7 +198,7 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-07-26T09:05:27Z,highest-temperature-in-sao-paulo-on-july-27-2026,sao-paulo,2026-07-27,1,NO,28°C,0.69,14.49,10.0,0.155,28.0,27°C,lost,0.0,-10.15,2026-07-28T10:22:08Z
 2026-07-26T09:05:27Z,highest-temperature-in-miami-on-july-27-2026,miami,2026-07-27,1,NO,90-91°F,0.63,15.87,10.0,0.185,32.0,92-93°F,lost,0.0,-10.19,2026-07-28T10:22:08Z
 2026-07-26T09:05:27Z,highest-temperature-in-austin-on-july-27-2026,austin,2026-07-27,1,NO,96-97°F,0.72,13.89,10.0,0.14,36.2,98-99°F,won,13.89,3.75,2026-07-28T10:22:08Z
-2026-07-26T09:05:27Z,highest-temperature-in-los-angeles-on-july-27-2026,los-angeles,2026-07-27,1,NO,78-79°F,0.61,16.39,10.0,0.195,26.3,78-79°F,open,,,
+2026-07-26T09:05:27Z,highest-temperature-in-los-angeles-on-july-27-2026,los-angeles,2026-07-27,1,NO,78-79°F,0.61,16.39,10.0,0.195,26.3,78-79°F,lost,0.0,-10.2,2026-07-28T17:14:05Z
 2026-07-26T09:05:27Z,highest-temperature-in-tokyo-on-july-28-2026,tokyo,2026-07-28,2,NO,29°C,0.73,13.7,10.0,0.135,29.0,30°C,open,,,
 2026-07-26T09:05:27Z,highest-temperature-in-warsaw-on-july-28-2026,warsaw,2026-07-28,2,NO,21°C,0.74,13.51,10.0,0.13,21.1,22°C,open,,,
 2026-07-26T09:05:27Z,highest-temperature-in-amsterdam-on-july-28-2026,amsterdam,2026-07-28,2,NO,27°C,0.75,13.33,10.0,0.125,26.8,26°C,open,,,

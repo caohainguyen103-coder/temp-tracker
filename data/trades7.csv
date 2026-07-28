@@ -433,9 +433,9 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-07-26T09:05:27Z,highest-temperature-in-nyc-on-july-27-2026,nyc,2026-07-27,1,NO,86-87°F,0.84,11.9,10.0,0.08,30.6,84-85°F,won,11.9,1.82,2026-07-28T10:22:08Z
 2026-07-26T09:05:27Z,highest-temperature-in-chicago-on-july-27-2026,chicago,2026-07-27,1,NO,86-87°F,0.8,12.5,10.0,0.1,29.9,88-89°F,won,12.5,2.4,2026-07-28T10:22:08Z
 2026-07-26T09:05:27Z,highest-temperature-in-austin-on-july-27-2026,austin,2026-07-27,1,NO,96-97°F,0.72,13.89,10.0,0.14,36.2,98-99°F,won,13.89,3.75,2026-07-28T10:22:08Z
-2026-07-26T09:05:27Z,highest-temperature-in-denver-on-july-27-2026,denver,2026-07-27,1,NO,96-97°F,0.77,12.99,10.0,0.115,36.0,94-95°F,open,,,
+2026-07-26T09:05:27Z,highest-temperature-in-denver-on-july-27-2026,denver,2026-07-27,1,NO,96-97°F,0.77,12.99,10.0,0.115,36.0,94-95°F,won,12.99,2.88,2026-07-28T17:14:05Z
 2026-07-26T09:05:27Z,highest-temperature-in-houston-on-july-27-2026,houston,2026-07-27,1,NO,98-99°F,0.94,10.64,10.0,0.03,36.5,96-97°F,won,10.64,0.61,2026-07-28T10:22:08Z
-2026-07-26T09:05:27Z,highest-temperature-in-san-francisco-on-july-27-2026,san-francisco,2026-07-27,1,NO,66-67°F,0.96,10.42,10.0,0.02,19.5,70-71°F,open,,,
+2026-07-26T09:05:27Z,highest-temperature-in-san-francisco-on-july-27-2026,san-francisco,2026-07-27,1,NO,66-67°F,0.96,10.42,10.0,0.02,19.5,70-71°F,won,10.42,0.4,2026-07-28T17:14:05Z
 2026-07-26T09:05:27Z,highest-temperature-in-panama-city-on-july-27-2026,panama-city,2026-07-27,1,NO,29°C,0.9,11.11,10.0,0.05,28.7,31°C,won,11.11,1.06,2026-07-28T10:22:08Z
 2026-07-26T09:05:27Z,highest-temperature-in-london-on-july-28-2026,london,2026-07-28,2,NO,33°C,0.99,10.1,10.0,0.005,32.6,30°C,open,,,
 2026-07-26T09:05:27Z,highest-temperature-in-paris-on-july-28-2026,paris,2026-07-28,2,NO,36°C,0.99,10.1,10.0,0.005,35.6,32°C,open,,,

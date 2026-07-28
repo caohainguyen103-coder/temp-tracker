@@ -938,3 +938,8 @@ target_date,event_slug,city,unit,precision,station_kind,station_id,resolved_buck
 2026-07-27,highest-temperature-in-warsaw-on-july-27-2026,warsaw,C,whole,metar,EPWA,23°C,23.0,23.0,iem_metar,2026-07-28T10:20:44Z
 2026-07-27,highest-temperature-in-wellington-on-july-27-2026,wellington,C,whole,metar,NZWN,11°C,11.0,11.0,iem_metar,2026-07-28T10:20:44Z
 2026-07-27,highest-temperature-in-wuhan-on-july-27-2026,wuhan,C,whole,metar,ZHHH,32°C,32.0,32.0,iem_metar,2026-07-28T10:20:44Z
+2026-07-27,highest-temperature-in-denver-on-july-27-2026,denver,F,whole,geocode,denver,92-93°F,33.6,92.5,openmeteo_grid,2026-07-28T17:14:00Z
+2026-07-27,highest-temperature-in-los-angeles-on-july-27-2026,los-angeles,F,whole,metar,KLAX,78-79°F,26.1,79.0,iem_metar,2026-07-28T17:14:00Z
+2026-07-27,highest-temperature-in-mexico-city-on-july-27-2026,mexico-city,C,whole,metar,MMMX,23°C,23.0,23.0,iem_metar,2026-07-28T17:14:00Z
+2026-07-27,highest-temperature-in-san-francisco-on-july-27-2026,san-francisco,F,whole,metar,KSFO,68-69°F,20.6,69.0,iem_metar,2026-07-28T17:14:00Z
+2026-07-27,highest-temperature-in-seattle-on-july-27-2026,seattle,F,whole,metar,KSEA,78-79°F,25.6,78.0,iem_metar,2026-07-28T17:14:00Z
