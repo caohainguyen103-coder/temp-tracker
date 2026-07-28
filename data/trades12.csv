@@ -102,3 +102,4 @@ entry_utc,event_slug,city,target_date,lead_days,n_buckets,sum_ask,shares,cost,fe
 2026-07-28T05:20:02Z,highest-temperature-in-chengdu-on-july-28-2026,chengdu,2026-07-28,0,11,0.957,104.49,100.0,3.6305,0.86,open,,,
 2026-07-28T06:30:28Z,highest-temperature-in-kuala-lumpur-on-july-28-2026,kuala-lumpur,2026-07-28,0,11,0.855,116.96,100.0,3.0405,13.92,open,,,
 2026-07-28T07:10:57Z,highest-temperature-in-austin-on-july-28-2026,austin,2026-07-28,0,11,0.961,104.06,100.0,2.8392,1.22,open,,,
+2026-07-28T08:02:15Z,highest-temperature-in-shenzhen-on-july-28-2026,shenzhen,2026-07-28,0,11,0.925,108.11,100.0,1.852,6.26,open,,,
