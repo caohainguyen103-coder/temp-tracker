@@ -25,3 +25,5 @@ entry_utc,event_slug,city,target_date,n_buckets_theoretical,sum_ask_theoretical,
 2026-07-29T18:09:19Z,lowest-temperature-in-london-on-july-30-2026,london,2026-07-30,11,0.959,5.21,,,,,,skipped,,do sau THAT khong du (o '21°C' chi kha dung 0.63/5.21 co phan) -- ly do: khong ro (xem debug) -> BO QUA
 2026-07-29T18:09:54Z,lowest-temperature-in-london-on-july-30-2026,london,2026-07-30,11,0.959,5.21,,,,,,skipped,,do sau THAT khong du (o '21°C' chi kha dung 0.63/5.21 co phan) -- ly do: khong ro (xem debug) -> BO QUA
 2026-07-29T18:10:22Z,lowest-temperature-in-london-on-july-30-2026,london,2026-07-30,11,0.959,5.21,,,,,,skipped,,do sau THAT khong du (o '21°C' chi kha dung 0.63/5.21 co phan) -- ly do: khong ro (xem debug) -> BO QUA
+2026-07-29T18:10:57Z,lowest-temperature-in-london-on-july-30-2026,london,2026-07-30,11,0.959,5.21,,,,,,skipped,,do sau THAT khong du (o '21°C' chi kha dung 0.63/5.21 co phan) -- ly do: khong ro (xem debug) -> BO QUA
+2026-07-29T18:11:25Z,lowest-temperature-in-london-on-july-30-2026,london,2026-07-30,11,0.959,5.21,,,,,,skipped,,do sau THAT khong du (o '21°C' chi kha dung 0.63/5.21 co phan) -- ly do: khong ro (xem debug) -> BO QUA
