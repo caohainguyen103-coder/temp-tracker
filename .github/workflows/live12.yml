@@ -1,0 +1,44 @@
+name: CD12 Live (tien that)
+
+# Chay tu dong moi 15 phut. Mac dinh AN TOAN: neu ban chua tao secret
+# LIVE_TRADING (hoac tao no = "0"), bot chi chay DRY-RUN (chi log ra se
+# mua gi, KHONG dat lenh that). Chi khi ban tu tao secret LIVE_TRADING = "1"
+# thi lenh that moi duoc gui.
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch: {}
+
+jobs:
+  live-trade:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cai thu vien
+        run: pip install py-clob-client
+
+      - name: Chay live_trade12.py
+        env:
+          POLYMARKET_PRIVATE_KEY: ${{ secrets.POLYMARKET_PRIVATE_KEY }}
+          POLYMARKET_FUNDER: ${{ secrets.POLYMARKET_FUNDER }}
+          POLYMARKET_SIG_TYPE: "2"
+          LIVE_TRADING: ${{ secrets.LIVE_TRADING }}
+          CD12_LIVE_STAKE: "5"
+          CD12_LIVE_MAX_TRADES: "1"
+          CD12_LIVE_DAILY_LOSS_LIMIT: "20"
+        run: python live_trade12.py
+
+      - name: Luu ket qua vao repo
+        run: |
+          git config user.name "cd12-live-bot"
+          git config user.email "actions@github.com"
+          git add data/trades12_live.csv 2>/dev/null || true
+          git diff --cached --quiet || git commit -m "CD12 live: cap nhat ket qua"
+          git push
