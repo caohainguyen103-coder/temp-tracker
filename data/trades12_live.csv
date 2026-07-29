@@ -3,3 +3,4 @@ entry_utc,event_slug,city,target_date,n_buckets_theoretical,sum_ask_theoretical,
 2026-07-29T14:47:27Z,highest-temperature-in-toronto-on-july-29-2026,toronto,2026-07-29,11,0.932,5.36,,,,,,skipped,,do sau THAT khong du (o mong nhat chi kha dung 0.00/5.36 co phan) -> BO QUA
 2026-07-29T15:02:38Z,highest-temperature-in-milan-on-july-29-2026,milan,2026-07-29,11,0.955,5.24,,,,,,skipped,,do sau THAT khong du (o mong nhat chi kha dung 0.00/5.24 co phan) -> BO QUA
 2026-07-29T15:02:38Z,highest-temperature-in-moscow-on-july-29-2026,moscow,2026-07-29,11,0.991,5.05,,,,,,skipped,,do sau THAT khong du (o mong nhat chi kha dung 0.00/5.05 co phan) -> BO QUA
+2026-07-29T16:33:16Z,highest-temperature-in-miami-on-july-29-2026,miami,2026-07-29,11,0.956,5.23,,,,,,skipped,,do sau THAT khong du (o '92-93°F' chi kha dung 0.00/5.23 co phan) -- ly do: co lenh ban that nhung gia thap nhat 0.610 > gia toi da chap nhan 0.571 (Gamma bao gia 0.560 nhung so lenh that dang ban dat hon) -> BO QUA
