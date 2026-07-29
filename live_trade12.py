@@ -111,13 +111,19 @@ def get_client():
 
 
 def book_depth_avg_price(client, token_id, need_shares, max_price):
-    """Doc SO LENH BAN THAT cua token_id, tra ve (shares_kha_dung, gia_binh_quan)
-    cho toi da need_shares o gia <= max_price. Day la kiem tra THAT qua CLOB
-    API, khac voi bestAsk cua Gamma API (chi la gia hang dau, khong noi ro
-    con bao nhieu khoi luong o do)."""
+    """Doc SO LENH BAN THAT cua token_id, tra ve (shares_kha_dung, gia_binh_quan,
+    debug_info) cho toi da need_shares o gia <= max_price. Day la kiem tra
+    THAT qua CLOB API, khac voi bestAsk cua Gamma API (chi la gia hang dau,
+    khong noi ro con bao nhieu khoi luong o do).
+
+    debug_info giup phan biet 2 truong hop khi got=0: (a) so lenh THAT SU
+    trong (khong ai ban) - thi truong khong co thanh khoan that, khac voi
+    (b) co lenh ban that nhung o gia cao hon max_price (bi loai boi truot
+    gia cho phep) - hai truong hop nay can xu ly/hieu khac nhau."""
     book = client.get_order_book(token_id)
+    raw_asks = getattr(book, "asks", None) or []
     asks = sorted(
-        ((float(a.price), float(a.size)) for a in (getattr(book, "asks", None) or [])),
+        ((float(a.price), float(a.size)) for a in raw_asks),
         key=lambda x: x[0],
     )
     got, cost = 0.0, 0.0
@@ -128,7 +134,44 @@ def book_depth_avg_price(client, token_id, need_shares, max_price):
         got += take
         cost += take * price
     avg = (cost / got) if got > 0 else None
-    return got, avg
+    debug_info = {
+        "n_levels": len(asks),
+        "best_price": asks[0][0] if asks else None,
+        "best_size": asks[0][1] if asks else None,
+    }
+    return got, avg, debug_info
+
+
+def _yes_token_id(mk):
+    """Lay dung token_id cua ket qua "Yes" trong clobTokenIds. TRUOC DAY code
+    luon gia dinh index [0] la "Yes" -- gia dinh nay co the SAI (neu API tra
+    ve thu tu [No, Yes] cho mot so thi truong), khien cac lan kiem tra do sau
+    that tra ve luon sai token (thuong la o hoan toan trong -> luon bi BO
+    QUA du thi truong that co the co thanh khoan). Ham nay uu tien doi chieu
+    voi field "outcomes" (thuong la ["Yes","No"] theo dung thu tu voi
+    clobTokenIds) truoc khi phai doan index [0]."""
+    try:
+        token_ids = json.loads(mk["clobTokenIds"])
+    except Exception:
+        return None
+    if not token_ids:
+        return None
+    outcomes_raw = mk.get("outcomes")
+    outcomes = None
+    if isinstance(outcomes_raw, str):
+        try:
+            outcomes = json.loads(outcomes_raw)
+        except Exception:
+            outcomes = None
+    elif isinstance(outcomes_raw, list):
+        outcomes = outcomes_raw
+    if outcomes and len(outcomes) == len(token_ids):
+        for i, o in enumerate(outcomes):
+            if str(o).strip().lower() == "yes":
+                return token_ids[i]
+    # Khong co field outcomes dang tin cay -> gia dinh nhu cu (index 0).
+    # DUOC GHI RO trong debug/note de biet lan nao dang phai doan.
+    return token_ids[0]
 
 
 def scan_candidates(now, today):
@@ -170,10 +213,7 @@ def scan_candidates(now, today):
             b = C.parse_bucket(mk.get("groupItemTitle"))
             if b is None or mk.get("closed") or not mk.get("active"):
                 continue
-            try:
-                yes_token = json.loads(mk["clobTokenIds"])[0]
-            except Exception:
-                yes_token = None
+            yes_token = _yes_token_id(mk)
             if yes_token is None or mk.get("bestAsk") is None:
                 ok = False
                 break
@@ -199,15 +239,28 @@ def try_enter_one(client, cand):
     need_shares = cand["shares_theoretical"]
     filled = []
     min_filled_shares = need_shares
+    worst = None
     for t in cand["tokens"]:
         max_price = min(t["ask"] * (1 + SLIPPAGE_TICKS_PCT), 0.99)
-        got, avg = book_depth_avg_price(client, t["token_id"], need_shares, max_price)
+        got, avg, dbg = book_depth_avg_price(client, t["token_id"], need_shares, max_price)
         filled.append({**t, "got": got, "avg": avg})
+        if worst is None or got < worst["got"]:
+            worst = {"got": got, "title": t.get("title"), "ask_gamma": t["ask"],
+                      "max_price": max_price, **dbg}
         min_filled_shares = min(min_filled_shares, got)
 
     if min_filled_shares < need_shares * 0.5:
-        return None, (f"do sau THAT khong du (o mong nhat chi kha dung "
-                       f"{min_filled_shares:.2f}/{need_shares:.2f} co phan) -> BO QUA")
+        if worst and worst["n_levels"] == 0:
+            ly_do = "so lenh THAT trong (khong co ai ban thuc su o thi truong nay)"
+        elif worst and worst["best_price"] is not None and worst["best_price"] > worst["max_price"]:
+            ly_do = (f"co lenh ban that nhung gia thap nhat {worst['best_price']:.3f} "
+                     f"> gia toi da chap nhan {worst['max_price']:.3f} (Gamma bao gia "
+                     f"{worst['ask_gamma']:.3f} nhung so lenh that dang ban dat hon)")
+        else:
+            ly_do = "khong ro (xem debug)"
+        return None, (f"do sau THAT khong du (o '{worst['title'] if worst else '?'}' "
+                       f"chi kha dung {min_filled_shares:.2f}/{need_shares:.2f} co phan) "
+                       f"-- ly do: {ly_do} -> BO QUA")
 
     shares_use = round(min_filled_shares, 2)
     real_asks = [f["avg"] if f["avg"] is not None else f["ask"] for f in filled]
