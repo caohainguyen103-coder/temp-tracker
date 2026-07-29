@@ -9,8 +9,19 @@
 # Duoc goi boi systemd (temp-tracker.service) — khong chay tay.
 # TU CAP NHAT: khi file nay trong repo thay doi, vong lap tu thay
 # the ban dang chay va khoi dong lai — khong can SSH vao sua tay.
+#
+# CD12 LIVE (tien that): neu ton tai /root/live12_secrets.env (KHONG nam
+# trong repo git, chi ton tai tren may VPS nay), vong lap se doc bien moi
+# truong tu file do va tu dong chay live_trade12.py moi vong quet. Neu
+# khong co file do (hoac thieu POLYMARKET_PRIVATE_KEY), phan live SE
+# TU DONG BO QUA — khong anh huong cac chien dich paper trade khac.
 # ============================================================
 cd /root/temp-tracker
+
+if [ -f /root/live12_secrets.env ]; then
+  source /root/live12_secrets.env
+fi
+
 last_cd10_hour=""
 last_commit_ts=0
 COMMIT_EVERY_SEC=60
@@ -42,6 +53,12 @@ while true; do
   # (19/07: bo CD11 — NO trung 100% CD9, YES la ao anh backtest, lo -89.75$)
   python3 vps_scan_all.py || echo "[LOI] vps_scan_all that bai, thu lai vong sau"
 
+  # CD12 LIVE (tien that) - chi chay neu da cau hinh secrets tren VPS nay
+  # (file /root/live12_secrets.env). Neu chua cau hinh thi tu bo qua.
+  if [ -n "$POLYMARKET_PRIVATE_KEY" ]; then
+    python3 live_trade12.py || echo "[LOI] live_trade12 that bai, thu lai vong sau"
+  fi
+
   # CD10: quet 1 lan/gio, theo dong ho UTC (khong dem vong nua vi vong lap
   # gio nhanh hon truoc rat nhieu, dem vong se lech gio thuc te).
   cur_hour=$(date -u +%Y-%m-%dT%H)
@@ -55,7 +72,7 @@ while true; do
   now_ts=$(date +%s)
   if [ $((now_ts - last_commit_ts)) -ge $COMMIT_EVERY_SEC ]; then
     git add data/trades9.csv data/cd9_price_hist.csv data/trades10.csv \
-            data/trades12.csv \
+            data/trades12.csv data/trades12_live.csv \
             data/trades14.csv data/cd14_price_hist.csv \
             data/trades15.csv data/cd15_price_hist.csv data/stations.json 2>/dev/null
     if ! git diff --cached --quiet; then
