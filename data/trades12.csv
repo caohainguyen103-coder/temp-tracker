@@ -125,3 +125,4 @@ entry_utc,event_slug,city,target_date,lead_days,n_buckets,sum_ask,shares,cost,fe
 2026-07-29T14:48:01Z,highest-temperature-in-toronto-on-july-29-2026,toronto,2026-07-29,0,11,0.932,107.3,100.0,3.2009,4.1,open,,,
 2026-07-29T15:02:32Z,highest-temperature-in-milan-on-july-29-2026,milan,2026-07-29,0,11,0.955,104.71,100.0,2.2509,2.46,open,,,
 2026-07-29T15:02:32Z,highest-temperature-in-moscow-on-july-29-2026,moscow,2026-07-29,0,11,0.991,100.91,100.0,0.4419,0.47,open,,,
+2026-07-29T16:27:53Z,highest-temperature-in-sao-paulo-on-july-29-2026,sao-paulo,2026-07-29,0,11,0.976,102.46,100.0,2.1251,0.33,open,,,
