@@ -116,3 +116,4 @@ entry_utc,event_slug,city,target_date,lead_days,n_buckets,sum_ask,shares,cost,fe
 2026-07-28T20:58:18Z,highest-temperature-in-mexico-city-on-july-28-2026,mexico-city,2026-07-28,0,11,0.985,101.52,100.0,1.19,0.33,open,,,
 2026-07-28T21:38:35Z,highest-temperature-in-seattle-on-july-28-2026,seattle,2026-07-28,0,11,0.977,102.35,100.0,1.8305,0.52,open,,,
 2026-07-29T01:15:26Z,highest-temperature-in-guangzhou-on-july-29-2026,guangzhou,2026-07-29,0,11,0.938,106.61,100.0,3.2915,3.32,open,,,
+2026-07-29T05:48:07Z,highest-temperature-in-chengdu-on-july-29-2026,chengdu,2026-07-29,0,11,0.96,104.17,100.0,3.3038,0.87,open,,,
