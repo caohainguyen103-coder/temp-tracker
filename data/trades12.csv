@@ -120,3 +120,4 @@ entry_utc,event_slug,city,target_date,lead_days,n_buckets,sum_ask,shares,cost,fe
 2026-07-29T06:33:29Z,highest-temperature-in-shanghai-on-july-29-2026,shanghai,2026-07-29,0,11,0.979,102.15,100.0,1.6001,0.55,open,,,
 2026-07-29T08:34:43Z,highest-temperature-in-wellington-on-july-29-2026,wellington,2026-07-29,0,11,0.959,104.28,100.0,0.8514,3.43,open,,,
 2026-07-29T12:11:36Z,highest-temperature-in-istanbul-on-july-29-2026,istanbul,2026-07-29,0,11,0.973,102.77,100.0,1.2433,1.53,open,,,
+2026-07-29T12:31:36Z,highest-temperature-in-london-on-july-29-2026,london,2026-07-29,0,11,0.967,103.41,100.0,2.8736,0.54,open,,,
