@@ -40,6 +40,8 @@
   .chip{font-size:11px;font-weight:600;padding:3px 10px;border-radius:99px}
   .chip.safe{background:rgba(52,211,153,.12);color:var(--good);border:1px solid rgba(52,211,153,.3)}
   .chip.risk{background:rgba(251,191,36,.12);color:var(--gold);border:1px solid rgba(251,191,36,.3)}
+  .chip.live{background:rgba(251,113,133,.16);color:var(--bad);border:1px solid rgba(251,113,133,.45);animation:livepulse 2s infinite}
+  @keyframes livepulse{0%,100%{opacity:1}50%{opacity:.55}}
   .pdesc{color:var(--mut);font-size:12.5px;margin:0 0 14px}
   table{width:100%;border-collapse:collapse;font-size:13px}
   th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line)}
@@ -88,6 +90,22 @@
   <div class="card"><b id="c-events">–</b><span>thị trường theo dõi</span></div>
   <div class="card"><b id="c-resolved">–</b><span>đã có kết quả</span></div>
   <div class="card"><b id="c-cities">–</b><span>thành phố</span></div>
+</div>
+
+<div class="panel" style="border:1px solid rgba(251,113,133,.4);box-shadow:0 0 0 1px rgba(251,113,133,.08)">
+  <div class="ptitle">💵 GIAO DỊCH THẬT — CD12 Arbitrage bằng tiền thật <span class="chip live">🔴 TIỀN THẬT · không phải mô phỏng</span>
+    <span style="margin-left:auto;font-weight:400;font-size:12px;color:var(--mut)">Chọn ngày <select id="live12-day"><option value="all">tất cả</option></select></span></div>
+  <p class="pdesc">Bản triển khai thật của Chiến dịch 12 (arbitrage mua trọn bộ ô, không thể thua về mặt lý thuyết) — chạy tự động trên VPS, quét mỗi 15-30s, dùng ví Polymarket thật của bạn. Mỗi bộ vào $5, chỉ mua khi lời ròng sau phí ≥ $0.15 <b>sau khi đã kiểm tra độ sâu sổ lệnh thật</b> (không chỉ tin giá hiển thị). Tự khóa nếu lỗ thật trong ngày vượt $20. <b>Lưu ý:</b> bot hiện chưa tự động theo dõi kết quả thắng/thua sau khi thị trường phân giải (chưa tự redeem) — "lời khóa chắc" dưới đây là số tiền chắc chắn sẽ nhận được khi thị trường đóng, cần tự kiểm tra/redeem trên Polymarket.</p>
+  <div class="cards" style="margin-bottom:14px">
+    <div class="card"><b id="live12-cost">–</b><span>vốn đang khóa (bộ đang mở)</span></div>
+    <div class="card"><b id="live12-locked">–</b><span>lời khóa chắc đang chờ</span></div>
+    <div class="card"><b id="live12-open">–</b><span>bộ đã mua thật</span></div>
+    <div class="card"><b id="live12-skipped">–</b><span>lần bị bỏ qua (không đạt chuẩn)</span></div>
+  </div>
+  <div class="pdesc" id="live12-sum" style="color:var(--txt);font-weight:600"></div>
+  <table id="live12tbl"><thead><tr>
+    <th>Lúc quét</th><th>Thành phố</th><th>Ngày mục tiêu</th><th>Số ô</th><th>Vốn bỏ</th><th>Lời khóa chắc</th><th>Trạng thái</th><th>Ghi chú</th>
+  </tr></thead><tbody></tbody></table>
 </div>
 
 <div class="panel">
@@ -445,6 +463,7 @@ const badge=s=>{const m={open:['b-open','đang mở'],won:['b-won','THẮNG'],lo
 
 let SNAPS=[],RES={},chart=null,chartEq=null;
 let PAPER4_ROWS=[],PAPER5_ROWS=[],PAPER6_ROWS=[],PAPER7_ROWS=[],PAPER8_ROWS=[],PAPER9_ROWS=[],PAPER10_ROWS=[],PAPER11_ROWS=[],PAPER12_ROWS=[],PAPER14_ROWS=[],PAPER15_ROWS=[],PAPER16_ROWS=[];
+let LIVE12_ROWS=[];
 function renderEquity(){
   const days=new Set();
   const day1={W15:{},W16:{},W4:{},W5:{},W6:{},W7:{},W8:{},W9:{},W11:{},W12:{},W14:{}};
@@ -525,7 +544,7 @@ async function load(){
     const o=document.createElement('option');o.value=d;o.textContent=d;sel.appendChild(o);
     const o2=document.createElement('option');o2.value=d;o2.textContent=d;ld.appendChild(o2);
   });
-  loadPaper4(); loadPaper5(); loadPaper6(); loadPaper7(); loadPaper8(); loadPaper9(); loadPaper10(); loadPaper11(); loadPaper12(); loadPaper14(); loadPaper15(); loadPaper16(); render();
+  loadLive12(); loadPaper4(); loadPaper5(); loadPaper6(); loadPaper7(); loadPaper8(); loadPaper9(); loadPaper10(); loadPaper11(); loadPaper12(); loadPaper14(); loadPaper15(); loadPaper16(); render();
 }
 
 async function loadPaper4(){
@@ -1334,6 +1353,70 @@ function renderPaper12(){
   });
 }
 
+function loadLive12(){
+  return fetch('data/trades12_live.csv',{cache:'no-store'}).then(r=>r.text()).catch(()=>'').then(txt=>{
+    const sel=document.getElementById('live12-day');
+    if(txt.includes('event_slug')){
+      const rows=parseCSV(txt);LIVE12_ROWS=rows;
+      if(sel){
+        const days=[...new Set(rows.map(r=>(r.entry_utc||'').slice(0,10)).filter(Boolean))].sort().reverse();
+        days.forEach(d=>{const o=document.createElement('option');o.value=d;o.textContent=d;sel.appendChild(o);});
+      }
+    }
+    renderLive12();
+  });
+}
+const LIVE12_STATUS_VN={
+  open:['✅ Đã mua thật','hit'],
+  dry_run:['🧪 Dry-run','' ],
+  skipped:['⏭ Bỏ qua','miss'],
+  no_credentials:['⚠ Thiếu API key','miss'],
+};
+function renderLive12(){
+  const tb=document.querySelector('#live12tbl tbody');
+  tb.innerHTML='';
+  const rows=LIVE12_ROWS;
+  if(!rows.length){
+    tb.innerHTML='<tr><td colspan="8" style="color:var(--mut)">Chưa có lần quét nào được ghi lại.</td></tr>';
+    document.getElementById('live12-cost').textContent='$0.00';
+    document.getElementById('live12-locked').textContent='+0.00 $';
+    document.getElementById('live12-open').textContent='0';
+    document.getElementById('live12-skipped').textContent='0';
+    return;
+  }
+  let openCost=0,openLocked=0,nOpen=0,nSkipped=0;
+  rows.forEach(r=>{
+    if(r.status==='open'){nOpen++;openCost+=num(r.cost_actual)||0;openLocked+=num(r.locked_profit_actual)||0;}
+    else if(r.status==='skipped'||r.status==='no_credentials')nSkipped++;
+  });
+  document.getElementById('live12-cost').textContent='$'+openCost.toFixed(2);
+  const pl=document.getElementById('live12-locked');
+  pl.textContent='+'+openLocked.toFixed(2)+' $';
+  pl.style.color='var(--good)';
+  document.getElementById('live12-open').textContent=nOpen;
+  document.getElementById('live12-skipped').textContent=nSkipped;
+  const pSum=document.getElementById('live12-sum');
+  if(pSum)pSum.innerHTML=`💵 ${nOpen} bộ mua thật · ⏭ ${nSkipped} lần bỏ qua — vốn đang khóa <b style="color:var(--txt)">$${openCost.toFixed(2)}</b> · lời khóa chắc đang chờ <b style="color:var(--good)">+${openLocked.toFixed(2)} $</b>`;
+  const selEl=document.getElementById('live12-day');
+  const day=selEl?selEl.value:'all';
+  const shown=day==='all'?rows:rows.filter(r=>(r.entry_utc||'').slice(0,10)===day);
+  const list=shown.slice(-60);
+  if(!list.length)tb.innerHTML='<tr><td colspan="8" style="color:var(--mut)">Không có dòng nào trong ngày này.</td></tr>';
+  list.slice().reverse().forEach(r=>{
+    const st=LIVE12_STATUS_VN[r.status]||[r.status||'–',''];
+    const lp=num(r.locked_profit_actual);
+    const cost=num(r.cost_actual);
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${(r.entry_utc||'').slice(5,16).replace('T',' ')}</td>
+      <td>${r.city||'–'}</td><td>${r.target_date||'–'}</td>
+      <td>${r.n_buckets_theoretical||'–'}</td>
+      <td>${cost!==null?'$'+cost.toFixed(2):'–'}</td>
+      <td class="${st[1]}">${lp!==null?'+'+lp.toFixed(2)+' $':'–'}</td>
+      <td class="${st[1]}">${st[0]}</td>
+      <td style="color:var(--mut);font-size:11.5px">${r.note||''}</td>`;
+    tb.appendChild(tr);
+  });
+}
 function loadPaper10(){
   return fetch('data/trades10.csv',{cache:'no-store'}).then(r=>r.text()).catch(()=>'').then(txt=>{
     const sel=document.getElementById('p10-day');
@@ -1562,6 +1645,7 @@ document.getElementById('p8-day').addEventListener('change',renderPaper8);
 document.getElementById('p9-day').addEventListener('change',renderPaper9);
 document.getElementById('p10-day').addEventListener('change',renderPaper10);
 document.getElementById('p11-day').addEventListener('change',renderPaper11);
+document.getElementById('live12-day').addEventListener('change',renderLive12);
 document.getElementById('p12-day').addEventListener('change',renderPaper12);
 document.getElementById('p14-day').addEventListener('change',renderPaper14);
 document.getElementById('p15-day').addEventListener('change',renderPaper15);
