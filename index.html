@@ -1368,6 +1368,7 @@ function loadLive12(){
 }
 const LIVE12_STATUS_VN={
   open:['✅ Đã mua thật','hit'],
+  open_CANH_BAO:['🚨 Mua thật - CẢNH BÁO thiếu ô','miss'],
   dry_run:['🧪 Dry-run','' ],
   skipped:['⏭ Bỏ qua','miss'],
   no_credentials:['⚠ Thiếu API key','miss'],
@@ -1384,9 +1385,12 @@ function renderLive12(){
     document.getElementById('live12-skipped').textContent='0';
     return;
   }
-  let openCost=0,openLocked=0,nOpen=0,nSkipped=0;
+  let openCost=0,openLocked=0,nOpen=0,nSkipped=0,nWarn=0;
   rows.forEach(r=>{
-    if(r.status==='open'){nOpen++;openCost+=num(r.cost_actual)||0;openLocked+=num(r.locked_profit_actual)||0;}
+    if(r.status==='open'||r.status==='open_CANH_BAO'){
+      nOpen++;openCost+=num(r.cost_actual)||0;openLocked+=num(r.locked_profit_actual)||0;
+      if(r.status==='open_CANH_BAO')nWarn++;
+    }
     else if(r.status==='skipped'||r.status==='no_credentials')nSkipped++;
   });
   document.getElementById('live12-cost').textContent='$'+openCost.toFixed(2);
@@ -1396,7 +1400,7 @@ function renderLive12(){
   document.getElementById('live12-open').textContent=nOpen;
   document.getElementById('live12-skipped').textContent=nSkipped;
   const pSum=document.getElementById('live12-sum');
-  if(pSum)pSum.innerHTML=`💵 ${nOpen} bộ mua thật · ⏭ ${nSkipped} lần bỏ qua — vốn đang khóa <b style="color:var(--txt)">$${openCost.toFixed(2)}</b> · lời khóa chắc đang chờ <b style="color:var(--good)">+${openLocked.toFixed(2)} $</b>`;
+  if(pSum)pSum.innerHTML=`💵 ${nOpen} bộ mua thật · ⏭ ${nSkipped} lần bỏ qua — vốn đang khóa <b style="color:var(--txt)">$${openCost.toFixed(2)}</b> · lời khóa chắc đang chờ <b style="color:var(--good)">+${openLocked.toFixed(2)} $</b>${nWarn?` · <span style="color:var(--bad)">🚨 ${nWarn} bộ nghi thiếu ô, kiểm tra tay trên Polymarket ngay</span>`:''}`;
   const selEl=document.getElementById('live12-day');
   const day=selEl?selEl.value:'all';
   const shown=day==='all'?rows:rows.filter(r=>(r.entry_utc||'').slice(0,10)===day);

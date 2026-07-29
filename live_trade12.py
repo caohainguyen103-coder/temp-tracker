@@ -174,13 +174,23 @@ def _yes_token_id(mk):
     return token_ids[0]
 
 
+BOUGHT_STATUSES = {"open", "open_CANH_BAO", "dry_run"}
+
+
 def scan_candidates(now, today):
-    have_live = {r["event_slug"] for r in C.read_csv(LIVE_CSV)}
+    # CHI loai tru event da THUC SU MUA (open/dry_run) -- KHONG loai tru vinh
+    # vien cac event bi "skipped" (thieu do sau tai thoi diem kiem tra). Ly
+    # do sua (phat hien 29/07): gia so lenh THAT dao dong lien tuc, mot event
+    # bi bo qua luc 15:33 hoan toan co the du do sau lai o lan quet 15:34 --
+    # truoc day code loai tru ca event bi skip vinh vien, khien co hoi thoang
+    # qua khong bao gio duoc thu lai.
+    have_bought = {r["event_slug"] for r in C.read_csv(LIVE_CSV)
+                   if r.get("status") in BOUGHT_STATUSES}
     events = collect.fetch_temperature_events() + collect.fetch_lowest_temperature_events()
     cands = []
     for ev in events:
         slug = ev.get("slug", "")
-        if not slug or slug in have_live:
+        if not slug or slug in have_bought:
             continue
         target = C.date_from_event(ev)
         city = C.city_from_ticker(ev.get("ticker") or slug) or ""
@@ -278,18 +288,55 @@ def try_enter_one(client, cand):
                   "order_ids": []},
                 "DRY-RUN: se mua nhung KHONG gui lenh that (dat LIVE_TRADING=1 de bat)")
 
+    # CANH BAO QUAN TRONG: moi lenh FAK duoi day duoc gui RIENG LE, tuan tu
+    # cho tung o. Giua luc kiem tra do sau (book_depth_avg_price o tren) va
+    # luc gui lenh that o day co do tre (nhieu lan goi API tuan tu), gia that
+    # co the da doi. FAK chi khop duoc bao nhieu la bay nhieu -- neu 1 o
+    # khong khop du shares_use trong khi cac o khac khop du, BO O DANG GIU SE
+    # KHONG CON TRON VEN -- mat tinh chat "chac thang du ket qua nao", tao ra
+    # rui ro that (giu lech huong). Doan code duoi co gang doc lai SO LUONG
+    # THAT SU duoc khop tu response de canh bao neu phat hien thieu -- nhung
+    # cau truc chinh xac cua response (ten field) CAN DOI CHIEU voi tai lieu
+    # py-clob-client hien hanh, khong duoc tin 100% neu chua tu kiem chung.
     order_ids = []
+    fill_reports = []
     for f in filled:
         price = round(f["avg"] if f["avg"] is not None else f["ask"], 3)
         args = OrderArgs(price=price, size=shares_use, side=BUY, token_id=f["token_id"])
         signed = client.create_order(args)
         resp = client.post_order(signed, OrderType.FAK)
-        order_ids.append(resp.get("orderID") if isinstance(resp, dict) else str(resp))
+        order_id = resp.get("orderID") if isinstance(resp, dict) else str(resp)
+        order_ids.append(order_id)
+        filled_size = None
+        if isinstance(resp, dict):
+            for key in ("takingAmount", "matchedAmount", "sizeMatched", "filledSize", "size"):
+                if key in resp:
+                    try:
+                        filled_size = float(resp[key])
+                    except (TypeError, ValueError):
+                        filled_size = None
+                    break
+        fill_reports.append({"title": f.get("title"), "requested": shares_use, "reported": filled_size})
+
+    # Chi canh bao khi response THUC SU noi ro so luong khop < yeu cau (>1%
+    # lech). Neu khong doc duoc field nao (filled_size=None moi lan), KHONG
+    # tu suy dien la loi -- chi la chua biet chac (can doi chieu tai lieu).
+    shortfalls = [fr for fr in fill_reports
+                  if fr["reported"] is not None and fr["reported"] < fr["requested"] * 0.99]
+    incomplete_risk = len(shortfalls) > 0
+    note = "DA GUI LENH THAT (FAK) cho tat ca cac o"
+    if incomplete_risk:
+        chi_tiet = "; ".join(f"{s['title']}: khop {s['reported']:.2f}/{s['requested']:.2f}" for s in shortfalls)
+        note += (f" -- CANH BAO RUI RO THAT: co o KHONG khop du so luong yeu cau ({chi_tiet}). "
+                 f"BO NAY CO THE KHONG CON TRON VEN -- vao Polymarket kiem tra vi thu cong NGAY.")
+    elif not any(fr["reported"] is not None for fr in fill_reports):
+        note += (" (khong doc duoc so luong khop that tu response API -- can tu kiem tra thu cong "
+                  "tren Polymarket de chac chan da mua du tung o, dung tin 100% vao dong nay)")
 
     return ({"shares_use": shares_use, "cost": real_cost, "fee": fee_est,
               "locked": locked_actual, "sum_ask_actual": sum_ask_actual,
-              "order_ids": order_ids},
-             "DA GUI LENH THAT (FAK) cho tat ca cac o")
+              "order_ids": order_ids, "incomplete_risk": incomplete_risk},
+             note)
 
 
 def daily_realized_pnl():
@@ -351,7 +398,14 @@ def main():
 
         result, note = try_enter_one(client, cand)
         print(f"  [{cand['city']} {cand['target_date']}] {note}")
-        status = "skipped" if result is None else ("open" if LIVE_TRADING else "dry_run")
+        if result is None:
+            status = "skipped"
+        elif not LIVE_TRADING:
+            status = "dry_run"
+        elif result.get("incomplete_risk"):
+            status = "open_CANH_BAO"
+        else:
+            status = "open"
         rows_out.append({
             "entry_utc": now, "event_slug": cand["event_slug"], "city": cand["city"],
             "target_date": cand["target_date"], "n_buckets_theoretical": cand["n_buckets"],
