@@ -62,11 +62,13 @@ from live_trade12 import (
     daily_realized_pnl,
 )
 
+# 30/07/2026: chuyen sang py-clob-client-v2 (xem ghi chu trong live_trade12.py
+# -- thu vien cu bi Polymarket khoa, moi lenh gui that deu bi loi "invalid
+# order version").
 try:
-    from py_clob_client.clob_types import OrderArgs, OrderType
-    from py_clob_client.order_builder.constants import BUY
+    from py_clob_client_v2 import OrderArgs, OrderType, Side
 except ImportError:
-    OrderArgs = OrderType = BUY = None
+    OrderArgs = OrderType = Side = None
 
 WS_URL = "wss://ws-subscriptions-clob.polymarket.com/ws/market"
 REFRESH_EVENTS_SEC = 45     # tan suat quet lai Gamma de tim su kien/o moi
@@ -320,7 +322,7 @@ def evaluate_event(slug):
 
 
 def execute_entry(client, plan):
-    """Chay trong executor thread (goi mang: client.create_order/post_order
+    """Chay trong executor thread (goi mang: client.create_and_post_order
     neu LIVE_TRADING=1, cong voi ghi CSV). KHONG dong vao books/events_meta
     -- chi dung du lieu da duoc trich xuat san trong 'plan'."""
     slug = plan["slug"]
@@ -349,9 +351,10 @@ def execute_entry(client, plan):
         shortfalls = []
         for f in filled:
             price = round(f["avg"] if f["avg"] is not None else f["ask"], 3)
-            args = OrderArgs(price=price, size=shares_use, side=BUY, token_id=f["token_id"])
-            signed = client.create_order(args)
-            resp = client.post_order(signed, OrderType.FAK)
+            args = OrderArgs(price=price, size=shares_use, side=Side.BUY, token_id=f["token_id"])
+            # create_and_post_order tu resolve tick_size va tu thu lai neu
+            # server bao "invalid order version" (py-clob-client-v2).
+            resp = client.create_and_post_order(order_args=args, order_type=OrderType.FAK)
             order_id = resp.get("orderID") if isinstance(resp, dict) else str(resp)
             order_ids.append(order_id)
             filled_size = None

@@ -61,10 +61,14 @@ import common as C
 import collect
 from paper_trade12 import full_set_asks, set_economics, FEE_RATE
 
+# 30/07/2026: thu vien cu "py-clob-client" (0.34.6) da bi Polymarket KHOA --
+# moi lenh gui that deu bi tu choi voi loi "invalid order version, please
+# use the latest clob-client" (repo cu da bi archive). Da chuyen sang thu
+# vien moi chinh thuc "py-clob-client-v2" (xem
+# https://github.com/Polymarket/py-clob-client-v2). Tren VPS can:
+#   pip install py-clob-client-v2 --break-system-packages
 try:
-    from py_clob_client.client import ClobClient
-    from py_clob_client.clob_types import OrderArgs, OrderType
-    from py_clob_client.order_builder.constants import BUY
+    from py_clob_client_v2 import ClobClient, OrderArgs, OrderType, Side
 except ImportError:
     ClobClient = None  # cho phep dry-run "xem ung vien" ngay ca khi chua cai thu vien
 
@@ -94,19 +98,24 @@ LIVE_FIELDS = [
 
 def get_client():
     if ClobClient is None:
-        print("[LOI] Chua cai py-clob-client. Chay: pip install py-clob-client")
+        print("[LOI] Chua cai py-clob-client-v2. Chay: pip install py-clob-client-v2 --break-system-packages")
         sys.exit(1)
     if not PRIVATE_KEY or not FUNDER_ADDRESS:
         print("[LOI] Thieu bien moi truong POLYMARKET_PRIVATE_KEY hoac POLYMARKET_FUNDER.")
         sys.exit(1)
-    client = ClobClient(
-        host="https://clob.polymarket.com",
-        key=PRIVATE_KEY,
-        chain_id=137,
-        signature_type=SIGNATURE_TYPE,
-        funder=FUNDER_ADDRESS,
+    host = "https://clob.polymarket.com"
+    # py-clob-client-v2 tach lam 2 buoc: (1) L1 (chu ky vi) de lay/tao API
+    # credentials, (2) L1+L2 (co creds) moi dat/huy lenh duoc. Khac voi ban
+    # cu chi can 1 client roi goi set_api_creds() ngay tren no.
+    l1_client = ClobClient(
+        host=host, chain_id=137, key=PRIVATE_KEY,
+        signature_type=SIGNATURE_TYPE, funder=FUNDER_ADDRESS,
     )
-    client.set_api_creds(client.create_or_derive_api_creds())
+    creds = l1_client.create_or_derive_api_key()
+    client = ClobClient(
+        host=host, chain_id=137, key=PRIVATE_KEY,
+        signature_type=SIGNATURE_TYPE, funder=FUNDER_ADDRESS, creds=creds,
+    )
     return client
 
 
@@ -121,9 +130,22 @@ def book_depth_avg_price(client, token_id, need_shares, max_price):
     (b) co lenh ban that nhung o gia cao hon max_price (bi loai boi truot
     gia cho phep) - hai truong hop nay can xu ly/hieu khac nhau."""
     book = client.get_order_book(token_id)
-    raw_asks = getattr(book, "asks", None) or []
+    # py-clob-client-v2: get_order_book() tra ve dict JSON THUAN (vd
+    # book["asks"] la list dict {"price":..,"size":..}), KHONG con la object
+    # co thuoc tinh .asks/.price/.size nhu ban cu -- doc ca 2 kieu cho chac.
+    if isinstance(book, dict):
+        raw_asks = book.get("asks") or []
+    else:
+        raw_asks = getattr(book, "asks", None) or []
+
+    def _lvl_price(a):
+        return a["price"] if isinstance(a, dict) else a.price
+
+    def _lvl_size(a):
+        return a["size"] if isinstance(a, dict) else a.size
+
     asks = sorted(
-        ((float(a.price), float(a.size)) for a in raw_asks),
+        ((float(_lvl_price(a)), float(_lvl_size(a))) for a in raw_asks),
         key=lambda x: x[0],
     )
     got, cost = 0.0, 0.0
@@ -302,9 +324,12 @@ def try_enter_one(client, cand):
     fill_reports = []
     for f in filled:
         price = round(f["avg"] if f["avg"] is not None else f["ask"], 3)
-        args = OrderArgs(price=price, size=shares_use, side=BUY, token_id=f["token_id"])
-        signed = client.create_order(args)
-        resp = client.post_order(signed, OrderType.FAK)
+        args = OrderArgs(price=price, size=shares_use, side=Side.BUY, token_id=f["token_id"])
+        # create_and_post_order (py-clob-client-v2) tu resolve tick_size va
+        # TU DONG THU LAI 1 lan neu server bao "invalid order version" (dung
+        # loi da gap 30/07/2026 voi thu vien cu) -- an toan hon goi
+        # create_order()+post_order() rieng le nhu ban cu.
+        resp = client.create_and_post_order(order_args=args, order_type=OrderType.FAK)
         order_id = resp.get("orderID") if isinstance(resp, dict) else str(resp)
         order_ids.append(order_id)
         filled_size = None
