@@ -498,7 +498,7 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-07-28T10:22:11Z,highest-temperature-in-austin-on-july-29-2026,austin,2026-07-29,1,NO,98-99°F,0.55,18.18,10.0,0.225,46.0,98-99°F,lost,0.0,-10.22,2026-07-30T09:47:02Z
 2026-07-28T10:22:11Z,highest-temperature-in-denver-on-july-29-2026,denver,2026-07-29,1,NO,90-91°F,0.69,14.49,10.0,0.155,31.5,90-91°F,lost,0.0,-10.15,2026-07-30T09:47:02Z
 2026-07-28T10:22:11Z,highest-temperature-in-houston-on-july-29-2026,houston,2026-07-29,1,NO,96-97°F,0.59,16.95,10.0,0.205,42.0,96-97°F,won,16.95,6.74,2026-07-30T09:47:02Z
-2026-07-28T10:22:11Z,highest-temperature-in-los-angeles-on-july-29-2026,los-angeles,2026-07-29,1,NO,78-79°F,0.51,19.61,10.0,0.245,49.5,78-79°F,open,,,
+2026-07-28T10:22:11Z,highest-temperature-in-los-angeles-on-july-29-2026,los-angeles,2026-07-29,1,NO,78-79°F,0.51,19.61,10.0,0.245,49.5,78-79°F,lost,0.0,-10.24,2026-07-30T17:10:43Z
 2026-07-28T10:22:11Z,highest-temperature-in-san-francisco-on-july-29-2026,san-francisco,2026-07-29,1,NO,70-71°F,0.61,16.39,10.0,0.195,40.0,70-71°F,won,16.39,6.2,2026-07-30T09:47:02Z
 2026-07-28T10:22:11Z,highest-temperature-in-mexico-city-on-july-29-2026,mexico-city,2026-07-29,1,NO,25°C,0.64,15.62,10.0,0.1799,37.0,25°C,won,15.62,5.44,2026-07-30T09:47:02Z
 2026-07-28T10:22:11Z,highest-temperature-in-panama-city-on-july-29-2026,panama-city,2026-07-29,1,NO,34°C,0.56,17.86,10.0,0.22,44.5,34°C,won,17.86,7.64,2026-07-30T09:47:02Z

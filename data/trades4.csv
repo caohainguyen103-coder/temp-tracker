@@ -225,3 +225,4 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-07-30T09:47:01Z,highest-temperature-in-karachi-on-august-1-2026,karachi,2026-08-01,2,NO,32°C,0.73,13.7,10.0,0.135,32.0,33°C,open,,,,mo_rong
 2026-07-30T09:47:01Z,highest-temperature-in-wellington-on-july-31-2026,wellington,2026-07-31,1,NO,13°C,0.68,14.71,10.0,0.16,13.0,14°C,open,,,,mo_rong
 2026-07-30T09:47:01Z,highest-temperature-in-austin-on-july-31-2026,austin,2026-07-31,1,NO,98-99°F,0.59,16.95,10.0,0.205,37.1,100-101°F,open,,,,mo_rong
+2026-07-30T17:10:40Z,highest-temperature-in-madrid-on-july-31-2026,madrid,2026-07-31,1,NO,38°C,0.57,17.54,10.0,0.215,37.8,37°C,open,,,,mo_rong

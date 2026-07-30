@@ -235,7 +235,7 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-07-29T10:21:20Z,highest-temperature-in-helsinki-on-july-29-2026,helsinki,2026-07-29,0,YES,24°C,0.62,16.13,10.0,0.19,60.5,24°C,won,16.13,5.94,2026-07-30T09:47:01Z
 2026-07-29T10:21:20Z,highest-temperature-in-jeddah-on-july-29-2026,jeddah,2026-07-29,0,YES,40°C,0.7,14.29,10.0,0.15,68.0,40°C,won,14.29,4.14,2026-07-30T09:47:01Z
 2026-07-29T10:21:20Z,highest-temperature-in-austin-on-july-29-2026,austin,2026-07-29,0,YES,98-99°F,0.65,15.38,10.0,0.1749,63.5,98-99°F,won,15.38,5.21,2026-07-30T09:47:01Z
-2026-07-29T10:21:20Z,highest-temperature-in-los-angeles-on-july-29-2026,los-angeles,2026-07-29,0,YES,78-79°F,0.62,16.13,10.0,0.19,61.0,78-79°F,open,,,
+2026-07-29T10:21:20Z,highest-temperature-in-los-angeles-on-july-29-2026,los-angeles,2026-07-29,0,YES,78-79°F,0.62,16.13,10.0,0.19,61.0,78-79°F,won,16.13,5.94,2026-07-30T17:10:41Z
 2026-07-29T10:21:20Z,highest-temperature-in-toronto-on-july-29-2026,toronto,2026-07-29,0,YES,26°C,0.64,15.62,10.0,0.1799,63.0,26°C,lost,0.0,-10.18,2026-07-30T09:47:01Z
 2026-07-29T10:21:20Z,highest-temperature-in-tel-aviv-on-july-30-2026,tel-aviv,2026-07-30,1,YES,34°C,0.63,15.87,10.0,0.185,62.5,34°C,open,,,
 2026-07-29T10:21:20Z,highest-temperature-in-madrid-on-july-30-2026,madrid,2026-07-30,1,YES,39°C,0.63,15.87,10.0,0.185,62.0,39°C,open,,,
