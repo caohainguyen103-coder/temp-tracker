@@ -70,11 +70,17 @@ while true; do
   # (19/07: bo CD11 — NO trung 100% CD9, YES la ao anh backtest, lo -89.75$)
   python3 vps_scan_all.py || echo "[LOI] vps_scan_all that bai, thu lai vong sau"
 
-  # CD12 LIVE (tien that) - chi chay neu da cau hinh secrets tren VPS nay
-  # (file /root/live12_secrets.env). Neu chua cau hinh thi tu bo qua.
-  if [ -n "$POLYMARKET_PRIVATE_KEY" ]; then
-    python3 live_trade12.py || echo "[LOI] live_trade12 that bai, thu lai vong sau"
-  fi
+  # CD12 LIVE (tien that) - DA TAT ban polling nay (30/07/2026): sau 21 tieng
+  # chay that (~175 lan quet, 0 lan khop), chan doan cho thay ban polling
+  # (dua vao gia Gamma API, tre so voi thi truong that) gan nhu khong bao
+  # gio bat kip cac o dang thay doi nhanh. Da thay bang live_trade12_ws.py
+  # (WebSocket real-time, doc thang so lenh that) chay RIENG qua systemd
+  # (temp-tracker-ws.service), khong con chay tu vong lap nay nua -- de
+  # tranh goi trung 2 lan cho cung 1 co hoi. Muon bat lai ban polling nay
+  # (vd de doi chieu) thi bo comment doan duoi:
+  # if [ -n "$POLYMARKET_PRIVATE_KEY" ]; then
+  #   python3 live_trade12.py || echo "[LOI] live_trade12 that bai, thu lai vong sau"
+  # fi
 
   # CD10: quet 1 lan/gio, theo dong ho UTC (khong dem vong nua vi vong lap
   # gio nhanh hon truoc rat nhieu, dem vong se lech gio thuc te).
