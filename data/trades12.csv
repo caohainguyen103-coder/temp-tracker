@@ -132,3 +132,4 @@ entry_utc,event_slug,city,target_date,lead_days,n_buckets,sum_ask,shares,cost,fe
 2026-07-29T21:39:36Z,highest-temperature-in-austin-on-july-29-2026,austin,2026-07-29,0,11,0.962,103.95,100.0,2.702,1.25,open,,,
 2026-07-29T23:20:33Z,highest-temperature-in-dallas-on-july-30-2026,dallas,2026-07-30,1,11,0.96,104.17,100.0,3.4141,0.76,open,,,
 2026-07-30T02:52:10Z,highest-temperature-in-shenzhen-on-july-30-2026,shenzhen,2026-07-30,0,11,0.963,103.84,100.0,2.538,1.3,open,,,
+2026-07-30T04:02:53Z,highest-temperature-in-manila-on-july-30-2026,manila,2026-07-30,0,11,0.955,104.71,100.0,3.2655,1.44,open,,,
