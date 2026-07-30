@@ -2,10 +2,13 @@
 # ============================================================
 # Vong lap chay tren VPS: CD9+CD11+CD12+CD14 quet chung 1 lan goi API
 # moi ~15-30s (xem vps_scan_all.py), CD10 moi ~60 phut (theo dong ho,
-# khong dem vong vi vong lap gio nhanh hon truoc rat nhieu). Commit +
-# push len GitHub duoc GOM lai moi ~60s (khong phai moi vong quet) de
-# tranh spam qua nhieu commit — logic vao/chot lenh van chay dung nhip
-# 15-30s, chi phan hien thi len dashboard la co do tre toi ~60s.
+# khong dem vong vi vong lap gio nhanh hon truoc rat nhieu). PUSH len
+# GitHub duoc GOM lai moi ~60s (khong phai moi vong quet) de tranh spam
+# qua nhieu push — nhung COMMIT local thi lam MOI VONG (neu co thay doi)
+# de dam bao working tree luon sach truoc khi git pull --rebase (xem fix
+# ben duoi — 30/07: phat hien commit bi gom 60s trong khi pull chay moi
+# vong 15-30s tung khien "git pull --rebase" that bai lien tuc do con
+# thay doi local chua commit, co the tre viec code moi tu GitHub toi VPS).
 # Duoc goi boi systemd (temp-tracker.service) — khong chay tay.
 # TU CAP NHAT: khi file nay trong repo thay doi, vong lap tu thay
 # the ban dang chay va khoi dong lai — khong can SSH vao sua tay.
@@ -23,8 +26,13 @@ if [ -f /root/live12_secrets.env ]; then
 fi
 
 last_cd10_hour=""
-last_commit_ts=0
-COMMIT_EVERY_SEC=60
+last_push_ts=0
+PUSH_EVERY_SEC=60
+
+DATA_FILES="data/trades9.csv data/cd9_price_hist.csv data/trades10.csv \
+data/trades12.csv data/trades12_live.csv \
+data/trades14.csv data/cd14_price_hist.csv \
+data/trades15.csv data/cd15_price_hist.csv data/stations.json"
 
 while true; do
   # Tu phuc hoi neu git dang ket giua chung 1 lan rebase/merge do (vd: web
@@ -36,6 +44,15 @@ while true; do
   if [ -f .git/MERGE_HEAD ]; then
     echo "[GIT] Dang ket giua merge do - tu huy va thu lai vong sau"
     git merge --abort 2>/dev/null || true
+  fi
+
+  # LUON commit thay doi local TRUOC khi pull (rieng viec nay khong goi
+  # mang, chi la git commit noi bo) -- dam bao working tree sach de
+  # "git pull --rebase" ben duoi khong bao gio bi chan boi thay doi
+  # chua commit cua chinh vong lap nay.
+  git add $DATA_FILES 2>/dev/null
+  if ! git diff --cached --quiet; then
+    git commit -q -m "VPS quet $(date -u +%Y-%m-%dT%H:%M:%S)"
   fi
 
   # Keo thay doi moi nhat (vd: ket qua chot lenh tu daily.yml, code moi)
@@ -67,19 +84,20 @@ while true; do
     last_cd10_hour="$cur_hour"
   fi
 
-  # Day ket qua len GitHub - GOM lai, chi commit/push moi ~60s (khong phai
-  # moi vong 15-30s) de khong lam ngap repo bang qua nhieu commit nho.
+  # Commit lai lan nua neu vps_scan_all/live_trade12/paper_trade10 vua ghi
+  # them du lieu moi trong chinh vong nay (de push ben duoi co day du,
+  # va de vong SAU van co working tree sach truoc khi pull).
+  git add $DATA_FILES 2>/dev/null
+  if ! git diff --cached --quiet; then
+    git commit -q -m "VPS quet $(date -u +%Y-%m-%dT%H:%M:%S)"
+  fi
+
+  # Day len GitHub - GOM lai, chi PUSH moi ~60s (khong phai moi vong
+  # 15-30s) de khong goi mang qua nhieu. Commit thi da lam o tren roi.
   now_ts=$(date +%s)
-  if [ $((now_ts - last_commit_ts)) -ge $COMMIT_EVERY_SEC ]; then
-    git add data/trades9.csv data/cd9_price_hist.csv data/trades10.csv \
-            data/trades12.csv data/trades12_live.csv \
-            data/trades14.csv data/cd14_price_hist.csv \
-            data/trades15.csv data/cd15_price_hist.csv data/stations.json 2>/dev/null
-    if ! git diff --cached --quiet; then
-      git commit -q -m "VPS quet $(date -u +%Y-%m-%dT%H:%M:%S)"
-      git push -q || { git pull --rebase -q || true; git push -q || true; }
-    fi
-    last_commit_ts=$now_ts
+  if [ $((now_ts - last_push_ts)) -ge $PUSH_EVERY_SEC ]; then
+    git push -q || { git pull --rebase -q || true; git push -q || true; }
+    last_push_ts=$now_ts
   fi
 
   sleep 15
