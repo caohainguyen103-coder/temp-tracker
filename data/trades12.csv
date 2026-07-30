@@ -147,3 +147,4 @@ entry_utc,event_slug,city,target_date,lead_days,n_buckets,sum_ask,shares,cost,fe
 2026-07-30T19:34:25Z,highest-temperature-in-amsterdam-on-july-31-2026,amsterdam,2026-07-31,1,11,0.957,104.49,100.0,3.8791,0.61,open,,,
 2026-07-30T20:34:59Z,highest-temperature-in-chicago-on-july-30-2026,chicago,2026-07-30,0,11,0.972,102.88,100.0,1.8424,1.04,open,,,
 2026-07-30T21:14:53Z,highest-temperature-in-los-angeles-on-july-30-2026,los-angeles,2026-07-30,0,11,0.99,101.01,100.0,0.5292,0.48,open,,,
+2026-07-30T22:20:30Z,highest-temperature-in-mexico-city-on-july-30-2026,mexico-city,2026-07-30,0,11,0.992,100.81,100.0,0.257,0.55,open,,,
