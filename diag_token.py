@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-diag_token.py — CHAN DOAN: kiem tra xem code co chon DUNG token "Yes" khong,
-bang cach in ra gia so lenh THAT cua CA 2 phia (token thu 0 va token thu 1)
-cho tung o cua 1 su kien dang bi bo qua nhieu nhat gan day.
+diag_token.py — CHAN DOAN: cho 1 su kien, kiem tra TUNG O:
+  - Token nao dang duoc code chon lam "Yes" (clobTokenIds vs outcomes).
+  - Gia sozeer lenh THAT (CLOB) cua token do, so voi bestAsk hien thi (Gamma).
+  - Co du co phan de mua o nguong gia bot THAT SU chap nhan (ask*(1+slippage))
+    hay khong.
 
-Khong gui lenh, khong dung private key de ky giao dich that -- chi doc
-order book cong khai (get_order_book chi can client object da khoi tao,
-day la du lieu cong khai, khong lo private key).
+In ra 1 BANG TOM TAT o CUOI CUNG, sap xep tu o NGHEN nhat (it co phan kha
+dung nhat) len dau -- khong can cuon man hinh de tim.
 
-Chay tren VPS (co du moi truong da cai san):
+Khong gui lenh that, chi doc order book cong khai.
+
+Chay tren VPS:
   cd /root/temp-tracker
   source /root/live12_secrets.env
   python3 diag_token.py highest-temperature-in-manila-on-july-30-2026
@@ -31,7 +34,8 @@ if ev is None:
 client = get_client()
 
 print(f"=== Su kien: {SLUG} ===\n")
-worst_bucket = None  # (got_cua_token_chon, title, chosen_id, other_id, gamma_ask)
+results = []  # moi phan tu: dict voi cac truong ben duoi
+
 for mk in ev.get("markets", []):
     title = mk.get("groupItemTitle")
     b = C.parse_bucket(title)
@@ -53,80 +57,76 @@ for mk in ev.get("markets", []):
 
     chosen = _yes_token_id(mk)
     best_ask_gamma = mk.get("bestAsk")
-    # DUNG DUNG CONG THUC nhu bot that: max_price = min(ask*(1+SLIPPAGE), 0.99)
-    # -- KHONG dung 0.99 co dinh (0.99 co dinh se luon "du" vi sổ lệnh thường co
-    # thanh khoan mong o gia rat cao, khong phan anh dung nguong that bot dung).
     real_max_price = None
     if best_ask_gamma is not None:
         real_max_price = min(float(best_ask_gamma) * (1 + SLIPPAGE_TICKS_PCT), 0.99)
 
-    print(f"--- O: {title} ---")
-    print(f"  bestAsk (Gamma, hien thi tren web)   : {best_ask_gamma}")
-    print(f"  gia toi da bot CHAP NHAN (+{SLIPPAGE_TICKS_PCT*100:.0f}% slippage): {real_max_price}")
-    print(f"  outcomes field                        : {outcomes}")
-    print(f"  clobTokenIds                          : {token_ids}")
-    print(f"  token duoc chon lam 'Yes' (chosen)    : {chosen}")
+    row = {"title": title, "gamma_ask": best_ask_gamma, "max_price": real_max_price,
+           "chosen": chosen, "chosen_best_price": None, "chosen_got": None,
+           "chosen_avg": None, "other_id": None, "other_best_price": None,
+           "other_got": None, "error": None}
 
-    chosen_got = None
-    chosen_avg = None
-    chosen_best_price = None
-    other_id = None
-    if token_ids and real_max_price is not None:
-        for idx, tid in enumerate(token_ids):
-            label = "Yes" if outcomes and idx < len(outcomes) and str(outcomes[idx]).strip().lower() == "yes" else (
-                    "No" if outcomes and idx < len(outcomes) and str(outcomes[idx]).strip().lower() == "no" else f"idx{idx}")
-            mark = " <== CODE DANG DUNG TOKEN NAY" if tid == chosen else ""
-            if tid != chosen:
-                other_id = tid
-            try:
-                got, avg, dbg = book_depth_avg_price(client, tid, need_shares=5.0, max_price=real_max_price)
-                print(f"    token[{idx}] nhan={label} id={tid[:12]}...{mark}")
-                print(f"        so lenh that: {dbg['n_levels']} muc gia, gia thap nhat={dbg['best_price']}, "
-                      f"khoi luong o gia do={dbg['best_size']}, kha dung <=gia toi da cho 5 co phan={got:.2f} (gia binh quan={avg})")
-                if tid == chosen:
-                    chosen_got = got
-                    chosen_avg = avg
-                    chosen_best_price = dbg['best_price']
-            except Exception as e:
-                print(f"    token[{idx}] nhan={label} id={tid[:12]}...{mark} -- LOI khi doc order book: {e}")
-    print()
+    if not token_ids or real_max_price is None:
+        row["error"] = "thieu clobTokenIds hoac bestAsk"
+        results.append(row)
+        print(f"--- O: {title} --- LOI: {row['error']}")
+        continue
 
-    if chosen_got is not None and (worst_bucket is None or chosen_got < worst_bucket[0]):
-        worst_bucket = (chosen_got, title, chosen, other_id, best_ask_gamma, real_max_price, chosen_avg, chosen_best_price)
+    for idx, tid in enumerate(token_ids):
+        if tid != chosen:
+            row["other_id"] = tid
+        try:
+            got, avg, dbg = book_depth_avg_price(client, tid, need_shares=5.0, max_price=real_max_price)
+        except Exception as e:
+            if tid == chosen:
+                row["error"] = f"loi doc order book token chosen: {e}"
+            continue
+        if tid == chosen:
+            row["chosen_got"] = got
+            row["chosen_avg"] = avg
+            row["chosen_best_price"] = dbg["best_price"]
+        else:
+            row["other_got"] = got
+            row["other_best_price"] = dbg["best_price"]
 
-print("=== KET LUAN CAN TU DOC ===")
-print("Neu token duoc CHON (dong co '<== CODE DANG DUNG') co gia thap nhat")
-print("CAO HON NHIEU so voi bestAsk hien thi, VA token CON LAI (khong duoc")
-print("chon) co gia thap nhat GAN VOI bestAsk hien thi hon -- thi code dang")
-print("CHON NHAM PHIA (bug that su). Nguoc lai neu token duoc chon co gia")
-print("gan voi bestAsk hon token kia, thi code dang chon dung, va gia cao")
-print("la do thi truong that thieu thanh khoan (khong phai bug).")
+    results.append(row)
+    print(f"--- O: {title} --- bestAsk={best_ask_gamma} max_price={real_max_price:.4f} "
+          f"chosen_best_price={row['chosen_best_price']} chosen_got={row['chosen_got']} "
+          f"other_best_price={row['other_best_price']}")
 
 print()
 print("############################################################")
-print("### TOM TAT -- O NGHEN CO CHAI (it co phan kha dung nhat) ###")
+print("### BANG TOM TAT -- sap xep tu O NGHEN nhat len dau        ###")
 print("############################################################")
-if worst_bucket is None:
-    print("Khong tinh duoc (co the tat ca cac o deu loi khi doc order book).")
-else:
-    got, title, chosen_id, other_id, gamma_ask, real_max_price, chosen_avg, chosen_best_price = worst_bucket
-    print(f"O: {title}")
-    print(f"  bestAsk Gamma hien thi          = {gamma_ask}")
-    print(f"  gia toi da bot chap nhan (+slip) = {real_max_price}")
-    print(f"Token DANG DUNG (Yes, theo code): {chosen_id}")
-    print(f"  -> gia thap nhat thuc te tren so lenh cua token nay = {chosen_best_price}")
-    print(f"  -> kha dung <= gia toi da: {got:.2f} co phan (5.00 = du, 0.00 = khong mua duoc gi)")
-    print(f"  -> gia binh quan neu mua = {chosen_avg}")
-    if other_id:
-        try:
-            got2, avg2, dbg2 = book_depth_avg_price(client, other_id, need_shares=5.0, max_price=0.99)
-            print(f"Token CON LAI (khong dung, coi nhu 'No'), doc voi nguong rong 0.99 de tham khao: {other_id}")
-            print(f"  -> gia thap nhat={dbg2['best_price']}, kha dung (<=0.99)={got2:.2f} co phan")
-        except Exception as e:
-            print(f"Token CON LAI: LOI khi doc: {e}")
+print(f"{'O (bucket)':<20}{'bestAsk':>9}{'max_chap_nhan':>15}{'gia_yes_that':>14}{'kha_dung':>10}{'gia_no_that':>13}")
+valid = [r for r in results if r["error"] is None]
+valid.sort(key=lambda r: (r["chosen_got"] if r["chosen_got"] is not None else 999))
+for r in valid:
+    print(f"{str(r['title'])[:19]:<20}{str(r['gamma_ask']):>9}{r['max_price']:>15.4f}"
+          f"{str(r['chosen_best_price']):>14}{(r['chosen_got'] if r['chosen_got'] is not None else -1):>10.2f}"
+          f"{str(r['other_best_price']):>13}")
+errs = [r for r in results if r["error"] is not None]
+if errs:
     print()
-    print(">>> Neu 'Token DANG DUNG' co gia rat cao/kha dung=0.00 NHUNG 'Token")
-    print(">>> CON LAI' lai co gia RAT GAN voi bestAsk Gamma hien thi o tren --")
-    print(">>> thi day CHINH LA BUG chon nham token. Neu ca 2 token deu it/khong")
-    print(">>> co thanh khoan gan gia hien thi, thi la do thi truong that thieu")
-    print(">>> nguoi ban that su o muc gia do (khong phai bug).")
+    print("O co loi khi doc:")
+    for r in errs:
+        print(f"  {r['title']}: {r['error']}")
+
+print()
+print("############################################################")
+print("### KET LUAN CAN TU DOC (dua vao dong DAU BANG tren)        ###")
+print("############################################################")
+if valid:
+    worst = valid[0]
+    print(f"O nghen nhat: {worst['title']} -- kha dung {worst['chosen_got']:.2f}/5.00 co phan "
+          f"o gia <= {worst['max_price']:.4f} (bestAsk hien thi = {worst['gamma_ask']})")
+    print(f"  Gia THAT thap nhat cua token 'Yes' dang dung  : {worst['chosen_best_price']}")
+    print(f"  Gia THAT thap nhat cua token con lai ('No')   : {worst['other_best_price']}")
+    print()
+    print(">>> Neu gia token 'Yes' dang dung cao/None NHUNG token 'No' con lai")
+    print(">>> lai co gia RAT GAN voi bestAsk hien thi -- day la BUG chon nham")
+    print(">>> token. Nguoc lai (gia Yes dang dung da gan voi bestAsk, chi la")
+    print(">>> cao hon nguong slippage cho phep, hoac token No khong co gia/that")
+    print(">>> xa) -- thi la do thi truong THAT thieu thanh khoan, khong phai bug.")
+else:
+    print("Khong co o nao doc duoc du lieu.")
