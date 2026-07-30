@@ -18,7 +18,7 @@ import sys
 
 import common as C
 import collect
-from live_trade12 import get_client, _yes_token_id, book_depth_avg_price
+from live_trade12 import get_client, _yes_token_id, book_depth_avg_price, SLIPPAGE_TICKS_PCT
 
 SLUG = sys.argv[1] if len(sys.argv) > 1 else "highest-temperature-in-manila-on-july-30-2026"
 
@@ -53,16 +53,25 @@ for mk in ev.get("markets", []):
 
     chosen = _yes_token_id(mk)
     best_ask_gamma = mk.get("bestAsk")
+    # DUNG DUNG CONG THUC nhu bot that: max_price = min(ask*(1+SLIPPAGE), 0.99)
+    # -- KHONG dung 0.99 co dinh (0.99 co dinh se luon "du" vi sổ lệnh thường co
+    # thanh khoan mong o gia rat cao, khong phan anh dung nguong that bot dung).
+    real_max_price = None
+    if best_ask_gamma is not None:
+        real_max_price = min(float(best_ask_gamma) * (1 + SLIPPAGE_TICKS_PCT), 0.99)
 
     print(f"--- O: {title} ---")
     print(f"  bestAsk (Gamma, hien thi tren web)   : {best_ask_gamma}")
+    print(f"  gia toi da bot CHAP NHAN (+{SLIPPAGE_TICKS_PCT*100:.0f}% slippage): {real_max_price}")
     print(f"  outcomes field                        : {outcomes}")
     print(f"  clobTokenIds                          : {token_ids}")
     print(f"  token duoc chon lam 'Yes' (chosen)    : {chosen}")
 
     chosen_got = None
+    chosen_avg = None
+    chosen_best_price = None
     other_id = None
-    if token_ids:
+    if token_ids and real_max_price is not None:
         for idx, tid in enumerate(token_ids):
             label = "Yes" if outcomes and idx < len(outcomes) and str(outcomes[idx]).strip().lower() == "yes" else (
                     "No" if outcomes and idx < len(outcomes) and str(outcomes[idx]).strip().lower() == "no" else f"idx{idx}")
@@ -70,18 +79,20 @@ for mk in ev.get("markets", []):
             if tid != chosen:
                 other_id = tid
             try:
-                got, avg, dbg = book_depth_avg_price(client, tid, need_shares=5.0, max_price=0.99)
+                got, avg, dbg = book_depth_avg_price(client, tid, need_shares=5.0, max_price=real_max_price)
                 print(f"    token[{idx}] nhan={label} id={tid[:12]}...{mark}")
                 print(f"        so lenh that: {dbg['n_levels']} muc gia, gia thap nhat={dbg['best_price']}, "
-                      f"khoi luong o gia do={dbg['best_size']}, kha dung <=0.99$ cho 5 co phan={got:.2f} (gia binh quan={avg})")
+                      f"khoi luong o gia do={dbg['best_size']}, kha dung <=gia toi da cho 5 co phan={got:.2f} (gia binh quan={avg})")
                 if tid == chosen:
                     chosen_got = got
+                    chosen_avg = avg
+                    chosen_best_price = dbg['best_price']
             except Exception as e:
                 print(f"    token[{idx}] nhan={label} id={tid[:12]}...{mark} -- LOI khi doc order book: {e}")
     print()
 
     if chosen_got is not None and (worst_bucket is None or chosen_got < worst_bucket[0]):
-        worst_bucket = (chosen_got, title, chosen, other_id, best_ask_gamma)
+        worst_bucket = (chosen_got, title, chosen, other_id, best_ask_gamma, real_max_price, chosen_avg, chosen_best_price)
 
 print("=== KET LUAN CAN TU DOC ===")
 print("Neu token duoc CHON (dong co '<== CODE DANG DUNG') co gia thap nhat")
@@ -98,15 +109,19 @@ print("############################################################")
 if worst_bucket is None:
     print("Khong tinh duoc (co the tat ca cac o deu loi khi doc order book).")
 else:
-    got, title, chosen_id, other_id, gamma_ask = worst_bucket
-    print(f"O: {title}  (bestAsk Gamma hien thi = {gamma_ask})")
+    got, title, chosen_id, other_id, gamma_ask, real_max_price, chosen_avg, chosen_best_price = worst_bucket
+    print(f"O: {title}")
+    print(f"  bestAsk Gamma hien thi          = {gamma_ask}")
+    print(f"  gia toi da bot chap nhan (+slip) = {real_max_price}")
     print(f"Token DANG DUNG (Yes, theo code): {chosen_id}")
-    print(f"  -> kha dung {got:.2f} co phan (cang gan 5.00 cang tot, 0.00 = hoan toan khong mua duoc)")
+    print(f"  -> gia thap nhat thuc te tren so lenh cua token nay = {chosen_best_price}")
+    print(f"  -> kha dung <= gia toi da: {got:.2f} co phan (5.00 = du, 0.00 = khong mua duoc gi)")
+    print(f"  -> gia binh quan neu mua = {chosen_avg}")
     if other_id:
         try:
             got2, avg2, dbg2 = book_depth_avg_price(client, other_id, need_shares=5.0, max_price=0.99)
-            print(f"Token CON LAI (khong dung, gia nhu la 'No'): {other_id}")
-            print(f"  -> gia thap nhat={dbg2['best_price']}, kha dung={got2:.2f} co phan")
+            print(f"Token CON LAI (khong dung, coi nhu 'No'), doc voi nguong rong 0.99 de tham khao: {other_id}")
+            print(f"  -> gia thap nhat={dbg2['best_price']}, kha dung (<=0.99)={got2:.2f} co phan")
         except Exception as e:
             print(f"Token CON LAI: LOI khi doc: {e}")
     print()
