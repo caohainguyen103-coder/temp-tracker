@@ -236,3 +236,7 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-07-31T10:15:48Z,highest-temperature-in-london-on-august-2-2026,london,2026-08-02,2,NO,27°C,0.7,14.29,10.0,0.15,26.8,26°C,open,,,,mo_rong
 2026-07-31T10:15:48Z,highest-temperature-in-moscow-on-august-1-2026,moscow,2026-08-01,1,NO,27°C,0.69,14.49,10.0,0.155,27.1,28°C,open,,,,mo_rong
 2026-07-31T10:15:48Z,highest-temperature-in-paris-on-august-2-2026,paris,2026-08-02,2,NO,31°C,0.68,14.71,10.0,0.16,30.6,32°C,open,,,,mo_rong
+2026-07-31T17:13:28Z,highest-temperature-in-chicago-on-august-1-2026,chicago,2026-08-01,1,NO,72-73°F,0.67,14.93,10.0,0.1651,22.0,70-71°F,open,,,,mo_rong
+2026-07-31T17:13:28Z,highest-temperature-in-singapore-on-august-1-2026,singapore,2026-08-01,1,NO,31°C,0.65,15.38,10.0,0.1749,30.6,32°C,open,,,,mo_rong
+2026-07-31T17:13:28Z,highest-temperature-in-denver-on-august-1-2026,denver,2026-08-01,1,NO,94-95°F,0.66,15.15,10.0,0.17,34.7,92-93°F,open,,,,mo_rong
+2026-07-31T17:13:28Z,highest-temperature-in-milan-on-august-2-2026,milan,2026-08-02,2,NO,34°C,0.68,14.71,10.0,0.16,34.3,35°C,open,,,,mo_rong
