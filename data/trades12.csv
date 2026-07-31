@@ -151,3 +151,4 @@ entry_utc,event_slug,city,target_date,lead_days,n_buckets,sum_ask,shares,cost,fe
 2026-07-31T03:02:27Z,highest-temperature-in-shanghai-on-july-31-2026,shanghai,2026-07-31,0,11,0.964,103.73,100.0,2.7885,0.94,open,,,
 2026-07-31T05:08:00Z,highest-temperature-in-nyc-on-july-31-2026,nyc,2026-07-31,0,11,0.962,103.95,100.0,3.4172,0.53,open,,,
 2026-07-31T05:58:19Z,highest-temperature-in-beijing-on-july-31-2026,beijing,2026-07-31,0,11,0.866,115.47,100.0,2.7948,12.68,open,,,
+2026-07-31T07:03:52Z,highest-temperature-in-kuala-lumpur-on-july-31-2026,kuala-lumpur,2026-07-31,0,11,0.975,102.56,100.0,1.577,0.98,open,,,
