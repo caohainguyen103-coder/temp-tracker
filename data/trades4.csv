@@ -224,7 +224,7 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-07-30T09:47:01Z,highest-temperature-in-manila-on-august-1-2026,manila,2026-08-01,2,NO,32°C,0.69,14.49,10.0,0.155,31.8,33°C,open,,,,mo_rong
 2026-07-30T09:47:01Z,highest-temperature-in-karachi-on-august-1-2026,karachi,2026-08-01,2,NO,32°C,0.73,13.7,10.0,0.135,32.0,33°C,open,,,,mo_rong
 2026-07-30T09:47:01Z,highest-temperature-in-wellington-on-july-31-2026,wellington,2026-07-31,1,NO,13°C,0.68,14.71,10.0,0.16,13.0,14°C,won,14.71,4.55,2026-08-01T08:03:24Z,mo_rong
-2026-07-30T09:47:01Z,highest-temperature-in-austin-on-july-31-2026,austin,2026-07-31,1,NO,98-99°F,0.59,16.95,10.0,0.205,37.1,100-101°F,open,,,,mo_rong
+2026-07-30T09:47:01Z,highest-temperature-in-austin-on-july-31-2026,austin,2026-07-31,1,NO,98-99°F,0.59,16.95,10.0,0.205,37.1,100-101°F,won,16.95,6.74,2026-08-01T15:43:31Z,mo_rong
 2026-07-30T17:10:40Z,highest-temperature-in-madrid-on-july-31-2026,madrid,2026-07-31,1,NO,38°C,0.57,17.54,10.0,0.215,37.8,37°C,lost,0.0,-10.21,2026-08-01T08:03:24Z,mo_rong
 2026-07-31T10:15:48Z,highest-temperature-in-cape-town-on-august-2-2026,cape-town,2026-08-02,2,NO,24°C,0.74,13.51,10.0,0.13,23.7,23°C,open,,,,goc
 2026-07-31T10:15:48Z,highest-temperature-in-chengdu-on-august-1-2026,chengdu,2026-08-01,1,NO,27°C,0.73,13.7,10.0,0.135,27.1,26°C,open,,,,goc

@@ -1129,3 +1129,12 @@ target_date,event_slug,city,unit,precision,station_kind,station_id,resolved_buck
 2026-07-31,highest-temperature-in-warsaw-on-july-31-2026,warsaw,C,whole,metar,EPWA,33°C,33.0,33.0,iem_metar,2026-08-01T08:02:42Z
 2026-07-31,highest-temperature-in-wellington-on-july-31-2026,wellington,C,whole,metar,NZWN,15°C,15.0,15.0,iem_metar,2026-08-01T08:02:42Z
 2026-07-31,highest-temperature-in-wuhan-on-july-31-2026,wuhan,C,whole,metar,ZHHH,35°C,35.0,35.0,iem_metar,2026-08-01T08:02:42Z
+2026-07-31,highest-temperature-in-atlanta-on-july-31-2026,atlanta,F,whole,metar,KATL,90-91°F,32.4,90.3,openmeteo_grid,2026-08-01T15:43:25Z
+2026-07-31,highest-temperature-in-austin-on-july-31-2026,austin,F,whole,metar,KAUS,100-101°F,37.8,100.0,iem_metar,2026-08-01T15:43:25Z
+2026-07-31,highest-temperature-in-dallas-on-july-31-2026,dallas,F,whole,geocode,dallas,102-103°F,39.0,102.2,openmeteo_grid,2026-08-01T15:43:25Z
+2026-07-31,highest-temperature-in-denver-on-july-31-2026,denver,F,whole,geocode,denver,90-91°F,35.0,95.0,openmeteo_grid,2026-08-01T15:43:25Z
+2026-07-31,highest-temperature-in-houston-on-july-31-2026,houston,F,whole,metar,KHOU,96-97°F,36.5,97.7,openmeteo_grid,2026-08-01T15:43:25Z
+2026-07-31,highest-temperature-in-los-angeles-on-july-31-2026,los-angeles,F,whole,metar,KLAX,78-79°F,26.1,79.0,iem_metar,2026-08-01T15:43:25Z
+2026-07-31,highest-temperature-in-nyc-on-july-31-2026,nyc,F,whole,metar,KLGA,84-85°F,28.9,84.0,iem_metar,2026-08-01T15:43:25Z
+2026-07-31,highest-temperature-in-san-francisco-on-july-31-2026,san-francisco,F,whole,metar,KSFO,72-73°F,22.2,72.0,iem_metar,2026-08-01T15:43:25Z
+2026-07-31,highest-temperature-in-seattle-on-july-31-2026,seattle,F,whole,metar,KSEA,82-83°F,27.8,82.0,iem_metar,2026-08-01T15:43:25Z
