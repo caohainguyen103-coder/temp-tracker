@@ -261,7 +261,7 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-07-31T10:15:49Z,highest-temperature-in-chicago-on-august-1-2026,chicago,2026-08-01,1,NO,70-71°F,0.62,16.13,10.0,0.19,21.0,70-71°F,won,16.13,5.94,2026-08-02T09:05:08Z
 2026-07-31T10:15:49Z,highest-temperature-in-houston-on-august-1-2026,houston,2026-08-01,1,NO,98-99°F,0.53,18.87,10.0,0.235,36.6,98-99°F,won,18.87,8.64,2026-08-02T09:05:08Z
 2026-07-31T10:15:49Z,highest-temperature-in-los-angeles-on-august-1-2026,los-angeles,2026-08-01,1,NO,80-81°F,0.47,21.28,10.0,0.265,26.9,80-81°F,won,21.28,11.02,2026-08-02T09:05:08Z
-2026-07-31T10:15:49Z,highest-temperature-in-san-francisco-on-august-1-2026,san-francisco,2026-08-01,1,NO,72-73°F,0.73,13.7,10.0,0.135,23.0,74-75°F,open,,,
+2026-07-31T10:15:49Z,highest-temperature-in-san-francisco-on-august-1-2026,san-francisco,2026-08-01,1,NO,72-73°F,0.73,13.7,10.0,0.135,23.0,74-75°F,lost,0.0,-10.13,2026-08-02T15:47:55Z
 2026-07-31T10:15:49Z,highest-temperature-in-tokyo-on-august-2-2026,tokyo,2026-08-02,2,NO,33°C,0.73,13.7,10.0,0.135,33.2,34°C,open,,,
 2026-07-31T10:15:49Z,highest-temperature-in-taipei-on-august-2-2026,taipei,2026-08-02,2,NO,37°C,0.7,14.29,10.0,0.15,36.9,37°C,open,,,
 2026-07-31T10:15:49Z,highest-temperature-in-wuhan-on-august-2-2026,wuhan,2026-08-02,2,NO,37°C,0.69,14.49,10.0,0.155,36.9,37°C,open,,,

@@ -1181,3 +1181,8 @@ target_date,event_slug,city,unit,precision,station_kind,station_id,resolved_buck
 2026-08-01,highest-temperature-in-warsaw-on-august-1-2026,warsaw,C,whole,metar,EPWA,31°C,31.0,31.0,iem_metar,2026-08-02T09:03:52Z
 2026-08-01,highest-temperature-in-wellington-on-august-1-2026,wellington,C,whole,metar,NZWN,11°C,11.0,11.0,iem_metar,2026-08-02T09:03:52Z
 2026-08-01,highest-temperature-in-wuhan-on-august-1-2026,wuhan,C,whole,metar,ZHHH,36°C,36.0,36.0,iem_metar,2026-08-02T09:03:52Z
+2026-08-01,highest-temperature-in-atlanta-on-august-1-2026,atlanta,F,whole,metar,KATL,86-87°F,29.1,84.4,openmeteo_grid,2026-08-02T15:47:51Z
+2026-08-01,highest-temperature-in-austin-on-august-1-2026,austin,F,whole,metar,KAUS,94-95°F,35.0,95.0,iem_metar,2026-08-02T15:47:51Z
+2026-08-01,highest-temperature-in-mexico-city-on-august-1-2026,mexico-city,C,whole,metar,MMMX,27°C,27.0,27.0,iem_metar,2026-08-02T15:47:51Z
+2026-08-01,highest-temperature-in-panama-city-on-august-1-2026,panama-city,C,whole,metar,MPMG,33°C,33.0,33.0,iem_metar,2026-08-02T15:47:51Z
+2026-08-01,highest-temperature-in-san-francisco-on-august-1-2026,san-francisco,F,whole,metar,KSFO,72-73°F,22.8,73.0,iem_metar,2026-08-02T15:47:51Z
