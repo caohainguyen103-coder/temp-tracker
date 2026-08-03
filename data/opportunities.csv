@@ -390,3 +390,5 @@ scan_utc,kind,event_slug,detail,edge,sum_ask,sum_bid,market_prob,model_prob,volu
 2026-08-03T10:53:26Z,crypto_btc,bitcoin-above-62k-on-august-4-2026,"BTC > $62,000 luc 2026-08-04T16:00:00Z; spot $62,606, DVOL 35%; mua NO @0.260; RONG +0.047 sau phi",0.0473,,,0.745,0.6792,40884.67641400001,16639.1585,mo hinh bo qua skew - tu tham dinh truoc khi vao lenh
 2026-08-03T10:53:26Z,negrisk_gan_dat,eurozone-2026-annual-inflation,9 o | mua 0.971 + phi 0.027 -> RONG +0.002 (thieu 0.008),0.0017,0.971,0.787,,,4694.3,99393.67664,CHUA DANG VAO - chi theo doi
 2026-08-03T10:53:26Z,negrisk_gan_dat,clf-mod-fio-2026-08-08-halftime-result,3 o | mua 1.003 + phi 0.002 -> RONG -0.005 (thieu 0.015),-0.0052,1.003,0.981,,,10737.532379,19345.40984,CHUA DANG VAO - chi theo doi
+2026-08-03T18:15:24Z,negrisk_sell_all,pro-football-2027-champion-20260729185915366,"33 o, tong bid 1.050 > 1 (chua tru phi)",0.05,2.111,1.05,,,33487.390062,6808887.2099,can split co phan (nang cao) - chi tham khao
+2026-08-03T18:15:24Z,negrisk_gan_dat,swe-dju-vas-2026-08-03,3 o | mua 1.007 + phi 0.001 -> RONG -0.008 (thieu 0.018),-0.0078,1.007,0.996,,,96615.94138100001,462390.39555,CHUA DANG VAO - chi theo doi
