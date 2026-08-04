@@ -60,3 +60,4 @@ entry_utc,market_slug,ccy,side,price,shares,stake,fee,model_prob,edge,end_date,s
 2026-08-03T22:18:00Z,ethereum-above-1900-on-august-4-2026,ETH,YES,0.12,83.33,10.0,0.616,0.1776,0.0502,2026-08-04T16:00:00Z,open,,,
 2026-08-04T16:23:59Z,bitcoin-above-62k-on-august-9-2026,BTC,NO,0.16,62.5,10.0,0.588,0.7825,0.0481,2026-08-09T16:00:00Z,open,,,
 2026-08-04T16:23:59Z,bitcoin-above-62k-on-august-8-2026,BTC,NO,0.14,71.43,10.0,0.602,0.81,0.0416,2026-08-08T16:00:00Z,open,,,
+2026-08-04T20:58:08Z,bitcoin-above-64k-on-august-5-2026,BTC,NO,0.33,30.3,10.0,0.469,0.6099,0.0446,2026-08-05T16:00:00Z,open,,,
