@@ -395,3 +395,4 @@ scan_utc,kind,event_slug,detail,edge,sum_ask,sum_bid,market_prob,model_prob,volu
 2026-08-03T22:18:00Z,crypto_eth,ethereum-above-1900-on-august-4-2026,"ETH > $1,900 luc 2026-08-04T16:00:00Z; spot $1,862, DVOL 49%; mua YES @0.120; RONG +0.050 sau phi",0.0502,,,0.115,0.1776,10944.669990999999,19303.9718,mo hinh bo qua skew - tu tham dinh truoc khi vao lenh
 2026-08-03T22:18:00Z,negrisk_gan_dat,best-ai-model-on-august-17-20260730202018839,6 o | mua 0.975 + phi 0.020 -> RONG +0.005 (thieu 0.005),0.0047,0.975,0.854,,,9522.768901000001,8477.39513,CHUA DANG VAO - chi theo doi
 2026-08-03T22:18:00Z,negrisk_gan_dat,ukr1-kud-shd-2026-08-03,2 o | mua 1.007 + phi 0.000 -> RONG -0.007 (thieu 0.017),-0.0074,1.007,0.993,,,296237.97130699997,33197.20522,CHUA DANG VAO - chi theo doi
+2026-08-04T08:03:47Z,negrisk_gan_dat,ukr1-shd-kud-2026-08-03,2 o | mua 1.009 + phi 0.000 -> RONG -0.009 (thieu 0.019),-0.0094,1.009,0.992,,,25682.357348000023,17095.96649,CHUA DANG VAO - chi theo doi
