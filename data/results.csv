@@ -1284,3 +1284,5 @@ target_date,event_slug,city,unit,precision,station_kind,station_id,resolved_buck
 2026-08-03,highest-temperature-in-warsaw-on-august-3-2026,warsaw,C,whole,metar,EPWA,29°C,29.0,29.0,iem_metar,2026-08-04T10:25:19Z
 2026-08-03,highest-temperature-in-wellington-on-august-3-2026,wellington,C,whole,metar,NZWN,16°C,16.0,16.0,iem_metar,2026-08-04T10:25:19Z
 2026-08-03,highest-temperature-in-wuhan-on-august-3-2026,wuhan,C,whole,metar,ZHHH,37°C,37.0,37.0,iem_metar,2026-08-04T10:25:19Z
+2026-08-03,highest-temperature-in-denver-on-august-3-2026,denver,F,whole,geocode,denver,100-101°F,39.1,102.4,openmeteo_grid,2026-08-04T18:16:34Z
+2026-08-03,highest-temperature-in-seattle-on-august-3-2026,seattle,F,whole,metar,KSEA,74-75°F,23.9,75.0,iem_metar,2026-08-04T18:16:34Z

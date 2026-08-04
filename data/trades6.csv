@@ -287,9 +287,9 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-08-03T12:51:58Z,highest-temperature-in-moscow-on-august-3-2026,moscow,2026-08-03,0,YES,25°C,0.84,11.9,10.0,0.08,82.0,25°C,won,11.9,1.82,2026-08-04T10:26:41Z
 2026-08-03T12:51:58Z,highest-temperature-in-istanbul-on-august-3-2026,istanbul,2026-08-03,0,YES,28°C,0.93,10.75,10.0,0.035,92.5,28°C,won,10.75,0.71,2026-08-04T10:26:41Z
 2026-08-03T12:51:58Z,highest-temperature-in-cape-town-on-august-3-2026,cape-town,2026-08-03,0,YES,22°C,0.67,14.93,10.0,0.1651,43.5,22°C,lost,0.0,-10.17,2026-08-04T10:26:41Z
-2026-08-03T12:51:58Z,highest-temperature-in-seattle-on-august-3-2026,seattle,2026-08-03,0,YES,76-77°F,0.63,15.87,10.0,0.185,62.5,76-77°F,open,,,
+2026-08-03T12:51:58Z,highest-temperature-in-seattle-on-august-3-2026,seattle,2026-08-03,0,YES,76-77°F,0.63,15.87,10.0,0.185,62.5,76-77°F,lost,0.0,-10.19,2026-08-04T18:16:36Z
 2026-08-03T12:51:58Z,highest-temperature-in-austin-on-august-3-2026,austin,2026-08-03,0,YES,100-101°F,0.64,15.62,10.0,0.1799,63.0,100-101°F,lost,0.0,-10.18,2026-08-04T10:26:41Z
-2026-08-03T12:51:58Z,highest-temperature-in-denver-on-august-3-2026,denver,2026-08-03,0,YES,100-101°F,0.73,13.7,10.0,0.135,72.0,100-101°F,open,,,
+2026-08-03T12:51:58Z,highest-temperature-in-denver-on-august-3-2026,denver,2026-08-03,0,YES,100-101°F,0.73,13.7,10.0,0.135,72.0,100-101°F,won,13.7,3.56,2026-08-04T18:16:36Z
 2026-08-03T12:51:58Z,highest-temperature-in-wellington-on-august-4-2026,wellington,2026-08-04,0,YES,10°C,0.81,12.35,10.0,0.095,79.5,10°C,open,,,
 2026-08-04T10:26:41Z,highest-temperature-in-ankara-on-august-4-2026,ankara,2026-08-04,0,YES,32°C,0.66,15.15,10.0,0.17,64.0,32°C,open,,,
 2026-08-04T10:26:41Z,highest-temperature-in-tel-aviv-on-august-4-2026,tel-aviv,2026-08-04,0,YES,33°C,0.73,13.7,10.0,0.135,70.5,33°C,open,,,

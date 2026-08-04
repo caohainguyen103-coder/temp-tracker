@@ -283,7 +283,7 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-08-02T09:05:08Z,highest-temperature-in-karachi-on-august-3-2026,karachi,2026-08-03,1,NO,32°C,0.73,13.7,10.0,0.135,31.7,33°C,won,13.7,3.56,2026-08-04T10:26:41Z
 2026-08-02T09:05:08Z,highest-temperature-in-sao-paulo-on-august-3-2026,sao-paulo,2026-08-03,1,NO,27°C,0.52,19.23,10.0,0.24,27.1,27°C,lost,0.0,-10.24,2026-08-04T10:26:41Z
 2026-08-02T09:05:08Z,highest-temperature-in-chicago-on-august-3-2026,chicago,2026-08-03,1,NO,78-79°F,0.68,14.71,10.0,0.16,26.1,80-81°F,won,14.71,4.55,2026-08-04T10:26:41Z
-2026-08-02T09:05:08Z,highest-temperature-in-denver-on-august-3-2026,denver,2026-08-03,1,NO,98-99°F,0.7,14.29,10.0,0.15,37.3,100-101°F,open,,,
+2026-08-02T09:05:08Z,highest-temperature-in-denver-on-august-3-2026,denver,2026-08-03,1,NO,98-99°F,0.7,14.29,10.0,0.15,37.3,100-101°F,won,14.29,4.14,2026-08-04T18:16:36Z
 2026-08-02T09:05:08Z,highest-temperature-in-warsaw-on-august-4-2026,warsaw,2026-08-04,2,NO,33°C,0.7,14.29,10.0,0.15,33.1,33°C,open,,,
 2026-08-02T09:05:08Z,highest-temperature-in-wuhan-on-august-4-2026,wuhan,2026-08-04,2,NO,38°C,0.67,14.93,10.0,0.1651,38.2,38°C,open,,,
 2026-08-02T09:05:08Z,highest-temperature-in-busan-on-august-4-2026,busan,2026-08-04,2,NO,35°C,0.72,13.89,10.0,0.14,35.3,34°C,open,,,

@@ -286,3 +286,5 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-08-04T10:26:41Z,highest-temperature-in-mexico-city-on-august-5-2026,mexico-city,2026-08-05,1,NO,27°C,0.67,14.93,10.0,0.1651,26.9,26°C,open,,,,mo_rong
 2026-08-04T10:26:41Z,highest-temperature-in-wellington-on-august-6-2026,wellington,2026-08-06,2,NO,10°C,0.65,15.38,10.0,0.1749,9.6,11°C,open,,,,mo_rong
 2026-08-04T10:26:41Z,highest-temperature-in-shanghai-on-august-5-2026,shanghai,2026-08-05,1,NO,33°C,0.64,15.62,10.0,0.1799,32.7,34°C,open,,,,mo_rong
+2026-08-04T18:16:36Z,highest-temperature-in-ankara-on-august-6-2026,ankara,2026-08-06,2,NO,32°C,0.65,15.38,10.0,0.1749,31.8,33°C,open,,,,mo_rong
+2026-08-04T18:16:36Z,highest-temperature-in-milan-on-august-5-2026,milan,2026-08-05,1,NO,37°C,0.63,15.87,10.0,0.185,36.9,36°C,open,,,,mo_rong
