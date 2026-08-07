@@ -320,8 +320,8 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-08-06T10:24:37Z,highest-temperature-in-istanbul-on-august-6-2026,istanbul,2026-08-06,0,YES,28°C,0.64,15.62,10.0,0.1799,60.5,28°C,won,15.62,5.44,2026-08-07T06:02:18Z
 2026-08-06T10:24:37Z,highest-temperature-in-jeddah-on-august-6-2026,jeddah,2026-08-06,0,YES,39°C,0.84,11.9,10.0,0.08,81.5,39°C,lost,0.0,-10.08,2026-08-07T06:02:18Z
 2026-08-06T10:24:37Z,highest-temperature-in-buenos-aires-on-august-6-2026,buenos-aires,2026-08-06,0,YES,14°C,0.65,15.38,10.0,0.1749,64.5,14°C,won,15.38,5.21,2026-08-07T06:02:18Z
-2026-08-06T10:24:37Z,highest-temperature-in-dallas-on-august-6-2026,dallas,2026-08-06,0,YES,100-101°F,0.65,15.38,10.0,0.1749,64.5,100-101°F,open,,,
-2026-08-06T10:24:37Z,highest-temperature-in-austin-on-august-6-2026,austin,2026-08-06,0,YES,98-99°F,0.67,14.93,10.0,0.1651,66.5,98-99°F,open,,,
+2026-08-06T10:24:37Z,highest-temperature-in-dallas-on-august-6-2026,dallas,2026-08-06,0,YES,100-101°F,0.65,15.38,10.0,0.1749,64.5,100-101°F,won,15.38,5.21,2026-08-07T15:13:43Z
+2026-08-06T10:24:37Z,highest-temperature-in-austin-on-august-6-2026,austin,2026-08-06,0,YES,98-99°F,0.67,14.93,10.0,0.1651,66.5,98-99°F,lost,0.0,-10.17,2026-08-07T15:13:43Z
 2026-08-07T06:02:18Z,highest-temperature-in-london-on-august-7-2026,london,2026-08-07,0,YES,25°C,0.64,15.62,10.0,0.1799,63.5,25°C,open,,,
 2026-08-07T06:02:18Z,highest-temperature-in-tel-aviv-on-august-7-2026,tel-aviv,2026-08-07,0,YES,32°C,0.66,15.15,10.0,0.17,63.5,32°C,open,,,
 2026-08-07T06:02:18Z,highest-temperature-in-hong-kong-on-august-7-2026,hong-kong,2026-08-07,0,YES,34°C,0.67,14.93,10.0,0.1651,65.5,34°C,open,,,

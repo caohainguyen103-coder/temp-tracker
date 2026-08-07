@@ -288,7 +288,7 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-08-04T10:26:41Z,highest-temperature-in-shanghai-on-august-5-2026,shanghai,2026-08-05,1,NO,33°C,0.64,15.62,10.0,0.1799,32.7,34°C,lost,0.0,-10.18,2026-08-06T10:24:36Z,mo_rong
 2026-08-04T18:16:36Z,highest-temperature-in-ankara-on-august-6-2026,ankara,2026-08-06,2,NO,32°C,0.65,15.38,10.0,0.1749,31.8,33°C,lost,0.0,-10.17,2026-08-07T06:02:18Z,mo_rong
 2026-08-04T18:16:36Z,highest-temperature-in-milan-on-august-5-2026,milan,2026-08-05,1,NO,37°C,0.63,15.87,10.0,0.185,36.9,36°C,won,15.87,5.68,2026-08-06T10:24:36Z,mo_rong
-2026-08-05T10:22:43Z,highest-temperature-in-miami-on-august-6-2026,miami,2026-08-06,1,NO,86-87°F,0.74,13.51,10.0,0.13,29.9,88-89°F,open,,,,goc
+2026-08-05T10:22:43Z,highest-temperature-in-miami-on-august-6-2026,miami,2026-08-06,1,NO,86-87°F,0.74,13.51,10.0,0.13,29.9,88-89°F,won,13.51,3.38,2026-08-07T15:13:43Z,goc
 2026-08-05T10:22:43Z,highest-temperature-in-ankara-on-august-7-2026,ankara,2026-08-07,2,NO,33°C,0.74,13.51,10.0,0.13,33.3,34°C,open,,,,goc
 2026-08-05T10:22:43Z,highest-temperature-in-cape-town-on-august-6-2026,cape-town,2026-08-06,1,NO,15°C,0.72,13.89,10.0,0.14,14.7,16°C,won,13.89,3.75,2026-08-07T06:02:18Z,goc
 2026-08-05T10:22:43Z,highest-temperature-in-toronto-on-august-6-2026,toronto,2026-08-06,1,NO,29°C,0.72,13.89,10.0,0.14,29.3,28°C,lost,0.0,-10.14,2026-08-07T06:02:18Z,goc
@@ -299,8 +299,8 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-08-05T10:22:43Z,highest-temperature-in-karachi-on-august-6-2026,karachi,2026-08-06,1,NO,32°C,0.7,14.29,10.0,0.15,32.3,33°C,won,14.29,4.14,2026-08-07T06:02:18Z,mo_rong
 2026-08-05T10:22:43Z,highest-temperature-in-tel-aviv-on-august-7-2026,tel-aviv,2026-08-07,2,NO,31°C,0.7,14.29,10.0,0.15,30.9,32°C,open,,,,mo_rong
 2026-08-05T17:14:12Z,highest-temperature-in-paris-on-august-6-2026,paris,2026-08-06,1,NO,26°C,0.68,14.71,10.0,0.16,25.5,25°C,won,14.71,4.55,2026-08-07T06:02:18Z,mo_rong
-2026-08-05T17:14:12Z,highest-temperature-in-mexico-city-on-august-6-2026,mexico-city,2026-08-06,1,NO,27°C,0.68,14.71,10.0,0.16,26.9,26°C,open,,,,mo_rong
-2026-08-05T17:14:12Z,highest-temperature-in-los-angeles-on-august-6-2026,los-angeles,2026-08-06,1,NO,76-77°F,0.64,15.62,10.0,0.1799,25.0,78-79°F,open,,,,mo_rong
+2026-08-05T17:14:12Z,highest-temperature-in-mexico-city-on-august-6-2026,mexico-city,2026-08-06,1,NO,27°C,0.68,14.71,10.0,0.16,26.9,26°C,won,14.71,4.55,2026-08-07T15:13:43Z,mo_rong
+2026-08-05T17:14:12Z,highest-temperature-in-los-angeles-on-august-6-2026,los-angeles,2026-08-06,1,NO,76-77°F,0.64,15.62,10.0,0.1799,25.0,78-79°F,lost,0.0,-10.18,2026-08-07T15:13:43Z,mo_rong
 2026-08-05T17:14:12Z,highest-temperature-in-milan-on-august-7-2026,milan,2026-08-07,2,NO,33°C,0.63,15.87,10.0,0.185,33.1,34°C,open,,,,mo_rong
 2026-08-06T10:24:36Z,highest-temperature-in-shenzhen-on-august-7-2026,shenzhen,2026-08-07,1,NO,35°C,0.73,13.7,10.0,0.135,34.6,34°C,open,,,,goc
 2026-08-06T10:24:36Z,highest-temperature-in-toronto-on-august-7-2026,toronto,2026-08-07,1,NO,25°C,0.73,13.7,10.0,0.135,25.1,26°C,open,,,,goc
