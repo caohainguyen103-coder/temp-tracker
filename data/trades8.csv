@@ -34,5 +34,5 @@ entry_utc,market_slug,match,side_team,commence_utc,side,ask,shares,stake,fee,pin
 2026-08-11T02:31:08Z,mlb-mil-sd-2026-08-10,Milwaukee Brewers vs. San Diego Padres,Milwaukee Brewers,2026-08-11T01:41:00Z,YES,0.55,18.18,10.0,0.225,0.6628,,0.1128,void,,0.0,2026-08-14T02:47:25Z
 2026-08-11T02:31:08Z,mlb-kc-lad-2026-08-10,Kansas City Royals vs. Los Angeles Dodgers,Los Angeles Dodgers,2026-08-11T02:10:19Z,NO,0.6,16.67,10.0,0.2,0.6976,,0.0976,void,,0.0,2026-08-14T02:47:25Z
 2026-08-12T02:47:18Z,mlb-col-ari-2026-08-11,Colorado Rockies vs. Arizona Diamondbacks,Colorado Rockies,2026-08-12T01:41:00Z,YES,0.16,62.5,10.0,0.42,0.2265,,0.0665,void,,0.0,2026-08-15T01:53:49Z
-2026-08-13T02:48:37Z,mlb-tex-laa-2026-08-12,Texas Rangers vs. Los Angeles Angels,Los Angeles Angels,2026-08-13T02:11:00Z,NO,0.35,28.57,10.0,0.325,0.402,,0.052,open,,,
+2026-08-13T02:48:37Z,mlb-tex-laa-2026-08-12,Texas Rangers vs. Los Angeles Angels,Los Angeles Angels,2026-08-13T02:11:00Z,NO,0.35,28.57,10.0,0.325,0.402,,0.052,void,,0.0,2026-08-16T13:02:05Z
 2026-08-14T02:47:25Z,mlb-tex-laa-2026-08-13,Texas Rangers vs. Los Angeles Angels,Texas Rangers,2026-08-14T02:08:00Z,YES,0.37,27.03,10.0,0.315,0.4356,,0.0656,open,,,

@@ -431,9 +431,9 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-08-14T13:41:21Z,highest-temperature-in-tel-aviv-on-august-16-2026,tel-aviv,2026-08-16,2,YES,33°C,0.65,15.38,10.0,0.1749,64.5,33°C,open,,,
 2026-08-15T01:53:49Z,highest-temperature-in-ankara-on-august-15-2026,ankara,2026-08-15,0,YES,26°C,0.65,15.38,10.0,0.1749,64.5,26°C,won,15.38,5.21,2026-08-16T02:01:24Z
 2026-08-15T01:53:49Z,highest-temperature-in-wellington-on-august-15-2026,wellington,2026-08-15,0,YES,13°C,0.92,10.87,10.0,0.04,91.0,13°C,won,10.87,0.83,2026-08-16T02:01:24Z
-2026-08-15T01:53:49Z,highest-temperature-in-milan-on-august-15-2026,milan,2026-08-15,0,YES,34°C,0.63,15.87,10.0,0.185,62.0,34°C,open,,,
+2026-08-15T01:53:49Z,highest-temperature-in-milan-on-august-15-2026,milan,2026-08-15,0,YES,34°C,0.63,15.87,10.0,0.185,62.0,34°C,won,15.87,5.68,2026-08-16T13:02:05Z
 2026-08-15T01:53:49Z,highest-temperature-in-istanbul-on-august-15-2026,istanbul,2026-08-15,0,YES,26°C,0.75,13.33,10.0,0.125,74.0,26°C,lost,0.0,-10.12,2026-08-16T02:01:24Z
-2026-08-15T01:53:49Z,highest-temperature-in-karachi-on-august-15-2026,karachi,2026-08-15,0,YES,32°C,0.66,15.15,10.0,0.17,65.0,32°C,open,,,
+2026-08-15T01:53:49Z,highest-temperature-in-karachi-on-august-15-2026,karachi,2026-08-15,0,YES,32°C,0.66,15.15,10.0,0.17,65.0,32°C,won,15.15,4.98,2026-08-16T13:02:05Z
 2026-08-16T02:01:24Z,highest-temperature-in-paris-on-august-16-2026,paris,2026-08-16,0,YES,31°C,0.66,15.15,10.0,0.17,64.5,31°C,open,,,
 2026-08-16T02:01:24Z,highest-temperature-in-ankara-on-august-16-2026,ankara,2026-08-16,0,YES,27°C,0.67,14.93,10.0,0.1651,66.0,27°C,open,,,
 2026-08-16T02:01:24Z,highest-temperature-in-istanbul-on-august-16-2026,istanbul,2026-08-16,0,YES,26°C,0.72,13.89,10.0,0.14,71.0,26°C,open,,,
@@ -445,3 +445,4 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-08-16T02:01:24Z,highest-temperature-in-los-angeles-on-august-16-2026,los-angeles,2026-08-16,1,YES,76-77°F,0.64,15.62,10.0,0.1799,62.0,76-77°F,open,,,
 2026-08-16T02:01:24Z,highest-temperature-in-zhengzhou-on-august-16-2026,zhengzhou,2026-08-16,0,YES,>=32°C,0.87,11.49,10.0,0.065,69.0,>=32°C,open,,,
 2026-08-16T02:01:24Z,highest-temperature-in-singapore-on-august-17-2026,singapore,2026-08-17,1,YES,32°C,0.65,15.38,10.0,0.1749,64.5,32°C,open,,,
+2026-08-16T13:02:05Z,highest-temperature-in-zhengzhou-on-august-17-2026,zhengzhou,2026-08-17,1,YES,>=32°C,0.8,12.5,10.0,0.1,51.5,>=32°C,open,,,
