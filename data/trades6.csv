@@ -468,8 +468,8 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-08-19T01:57:24Z,highest-temperature-in-amsterdam-on-august-19-2026,amsterdam,2026-08-19,0,YES,21°C,0.7,14.29,10.0,0.15,69.0,21°C,won,14.29,4.14,2026-08-20T01:53:53Z
 2026-08-19T01:57:24Z,highest-temperature-in-helsinki-on-august-19-2026,helsinki,2026-08-19,0,YES,20°C,0.65,15.38,10.0,0.1749,64.5,20°C,won,15.38,5.21,2026-08-20T01:53:53Z
 2026-08-19T01:57:24Z,highest-temperature-in-karachi-on-august-19-2026,karachi,2026-08-19,0,YES,32°C,0.63,15.87,10.0,0.185,62.0,32°C,won,15.87,5.68,2026-08-20T01:53:53Z
-2026-08-19T01:57:24Z,highest-temperature-in-nyc-on-august-19-2026,nyc,2026-08-19,1,YES,86-87°F,0.64,15.62,10.0,0.1799,63.0,86-87°F,open,,,
-2026-08-19T01:57:24Z,highest-temperature-in-miami-on-august-19-2026,miami,2026-08-19,1,YES,96-97°F,0.65,15.38,10.0,0.1749,64.5,96-97°F,open,,,
+2026-08-19T01:57:24Z,highest-temperature-in-nyc-on-august-19-2026,nyc,2026-08-19,1,YES,86-87°F,0.64,15.62,10.0,0.1799,63.0,86-87°F,won,15.62,5.44,2026-08-20T13:12:01Z
+2026-08-19T01:57:24Z,highest-temperature-in-miami-on-august-19-2026,miami,2026-08-19,1,YES,96-97°F,0.65,15.38,10.0,0.1749,64.5,96-97°F,lost,0.0,-10.17,2026-08-20T13:12:01Z
 2026-08-19T01:57:24Z,highest-temperature-in-tel-aviv-on-august-20-2026,tel-aviv,2026-08-20,1,YES,33°C,0.67,14.93,10.0,0.1651,65.5,33°C,open,,,
 2026-08-19T13:09:45Z,highest-temperature-in-zhengzhou-on-august-20-2026,zhengzhou,2026-08-20,1,YES,31°C,0.82,12.2,10.0,0.09,43.5,31°C,open,,,
 2026-08-19T13:09:45Z,highest-temperature-in-tel-aviv-on-august-21-2026,tel-aviv,2026-08-21,2,YES,33°C,0.68,14.71,10.0,0.16,66.5,33°C,open,,,
@@ -481,3 +481,7 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-08-20T01:53:53Z,highest-temperature-in-austin-on-august-20-2026,austin,2026-08-20,1,YES,102-103°F,0.64,15.62,10.0,0.1799,63.5,102-103°F,open,,,
 2026-08-20T01:53:53Z,highest-temperature-in-singapore-on-august-21-2026,singapore,2026-08-21,1,YES,33°C,0.69,14.49,10.0,0.155,68.5,33°C,open,,,
 2026-08-20T01:53:53Z,highest-temperature-in-karachi-on-august-21-2026,karachi,2026-08-21,1,YES,32°C,0.67,14.93,10.0,0.1651,66.5,32°C,open,,,
+2026-08-20T13:12:01Z,highest-temperature-in-denver-on-august-21-2026,denver,2026-08-21,1,YES,96-97°F,0.68,14.71,10.0,0.16,67.0,96-97°F,open,,,
+2026-08-20T13:12:01Z,highest-temperature-in-zhengzhou-on-august-21-2026,zhengzhou,2026-08-21,1,YES,30°C,0.68,14.71,10.0,0.16,43.5,30°C,open,,,
+2026-08-20T13:12:01Z,highest-temperature-in-tel-aviv-on-august-22-2026,tel-aviv,2026-08-22,2,YES,33°C,0.64,15.62,10.0,0.1799,63.5,33°C,open,,,
+2026-08-20T13:12:01Z,highest-temperature-in-jeddah-on-august-22-2026,jeddah,2026-08-22,2,YES,>=38°C,0.82,12.2,10.0,0.09,80.5,>=38°C,open,,,
