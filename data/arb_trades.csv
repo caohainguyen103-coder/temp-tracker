@@ -10,3 +10,4 @@ entry_utc,event_slug,end_date,sets,cost_per_set,total_cost,payout_per_set,locked
 2026-07-12T23:36:22Z,emmys-2026-outstanding-guest-actor-in-a-comedy-series,2026-09-14T20:00:00Z,25,0.9651,24.13,1.0,0.87,open,
 2026-07-12T23:36:22Z,emmys-2026-outstanding-variety-series,2026-09-14T20:00:00Z,11,0.967,10.64,1.0,0.36,open,
 2026-08-16T20:44:30Z,what-will-be-the-2-us-netflix-movie-this-week-20260812183618499,2026-08-18T23:59:00Z,2,0.2136,0.43,1.0,1.57,settled,2026-08-19T01:58:13Z
+2026-08-20T04:07:27Z,huancayo-mayoral-election-winner-20260811165718694,2026-10-04T23:59:00Z,2,0.8483,1.7,1.0,0.3,open,
