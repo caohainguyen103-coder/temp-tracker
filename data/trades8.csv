@@ -45,3 +45,4 @@ entry_utc,market_slug,match,side_team,commence_utc,side,ask,shares,stake,fee,pin
 2026-08-22T01:54:45Z,mlb-wsh-mia-2026-08-21,Washington Nationals vs. Miami Marlins,Washington Nationals,2026-08-21T23:11:00Z,YES,0.058,172.41,10.0,0.471,0.4066,,0.3486,open,,,
 2026-08-22T01:54:45Z,mlb-cle-col-2026-08-21,Cleveland Guardians vs. Colorado Rockies,Colorado Rockies,2026-08-22T00:41:00Z,NO,0.15,66.67,10.0,0.425,0.2097,,0.0597,open,,,
 2026-08-23T02:04:28Z,mlb-sf-bos-2026-08-22,San Francisco Giants vs. Boston Red Sox,Boston Red Sox,2026-08-22T23:16:00Z,NO,0.08,125.0,10.0,0.46,0.4112,,0.3312,open,,,
+2026-08-24T02:07:53Z,mlb-atl-mil-2026-08-23,Atlanta Braves vs. Milwaukee Brewers,Milwaukee Brewers,2026-08-23T23:11:00Z,NO,0.1,100.0,10.0,0.45,0.2069,,0.1069,open,,,
