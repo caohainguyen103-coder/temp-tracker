@@ -3883,3 +3883,5 @@ scan_utc,kind,event_slug,detail,edge,sum_ask,sum_bid,market_prob,model_prob,volu
 2026-08-25T22:51:58Z,negrisk_gan_dat,katsina-nigeria-governor-election-winner,2 o | mua 0.990 + phi 0.008 -> RONG +0.002 (thieu 0.008),0.0025,0.99,0.95,,,8692.262812,29870.6529,CHUA DANG VAO - chi theo doi
 2026-08-25T22:51:58Z,negrisk_gan_dat,oura-ipo-closing-market-cap,8 o | mua 0.964 + phi 0.034 -> RONG +0.002 (thieu 0.008),0.0024,0.964,0.771,,,12676.348211999999,50508.72432,CHUA DANG VAO - chi theo doi
 2026-08-25T22:51:58Z,negrisk_gan_dat,how-many-seats-will-united-russia-win-in-the-next-russian-legislative-election,7 o | mua 1.006 + phi 0.000 -> RONG -0.006 (thieu 0.016),-0.006,1.006,0.938,,,20911.616170999998,291003.79464,CHUA DANG VAO - chi theo doi
+2026-08-25T23:46:42Z,negrisk_gan_dat,oura-ipo-closing-market-cap,8 o | mua 0.965 + phi 0.034 -> RONG +0.001 (thieu 0.009),0.0014,0.965,0.773,,,12676.348211999999,65130.40434,CHUA DANG VAO - chi theo doi
+2026-08-25T23:46:42Z,negrisk_gan_dat,katsina-nigeria-governor-election-winner,2 o | mua 1.000 + phi 0.008 -> RONG -0.008 (thieu 0.018),-0.0078,1.0,0.97,,,8692.262812,32067.7717,CHUA DANG VAO - chi theo doi
