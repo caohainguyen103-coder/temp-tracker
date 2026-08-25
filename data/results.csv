@@ -2298,3 +2298,15 @@ target_date,event_slug,city,unit,precision,station_kind,station_id,resolved_buck
 2026-08-23,highest-temperature-in-sao-paulo-on-august-23-2026,sao-paulo,C,whole,geocode,sao-paulo,24°C,24.4,24.4,openmeteo_grid,2026-08-24T13:13:45Z
 2026-08-23,highest-temperature-in-seattle-on-august-23-2026,seattle,F,whole,geocode,seattle,74-75°F,21.5,70.7,openmeteo_grid,2026-08-24T13:13:45Z
 2026-08-23,highest-temperature-in-toronto-on-august-23-2026,toronto,C,whole,geocode,toronto,20°C,19.2,19.2,openmeteo_grid,2026-08-24T13:13:45Z
+2026-08-24,highest-temperature-in-busan-on-august-24-2026,busan,C,whole,geocode,busan,34°C,31.0,31.0,openmeteo_grid,2026-08-25T02:02:17Z
+2026-08-24,highest-temperature-in-cape-town-on-august-24-2026,cape-town,C,whole,geocode,cape-town,18°C,19.1,19.1,openmeteo_grid,2026-08-25T02:02:17Z
+2026-08-24,highest-temperature-in-helsinki-on-august-24-2026,helsinki,C,whole,geocode,helsinki,18°C,19.1,19.1,openmeteo_grid,2026-08-25T02:02:17Z
+2026-08-24,highest-temperature-in-istanbul-on-august-24-2026,istanbul,C,whole,geocode,istanbul,28°C,29.3,29.3,openmeteo_grid,2026-08-25T02:02:17Z
+2026-08-24,highest-temperature-in-jinan-on-august-24-2026,jinan,C,whole,metar,ZSJN,>=26°C,30.0,30.0,iem_metar,2026-08-25T02:02:17Z
+2026-08-24,highest-temperature-in-london-on-august-24-2026,london,C,whole,geocode,london,22°C,22.0,22.0,openmeteo_grid,2026-08-25T02:02:17Z
+2026-08-24,highest-temperature-in-moscow-on-august-24-2026,moscow,C,whole,geocode,moscow,20°C,19.3,19.3,openmeteo_grid,2026-08-25T02:02:17Z
+2026-08-24,highest-temperature-in-seoul-on-august-24-2026,seoul,C,whole,geocode,seoul,31°C,32.3,32.3,openmeteo_grid,2026-08-25T02:02:17Z
+2026-08-24,highest-temperature-in-singapore-on-august-24-2026,singapore,C,whole,geocode,singapore,33°C,32.8,32.8,openmeteo_grid,2026-08-25T02:02:17Z
+2026-08-24,highest-temperature-in-tel-aviv-on-august-24-2026,tel-aviv,C,whole,geocode,tel-aviv,33°C,31.3,31.3,openmeteo_grid,2026-08-25T02:02:17Z
+2026-08-24,highest-temperature-in-tokyo-on-august-24-2026,tokyo,C,whole,geocode,tokyo,33°C,32.5,32.5,openmeteo_grid,2026-08-25T02:02:17Z
+2026-08-24,highest-temperature-in-wellington-on-august-24-2026,wellington,C,whole,geocode,wellington,15°C,14.1,14.1,openmeteo_grid,2026-08-25T02:02:17Z
