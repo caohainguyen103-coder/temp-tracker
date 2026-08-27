@@ -2452,3 +2452,4 @@ target_date,event_slug,city,unit,precision,station_kind,station_id,resolved_buck
 2026-08-26,highest-temperature-in-warsaw-on-august-26-2026,warsaw,C,whole,geocode,warsaw,23°C,22.8,22.8,openmeteo_grid,2026-08-27T09:46:22Z
 2026-08-26,highest-temperature-in-wellington-on-august-26-2026,wellington,C,whole,geocode,wellington,16°C,14.9,14.9,openmeteo_grid,2026-08-27T09:46:22Z
 2026-08-26,highest-temperature-in-wuhan-on-august-26-2026,wuhan,C,whole,geocode,wuhan,37°C,37.1,37.1,openmeteo_grid,2026-08-27T09:46:22Z
+2026-08-26,highest-temperature-in-zhengzhou-on-august-26-2026,zhengzhou,C,whole,geocode,zhengzhou,>=32°C,33.4,33.4,openmeteo_grid,2026-08-27T22:13:43Z

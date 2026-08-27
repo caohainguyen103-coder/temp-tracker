@@ -617,3 +617,5 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-08-27T09:48:19Z,highest-temperature-in-amsterdam-on-august-28-2026,amsterdam,2026-08-28,1,NO,22°C,0.67,14.93,10.0,0.1651,22.3,23°C,open,,,,mo_rong
 2026-08-27T09:48:19Z,highest-temperature-in-denver-on-august-28-2026,denver,2026-08-28,1,NO,94-95°F,0.64,15.62,10.0,0.1799,34.4,92-93°F,open,,,,mo_rong
 2026-08-27T09:48:19Z,highest-temperature-in-madrid-on-august-28-2026,madrid,2026-08-28,1,NO,26°C,0.59,16.95,10.0,0.205,25.5,27°C,open,,,,mo_rong
+2026-08-27T22:13:44Z,highest-temperature-in-miami-on-august-28-2026,miami,2026-08-28,1,NO,90-91°F,0.56,17.86,10.0,0.22,32.2,92-93°F,open,,,,mo_rong
+2026-08-27T22:13:44Z,highest-temperature-in-ankara-on-august-29-2026,ankara,2026-08-29,2,NO,24°C,0.74,13.51,10.0,0.13,24.5,23°C,open,,,,mo_rong
