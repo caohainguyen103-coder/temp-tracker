@@ -46,8 +46,8 @@ entry_utc,market_slug,match,side_team,commence_utc,side,ask,shares,stake,fee,pin
 2026-08-22T01:54:45Z,mlb-cle-col-2026-08-21,Cleveland Guardians vs. Colorado Rockies,Colorado Rockies,2026-08-22T00:41:00Z,NO,0.15,66.67,10.0,0.425,0.2097,,0.0597,void,,0.0,2026-08-25T02:02:59Z
 2026-08-23T02:04:28Z,mlb-sf-bos-2026-08-22,San Francisco Giants vs. Boston Red Sox,Boston Red Sox,2026-08-22T23:16:00Z,NO,0.08,125.0,10.0,0.46,0.4112,,0.3312,void,,0.0,2026-08-26T02:09:13Z
 2026-08-24T02:07:53Z,mlb-atl-mil-2026-08-23,Atlanta Braves vs. Milwaukee Brewers,Milwaukee Brewers,2026-08-23T23:11:00Z,NO,0.1,100.0,10.0,0.45,0.2069,,0.1069,void,,0.0,2026-08-27T09:48:20Z
-2026-08-25T02:02:59Z,mlb-cin-sf-2026-08-24,Cincinnati Reds vs. San Francisco Giants,Cincinnati Reds,2026-08-25T01:45:21Z,YES,0.35,28.57,10.0,0.325,0.5718,,0.2218,open,,,
-2026-08-25T02:02:59Z,mlb-chc-ari-2026-08-24,Chicago Cubs vs. Arizona Diamondbacks,Arizona Diamondbacks,2026-08-25T01:42:08Z,NO,0.34,29.41,10.0,0.33,0.4883,,0.1483,open,,,
+2026-08-25T02:02:59Z,mlb-cin-sf-2026-08-24,Cincinnati Reds vs. San Francisco Giants,Cincinnati Reds,2026-08-25T01:45:21Z,YES,0.35,28.57,10.0,0.325,0.5718,,0.2218,void,,0.0,2026-08-28T11:29:57Z
+2026-08-25T02:02:59Z,mlb-chc-ari-2026-08-24,Chicago Cubs vs. Arizona Diamondbacks,Arizona Diamondbacks,2026-08-25T01:42:08Z,NO,0.34,29.41,10.0,0.33,0.4883,,0.1483,void,,0.0,2026-08-28T11:29:57Z
 2026-08-26T02:09:13Z,mlb-min-oak-2026-08-25,Minnesota Twins vs. Athletics,Minnesota Twins,2026-08-26T01:41:06Z,YES,0.35,28.57,10.0,0.325,0.5274,,0.1774,open,,,
 2026-08-26T02:09:13Z,mlb-hou-nyy-2026-08-25,Houston Astros vs. New York Yankees,New York Yankees,2026-08-25T23:10:00Z,NO,0.09,111.11,10.0,0.455,0.1542,,0.0642,open,,,
 2026-08-26T02:09:13Z,mlb-phi-sea-2026-08-25,Philadelphia Phillies vs. Seattle Mariners,Seattle Mariners,2026-08-26T01:42:07Z,NO,0.44,22.73,10.0,0.28,0.5013,,0.0613,open,,,
