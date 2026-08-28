@@ -714,3 +714,6 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-08-28T11:29:56Z,highest-temperature-in-wuhan-on-august-30-2026,wuhan,2026-08-30,2,NO,33°C,0.73,13.7,10.0,0.135,32.8,33°C,open,,,
 2026-08-28T11:29:56Z,highest-temperature-in-kuala-lumpur-on-august-30-2026,kuala-lumpur,2026-08-30,2,NO,34°C,0.66,15.15,10.0,0.17,34.1,33°C,open,,,
 2026-08-28T11:29:56Z,highest-temperature-in-jeddah-on-august-30-2026,jeddah,2026-08-30,2,NO,39°C,0.76,13.16,10.0,0.12,38.7,>=40°C,open,,,
+2026-08-28T22:16:12Z,highest-temperature-in-austin-on-august-30-2026,austin,2026-08-30,2,NO,100-101°F,0.69,14.49,10.0,0.155,38.2,98-99°F,open,,,
+2026-08-28T22:16:12Z,highest-temperature-in-san-francisco-on-august-30-2026,san-francisco,2026-08-30,2,NO,68-69°F,0.71,14.08,10.0,0.145,20.1,68-69°F,open,,,
+2026-08-28T22:16:12Z,highest-temperature-in-panama-city-on-august-30-2026,panama-city,2026-08-30,2,NO,31°C,0.71,14.08,10.0,0.145,30.7,32°C,open,,,
