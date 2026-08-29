@@ -48,7 +48,7 @@ entry_utc,market_slug,match,side_team,commence_utc,side,ask,shares,stake,fee,pin
 2026-08-24T02:07:53Z,mlb-atl-mil-2026-08-23,Atlanta Braves vs. Milwaukee Brewers,Milwaukee Brewers,2026-08-23T23:11:00Z,NO,0.1,100.0,10.0,0.45,0.2069,,0.1069,void,,0.0,2026-08-27T09:48:20Z
 2026-08-25T02:02:59Z,mlb-cin-sf-2026-08-24,Cincinnati Reds vs. San Francisco Giants,Cincinnati Reds,2026-08-25T01:45:21Z,YES,0.35,28.57,10.0,0.325,0.5718,,0.2218,void,,0.0,2026-08-28T11:29:57Z
 2026-08-25T02:02:59Z,mlb-chc-ari-2026-08-24,Chicago Cubs vs. Arizona Diamondbacks,Arizona Diamondbacks,2026-08-25T01:42:08Z,NO,0.34,29.41,10.0,0.33,0.4883,,0.1483,void,,0.0,2026-08-28T11:29:57Z
-2026-08-26T02:09:13Z,mlb-min-oak-2026-08-25,Minnesota Twins vs. Athletics,Minnesota Twins,2026-08-26T01:41:06Z,YES,0.35,28.57,10.0,0.325,0.5274,,0.1774,open,,,
-2026-08-26T02:09:13Z,mlb-hou-nyy-2026-08-25,Houston Astros vs. New York Yankees,New York Yankees,2026-08-25T23:10:00Z,NO,0.09,111.11,10.0,0.455,0.1542,,0.0642,open,,,
-2026-08-26T02:09:13Z,mlb-phi-sea-2026-08-25,Philadelphia Phillies vs. Seattle Mariners,Seattle Mariners,2026-08-26T01:42:07Z,NO,0.44,22.73,10.0,0.28,0.5013,,0.0613,open,,,
-2026-08-26T02:09:13Z,mlb-pit-sd-2026-08-25,Pittsburgh Pirates vs. San Diego Padres,San Diego Padres,2026-08-26T01:41:05Z,NO,0.57,17.54,10.0,0.215,0.6232,,0.0532,open,,,
+2026-08-26T02:09:13Z,mlb-min-oak-2026-08-25,Minnesota Twins vs. Athletics,Minnesota Twins,2026-08-26T01:41:06Z,YES,0.35,28.57,10.0,0.325,0.5274,,0.1774,void,,0.0,2026-08-29T07:26:20Z
+2026-08-26T02:09:13Z,mlb-hou-nyy-2026-08-25,Houston Astros vs. New York Yankees,New York Yankees,2026-08-25T23:10:00Z,NO,0.09,111.11,10.0,0.455,0.1542,,0.0642,void,,0.0,2026-08-29T07:26:20Z
+2026-08-26T02:09:13Z,mlb-phi-sea-2026-08-25,Philadelphia Phillies vs. Seattle Mariners,Seattle Mariners,2026-08-26T01:42:07Z,NO,0.44,22.73,10.0,0.28,0.5013,,0.0613,void,,0.0,2026-08-29T07:26:20Z
+2026-08-26T02:09:13Z,mlb-pit-sd-2026-08-25,Pittsburgh Pirates vs. San Diego Padres,San Diego Padres,2026-08-26T01:41:05Z,NO,0.57,17.54,10.0,0.215,0.6232,,0.0532,void,,0.0,2026-08-29T07:26:20Z
