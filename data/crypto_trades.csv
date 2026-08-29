@@ -130,3 +130,6 @@ entry_utc,market_slug,ccy,side,price,shares,stake,fee,model_prob,edge,end_date,s
 2026-08-28T18:52:48Z,bitcoin-above-80k-on-august-30-2026,BTC,YES,0.05,200.0,10.0,0.665,0.1171,0.0638,2026-08-30T16:00:00Z,open,,,
 2026-08-28T18:52:48Z,bitcoin-above-78k-on-august-29-2026,BTC,YES,0.27,37.04,10.0,0.511,0.3444,0.0606,2026-08-29T16:00:00Z,open,,,
 2026-08-28T18:52:48Z,bitcoin-above-80k-on-august-31-2026,BTC,YES,0.1,100.0,10.0,0.63,0.1668,0.0605,2026-08-31T16:00:00Z,open,,,
+2026-08-29T02:20:11Z,ethereum-above-2400-on-august-29-2026,ETH,NO,0.043,232.56,10.0,0.6699,0.7893,0.1648,2026-08-29T16:00:00Z,open,,,
+2026-08-29T02:20:11Z,ethereum-above-2400-on-august-30-2026,ETH,NO,0.16,62.5,10.0,0.588,0.6821,0.1485,2026-08-30T16:00:00Z,open,,,
+2026-08-29T02:20:11Z,bitcoin-above-76k-on-august-31-2026,BTC,NO,0.17,58.82,10.0,0.581,0.7455,0.0746,2026-08-31T16:00:00Z,open,,,
