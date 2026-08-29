@@ -2548,3 +2548,9 @@ target_date,event_slug,city,unit,precision,station_kind,station_id,resolved_buck
 2026-08-28,highest-temperature-in-wellington-on-august-28-2026,wellington,C,whole,geocode,wellington,16°C,14.7,14.7,openmeteo_grid,2026-08-29T07:24:25Z
 2026-08-28,highest-temperature-in-wuhan-on-august-28-2026,wuhan,C,whole,geocode,wuhan,36°C,36.2,36.2,openmeteo_grid,2026-08-29T07:24:25Z
 2026-08-28,highest-temperature-in-zhengzhou-on-august-28-2026,zhengzhou,C,whole,geocode,zhengzhou,24°C,24.9,24.9,openmeteo_grid,2026-08-29T07:24:25Z
+2026-08-28,highest-temperature-in-austin-on-august-28-2026,austin,F,whole,geocode,austin,100-101°F,37.8,100.0,openmeteo_grid,2026-08-29T16:41:44Z
+2026-08-28,highest-temperature-in-dallas-on-august-28-2026,dallas,F,whole,geocode,dallas,100-101°F,39.1,102.4,openmeteo_grid,2026-08-29T16:41:44Z
+2026-08-28,highest-temperature-in-denver-on-august-28-2026,denver,F,whole,geocode,denver,92-93°F,35.6,96.1,openmeteo_grid,2026-08-29T16:41:44Z
+2026-08-28,highest-temperature-in-los-angeles-on-august-28-2026,los-angeles,F,whole,geocode,los-angeles,84-85°F,35.8,96.4,openmeteo_grid,2026-08-29T16:41:44Z
+2026-08-28,highest-temperature-in-san-francisco-on-august-28-2026,san-francisco,F,whole,geocode,san-francisco,64-65°F,20.8,69.4,openmeteo_grid,2026-08-29T16:41:44Z
+2026-08-28,highest-temperature-in-seattle-on-august-28-2026,seattle,F,whole,geocode,seattle,72-73°F,21.0,69.8,openmeteo_grid,2026-08-29T16:41:44Z
