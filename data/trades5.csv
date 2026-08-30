@@ -700,9 +700,9 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-08-28T11:29:56Z,highest-temperature-in-singapore-on-august-29-2026,singapore,2026-08-29,1,NO,32°C,0.74,13.51,10.0,0.13,31.7,33°C,won,13.51,3.38,2026-08-30T05:29:20Z
 2026-08-28T11:29:56Z,highest-temperature-in-moscow-on-august-29-2026,moscow,2026-08-29,1,NO,21°C,0.69,14.49,10.0,0.155,21.0,20°C,lost,0.0,-10.15,2026-08-30T05:29:20Z
 2026-08-28T11:29:56Z,highest-temperature-in-qingdao-on-august-29-2026,qingdao,2026-08-29,1,NO,30°C,0.72,13.89,10.0,0.14,29.7,29°C,won,13.89,3.75,2026-08-30T05:29:20Z
-2026-08-28T11:29:56Z,highest-temperature-in-austin-on-august-29-2026,austin,2026-08-29,1,NO,100-101°F,0.55,18.18,10.0,0.225,37.6,98-99°F,open,,,
-2026-08-28T11:29:56Z,highest-temperature-in-san-francisco-on-august-29-2026,san-francisco,2026-08-29,1,NO,68-69°F,0.66,15.15,10.0,0.17,20.3,66-67°F,open,,,
-2026-08-28T11:29:56Z,highest-temperature-in-mexico-city-on-august-29-2026,mexico-city,2026-08-29,1,NO,24°C,0.72,13.89,10.0,0.14,23.5,23°C,open,,,
+2026-08-28T11:29:56Z,highest-temperature-in-austin-on-august-29-2026,austin,2026-08-29,1,NO,100-101°F,0.55,18.18,10.0,0.225,37.6,98-99°F,won,18.18,7.96,2026-08-30T16:40:59Z
+2026-08-28T11:29:56Z,highest-temperature-in-san-francisco-on-august-29-2026,san-francisco,2026-08-29,1,NO,68-69°F,0.66,15.15,10.0,0.17,20.3,66-67°F,won,15.15,4.98,2026-08-30T16:40:59Z
+2026-08-28T11:29:56Z,highest-temperature-in-mexico-city-on-august-29-2026,mexico-city,2026-08-29,1,NO,24°C,0.72,13.89,10.0,0.14,23.5,23°C,won,13.89,3.75,2026-08-30T16:40:59Z
 2026-08-28T11:29:56Z,highest-temperature-in-zhengzhou-on-august-29-2026,zhengzhou,2026-08-29,1,NO,>=32°C,0.08,125.0,10.0,0.46,32.9,30°C,lost,0.0,-10.46,2026-08-30T05:29:20Z
 2026-08-28T11:29:56Z,highest-temperature-in-london-on-august-30-2026,london,2026-08-30,2,NO,23°C,0.69,14.49,10.0,0.155,22.7,22°C,open,,,
 2026-08-28T11:29:56Z,highest-temperature-in-paris-on-august-30-2026,paris,2026-08-30,2,NO,25°C,0.73,13.7,10.0,0.135,24.8,24°C,open,,,
