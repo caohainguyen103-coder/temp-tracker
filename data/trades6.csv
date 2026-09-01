@@ -621,7 +621,7 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-08-31T05:41:15Z,highest-temperature-in-cape-town-on-august-31-2026,cape-town,2026-08-31,0,YES,17°C,0.63,15.87,10.0,0.185,61.5,17°C,lost,0.0,-10.19,2026-09-01T05:17:04Z
 2026-08-31T05:41:15Z,highest-temperature-in-qingdao-on-august-31-2026,qingdao,2026-08-31,0,YES,31°C,0.84,11.9,10.0,0.08,64.0,31°C,won,11.9,1.82,2026-09-01T05:17:04Z
 2026-08-31T05:41:15Z,highest-temperature-in-manila-on-august-31-2026,manila,2026-08-31,0,YES,33°C,0.94,10.64,10.0,0.03,75.0,33°C,won,10.64,0.61,2026-09-01T05:17:04Z
-2026-08-31T05:41:15Z,highest-temperature-in-atlanta-on-august-31-2026,atlanta,2026-08-31,0,YES,92-93°F,0.63,15.87,10.0,0.185,62.0,92-93°F,open,,,
+2026-08-31T05:41:15Z,highest-temperature-in-atlanta-on-august-31-2026,atlanta,2026-08-31,0,YES,92-93°F,0.63,15.87,10.0,0.185,62.0,92-93°F,won,15.87,5.68,2026-09-01T16:37:25Z
 2026-08-31T05:41:15Z,highest-temperature-in-sao-paulo-on-august-31-2026,sao-paulo,2026-08-31,0,YES,<=29°C,0.78,12.82,10.0,0.11,76.5,<=29°C,won,12.82,2.71,2026-09-01T05:17:04Z
 2026-08-31T05:41:15Z,highest-temperature-in-tel-aviv-on-september-1-2026,tel-aviv,2026-09-01,1,YES,32°C,0.62,16.13,10.0,0.19,61.0,32°C,open,,,
 2026-08-31T05:41:15Z,highest-temperature-in-tel-aviv-on-september-2-2026,tel-aviv,2026-09-02,2,YES,33°C,0.64,15.62,10.0,0.1799,59.5,33°C,open,,,

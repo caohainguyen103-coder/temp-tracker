@@ -2695,3 +2695,16 @@ target_date,event_slug,city,unit,precision,station_kind,station_id,resolved_buck
 2026-08-31,highest-temperature-in-wellington-on-august-31-2026,wellington,C,whole,geocode,wellington,17°C,15.7,15.7,openmeteo_grid,2026-09-01T05:14:29Z
 2026-08-31,highest-temperature-in-wuhan-on-august-31-2026,wuhan,C,whole,geocode,wuhan,34°C,30.9,30.9,openmeteo_grid,2026-09-01T05:14:29Z
 2026-08-31,highest-temperature-in-zhengzhou-on-august-31-2026,zhengzhou,C,whole,geocode,zhengzhou,>=32°C,33.5,33.5,openmeteo_grid,2026-09-01T05:14:29Z
+2026-08-31,highest-temperature-in-atlanta-on-august-31-2026,atlanta,F,whole,geocode,atlanta,92-93°F,34.1,93.4,openmeteo_grid,2026-09-01T16:36:47Z
+2026-08-31,highest-temperature-in-austin-on-august-31-2026,austin,F,whole,geocode,austin,98-99°F,37.9,100.2,openmeteo_grid,2026-09-01T16:36:47Z
+2026-08-31,highest-temperature-in-buenos-aires-on-august-31-2026,buenos-aires,C,whole,geocode,buenos-aires,19°C,16.6,16.6,openmeteo_grid,2026-09-01T16:36:47Z
+2026-08-31,highest-temperature-in-chicago-on-august-31-2026,chicago,F,whole,geocode,chicago,86-87°F,30.1,86.2,openmeteo_grid,2026-09-01T16:36:47Z
+2026-08-31,highest-temperature-in-dallas-on-august-31-2026,dallas,F,whole,geocode,dallas,100-101°F,38.7,101.7,openmeteo_grid,2026-09-01T16:36:47Z
+2026-08-31,highest-temperature-in-denver-on-august-31-2026,denver,F,whole,geocode,denver,86-87°F,30.2,86.4,openmeteo_grid,2026-09-01T16:36:47Z
+2026-08-31,highest-temperature-in-houston-on-august-31-2026,houston,F,whole,geocode,houston,90-91°F,32.1,89.8,openmeteo_grid,2026-09-01T16:36:47Z
+2026-08-31,highest-temperature-in-london-on-august-31-2026,london,C,whole,geocode,london,24°C,22.6,22.6,openmeteo_grid,2026-09-01T16:36:47Z
+2026-08-31,highest-temperature-in-los-angeles-on-august-31-2026,los-angeles,F,whole,geocode,los-angeles,78-79°F,29.9,85.8,openmeteo_grid,2026-09-01T16:36:47Z
+2026-08-31,highest-temperature-in-mexico-city-on-august-31-2026,mexico-city,C,whole,geocode,mexico-city,24°C,21.3,21.3,openmeteo_grid,2026-09-01T16:36:47Z
+2026-08-31,highest-temperature-in-miami-on-august-31-2026,miami,F,whole,geocode,miami,90-91°F,31.5,88.7,openmeteo_grid,2026-09-01T16:36:47Z
+2026-08-31,highest-temperature-in-san-francisco-on-august-31-2026,san-francisco,F,whole,geocode,san-francisco,66-67°F,18.2,64.8,openmeteo_grid,2026-09-01T16:36:47Z
+2026-08-31,highest-temperature-in-seattle-on-august-31-2026,seattle,F,whole,geocode,seattle,76-77°F,23.1,73.6,openmeteo_grid,2026-09-01T16:36:47Z
