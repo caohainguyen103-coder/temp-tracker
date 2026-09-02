@@ -1772,7 +1772,7 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-09-01T05:17:06Z,highest-temperature-in-tokyo-on-september-1-2026,tokyo,2026-09-01,0,NO,28°C,0.34,29.41,10.0,0.33,68.0,28°C,lost,0.0,-10.33,2026-09-02T04:36:56Z
 2026-09-01T05:17:06Z,highest-temperature-in-shanghai-on-september-1-2026,shanghai,2026-09-01,0,NO,30°C,0.51,19.61,10.0,0.245,52.0,30°C,lost,0.0,-10.24,2026-09-02T04:36:56Z
 2026-09-01T05:17:06Z,highest-temperature-in-singapore-on-september-1-2026,singapore,2026-09-01,0,NO,32°C,0.56,17.86,10.0,0.22,51.0,32°C,lost,0.0,-10.22,2026-09-02T04:36:56Z
-2026-09-01T05:17:06Z,highest-temperature-in-milan-on-september-1-2026,milan,2026-09-01,0,NO,30°C,0.6,16.67,10.0,0.2,41.0,30°C,open,,,
+2026-09-01T05:17:06Z,highest-temperature-in-milan-on-september-1-2026,milan,2026-09-01,0,NO,30°C,0.6,16.67,10.0,0.2,41.0,30°C,won,16.67,6.47,2026-09-02T16:35:25Z
 2026-09-01T05:17:06Z,highest-temperature-in-madrid-on-september-1-2026,madrid,2026-09-01,0,NO,35°C,0.47,21.28,10.0,0.265,55.0,35°C,won,21.28,11.02,2026-09-02T04:36:56Z
 2026-09-01T05:17:06Z,highest-temperature-in-warsaw-on-september-1-2026,warsaw,2026-09-01,0,NO,21°C,0.45,22.22,10.0,0.275,55.5,21°C,lost,0.0,-10.28,2026-09-02T04:36:56Z
 2026-09-01T05:17:06Z,highest-temperature-in-chongqing-on-september-1-2026,chongqing,2026-09-01,0,NO,35°C,0.47,21.28,10.0,0.265,57.0,35°C,won,21.28,11.02,2026-09-02T04:36:56Z
@@ -1789,3 +1789,5 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-09-02T04:36:55Z,highest-temperature-in-lucknow-on-september-2-2026,lucknow,2026-09-02,0,NO,30°C,0.64,15.62,10.0,0.1799,37.5,30°C,open,,,
 2026-09-02T04:36:55Z,highest-temperature-in-munich-on-september-2-2026,munich,2026-09-02,0,NO,25°C,0.38,26.32,10.0,0.31,63.0,25°C,open,,,
 2026-09-02T04:36:55Z,highest-temperature-in-tokyo-on-september-2-2026,tokyo,2026-09-02,0,NO,31°C,0.6,16.67,10.0,0.2,41.5,31°C,open,,,
+2026-09-02T16:35:25Z,highest-temperature-in-hong-kong-on-september-2-2026,hong-kong,2026-09-02,0,NO,29°C,0.61,16.39,10.0,0.195,40.0,29°C,open,,,
+2026-09-02T16:35:25Z,highest-temperature-in-shanghai-on-september-2-2026,shanghai,2026-09-02,0,NO,30°C,0.56,17.86,10.0,0.22,51.0,30°C,open,,,
