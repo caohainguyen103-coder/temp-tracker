@@ -52,3 +52,4 @@ entry_utc,market_slug,match,side_team,commence_utc,side,ask,shares,stake,fee,pin
 2026-08-26T02:09:13Z,mlb-hou-nyy-2026-08-25,Houston Astros vs. New York Yankees,New York Yankees,2026-08-25T23:10:00Z,NO,0.09,111.11,10.0,0.455,0.1542,,0.0642,void,,0.0,2026-08-29T07:26:20Z
 2026-08-26T02:09:13Z,mlb-phi-sea-2026-08-25,Philadelphia Phillies vs. Seattle Mariners,Seattle Mariners,2026-08-26T01:42:07Z,NO,0.44,22.73,10.0,0.28,0.5013,,0.0613,void,,0.0,2026-08-29T07:26:20Z
 2026-08-26T02:09:13Z,mlb-pit-sd-2026-08-25,Pittsburgh Pirates vs. San Diego Padres,San Diego Padres,2026-08-26T01:41:05Z,NO,0.57,17.54,10.0,0.215,0.6232,,0.0532,void,,0.0,2026-08-29T07:26:20Z
+2026-09-03T04:30:29Z,mlb-stl-lad-2026-09-02,St. Louis Cardinals vs. Los Angeles Dodgers,Los Angeles Dodgers,2026-09-03T02:11:00Z,NO,0.74,13.51,10.0,0.13,0.8066,,0.0666,open,,,
