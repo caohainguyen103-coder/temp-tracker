@@ -141,3 +141,4 @@ entry_utc,market_slug,ccy,side,price,shares,stake,fee,model_prob,edge,end_date,s
 2026-09-01T18:40:38Z,bitcoin-above-74k-on-september-7-2026,BTC,NO,0.18,55.56,10.0,0.574,0.7648,0.0448,2026-09-07T16:00:00Z,open,,,
 2026-09-02T18:50:11Z,bitcoin-above-78k-on-september-3-2026,BTC,YES,0.25,40.0,10.0,0.525,0.3233,0.0602,2026-09-03T16:00:00Z,open,,,
 2026-09-03T16:35:01Z,bitcoin-above-80k-on-september-4-2026,BTC,YES,0.64,15.62,10.0,0.2519,0.7116,0.0554,2026-09-04T16:00:00Z,open,,,
+2026-09-03T22:41:19Z,bitcoin-above-82k-on-september-5-2026,BTC,YES,0.306,32.68,10.0,0.4858,0.3627,0.0418,2026-09-05T16:00:00Z,open,,,
