@@ -1791,7 +1791,13 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-09-02T04:36:55Z,highest-temperature-in-tokyo-on-september-2-2026,tokyo,2026-09-02,0,NO,31°C,0.6,16.67,10.0,0.2,41.5,31°C,lost,0.0,-10.2,2026-09-03T04:30:32Z
 2026-09-02T16:35:25Z,highest-temperature-in-hong-kong-on-september-2-2026,hong-kong,2026-09-02,0,NO,29°C,0.61,16.39,10.0,0.195,40.0,29°C,won,16.39,6.2,2026-09-03T16:28:13Z
 2026-09-02T16:35:25Z,highest-temperature-in-shanghai-on-september-2-2026,shanghai,2026-09-02,0,NO,30°C,0.56,17.86,10.0,0.22,51.0,30°C,lost,0.0,-10.22,2026-09-03T04:30:32Z
-2026-09-03T04:30:32Z,highest-temperature-in-london-on-september-3-2026,london,2026-09-03,0,NO,25°C,0.42,23.81,10.0,0.29,58.5,25°C,open,,,
-2026-09-03T04:30:32Z,highest-temperature-in-paris-on-september-3-2026,paris,2026-09-03,0,NO,26°C,0.58,17.24,10.0,0.21,43.5,26°C,open,,,
-2026-09-03T16:28:13Z,highest-temperature-in-seoul-on-september-3-2026,seoul,2026-09-03,0,NO,30°C,0.41,24.39,10.0,0.295,61.5,30°C,open,,,
-2026-09-03T16:28:13Z,highest-temperature-in-ankara-on-september-3-2026,ankara,2026-09-03,0,NO,30°C,0.45,22.22,10.0,0.275,55.5,30°C,open,,,
+2026-09-03T04:30:32Z,highest-temperature-in-london-on-september-3-2026,london,2026-09-03,0,NO,25°C,0.42,23.81,10.0,0.29,58.5,25°C,won,23.81,13.52,2026-09-04T04:33:03Z
+2026-09-03T04:30:32Z,highest-temperature-in-paris-on-september-3-2026,paris,2026-09-03,0,NO,26°C,0.58,17.24,10.0,0.21,43.5,26°C,won,17.24,7.03,2026-09-04T04:33:03Z
+2026-09-03T16:28:13Z,highest-temperature-in-seoul-on-september-3-2026,seoul,2026-09-03,0,NO,30°C,0.41,24.39,10.0,0.295,61.5,30°C,won,24.39,14.1,2026-09-04T04:33:03Z
+2026-09-03T16:28:13Z,highest-temperature-in-ankara-on-september-3-2026,ankara,2026-09-03,0,NO,30°C,0.45,22.22,10.0,0.275,55.5,30°C,lost,0.0,-10.28,2026-09-04T04:33:03Z
+2026-09-04T04:33:03Z,highest-temperature-in-london-on-september-4-2026,london,2026-09-04,0,NO,22°C,0.44,22.73,10.0,0.28,57.0,22°C,open,,,
+2026-09-04T04:33:03Z,highest-temperature-in-paris-on-september-4-2026,paris,2026-09-04,0,NO,29°C,0.55,18.18,10.0,0.225,45.5,29°C,open,,,
+2026-09-04T04:33:03Z,highest-temperature-in-seoul-on-september-4-2026,seoul,2026-09-04,0,NO,30°C,0.38,26.32,10.0,0.31,64.0,30°C,open,,,
+2026-09-04T04:33:03Z,highest-temperature-in-ankara-on-september-4-2026,ankara,2026-09-04,0,NO,28°C,0.48,20.83,10.0,0.26,53.5,28°C,open,,,
+2026-09-04T04:33:03Z,highest-temperature-in-lucknow-on-september-4-2026,lucknow,2026-09-04,0,NO,31°C,0.51,19.61,10.0,0.245,51.0,31°C,open,,,
+2026-09-04T04:33:03Z,highest-temperature-in-munich-on-september-4-2026,munich,2026-09-04,0,NO,30°C,0.44,22.73,10.0,0.28,57.0,30°C,open,,,
