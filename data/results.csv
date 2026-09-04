@@ -2848,3 +2848,16 @@ target_date,event_slug,city,unit,precision,station_kind,station_id,resolved_buck
 2026-09-03,highest-temperature-in-wellington-on-september-3-2026,wellington,C,whole,geocode,wellington,17°C,16.0,16.0,openmeteo_grid,2026-09-04T04:31:40Z
 2026-09-03,highest-temperature-in-wuhan-on-september-3-2026,wuhan,C,whole,geocode,wuhan,27°C,28.9,28.9,openmeteo_grid,2026-09-04T04:31:40Z
 2026-09-03,highest-temperature-in-zhengzhou-on-september-3-2026,zhengzhou,C,whole,geocode,zhengzhou,29°C,28.8,28.8,openmeteo_grid,2026-09-04T04:31:40Z
+2026-09-03,highest-temperature-in-atlanta-on-september-3-2026,atlanta,F,whole,geocode,atlanta,94-95°F,35.4,95.7,openmeteo_grid,2026-09-04T16:23:16Z
+2026-09-03,highest-temperature-in-austin-on-september-3-2026,austin,F,whole,geocode,austin,98-99°F,37.8,100.0,openmeteo_grid,2026-09-04T16:23:16Z
+2026-09-03,highest-temperature-in-chicago-on-september-3-2026,chicago,F,whole,geocode,chicago,90-91°F,32.0,89.6,openmeteo_grid,2026-09-04T16:23:16Z
+2026-09-03,highest-temperature-in-dallas-on-september-3-2026,dallas,F,whole,geocode,dallas,90-91°F,33.3,91.9,openmeteo_grid,2026-09-04T16:23:16Z
+2026-09-03,highest-temperature-in-denver-on-september-3-2026,denver,F,whole,geocode,denver,92-93°F,33.7,92.7,openmeteo_grid,2026-09-04T16:23:16Z
+2026-09-03,highest-temperature-in-houston-on-september-3-2026,houston,F,whole,geocode,houston,92-93°F,31.0,87.8,openmeteo_grid,2026-09-04T16:23:16Z
+2026-09-03,highest-temperature-in-los-angeles-on-september-3-2026,los-angeles,F,whole,geocode,los-angeles,76-77°F,28.1,82.6,openmeteo_grid,2026-09-04T16:23:16Z
+2026-09-03,highest-temperature-in-mexico-city-on-september-3-2026,mexico-city,C,whole,geocode,mexico-city,26°C,24.3,24.3,openmeteo_grid,2026-09-04T16:23:16Z
+2026-09-03,highest-temperature-in-miami-on-september-3-2026,miami,F,whole,geocode,miami,92-93°F,31.0,87.8,openmeteo_grid,2026-09-04T16:23:16Z
+2026-09-03,highest-temperature-in-nyc-on-september-3-2026,nyc,F,whole,geocode,nyc,86-87°F,29.9,85.8,openmeteo_grid,2026-09-04T16:23:16Z
+2026-09-03,highest-temperature-in-panama-city-on-september-3-2026,panama-city,C,whole,geocode,panama-city,>=33°C,30.4,30.4,openmeteo_grid,2026-09-04T16:23:16Z
+2026-09-03,highest-temperature-in-san-francisco-on-september-3-2026,san-francisco,F,whole,geocode,san-francisco,70-71°F,21.0,69.8,openmeteo_grid,2026-09-04T16:23:16Z
+2026-09-03,highest-temperature-in-seattle-on-september-3-2026,seattle,F,whole,geocode,seattle,68-69°F,18.2,64.8,openmeteo_grid,2026-09-04T16:23:16Z
