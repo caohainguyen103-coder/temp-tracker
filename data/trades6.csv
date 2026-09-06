@@ -696,7 +696,7 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-09-05T04:34:58Z,highest-temperature-in-busan-on-september-5-2026,busan,2026-09-05,0,YES,29°C,0.79,12.66,10.0,0.105,75.0,29°C,won,12.66,2.56,2026-09-06T04:43:54Z
 2026-09-05T04:34:58Z,highest-temperature-in-helsinki-on-september-5-2026,helsinki,2026-09-05,0,YES,18°C,0.63,15.87,10.0,0.185,61.5,18°C,won,15.87,5.68,2026-09-06T04:43:54Z
 2026-09-05T04:34:58Z,highest-temperature-in-manila-on-september-5-2026,manila,2026-09-05,0,YES,29°C,0.94,10.64,10.0,0.03,91.0,29°C,won,10.64,0.61,2026-09-06T04:43:54Z
-2026-09-05T04:34:58Z,highest-temperature-in-miami-on-september-5-2026,miami,2026-09-05,0,YES,90-91°F,0.62,16.13,10.0,0.19,61.5,90-91°F,open,,,
+2026-09-05T04:34:58Z,highest-temperature-in-miami-on-september-5-2026,miami,2026-09-05,0,YES,90-91°F,0.62,16.13,10.0,0.19,61.5,90-91°F,won,16.13,5.94,2026-09-06T15:29:27Z
 2026-09-05T04:34:58Z,highest-temperature-in-wellington-on-september-6-2026,wellington,2026-09-06,1,YES,15°C,0.62,16.13,10.0,0.19,61.0,15°C,open,,,
 2026-09-05T15:15:22Z,highest-temperature-in-zhengzhou-on-september-6-2026,zhengzhou,2026-09-06,1,YES,>=32°C,0.85,11.76,10.0,0.075,69.5,>=32°C,open,,,
 2026-09-05T15:15:22Z,highest-temperature-in-wellington-on-september-7-2026,wellington,2026-09-07,1,YES,13°C,0.67,14.93,10.0,0.1651,66.0,13°C,open,,,
@@ -717,3 +717,6 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-09-06T04:43:54Z,highest-temperature-in-sao-paulo-on-september-6-2026,sao-paulo,2026-09-06,0,YES,15°C,0.8,12.5,10.0,0.1,79.5,15°C,open,,,
 2026-09-06T04:43:54Z,highest-temperature-in-buenos-aires-on-september-6-2026,buenos-aires,2026-09-06,0,YES,11°C,0.66,15.15,10.0,0.17,65.5,11°C,open,,,
 2026-09-06T04:43:54Z,highest-temperature-in-helsinki-on-september-7-2026,helsinki,2026-09-07,1,YES,17°C,0.62,16.13,10.0,0.19,61.5,17°C,open,,,
+2026-09-06T15:29:27Z,highest-temperature-in-zhengzhou-on-september-7-2026,zhengzhou,2026-09-07,1,YES,>=32°C,0.81,12.35,10.0,0.095,60.5,>=32°C,open,,,
+2026-09-06T15:29:27Z,highest-temperature-in-tel-aviv-on-september-8-2026,tel-aviv,2026-09-08,2,YES,33°C,0.73,13.7,10.0,0.135,72.0,33°C,open,,,
+2026-09-06T15:29:27Z,highest-temperature-in-singapore-on-september-8-2026,singapore,2026-09-08,2,YES,33°C,0.72,13.89,10.0,0.14,71.5,33°C,open,,,
