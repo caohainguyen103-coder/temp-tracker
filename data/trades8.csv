@@ -56,3 +56,6 @@ entry_utc,market_slug,match,side_team,commence_utc,side,ask,shares,stake,fee,pin
 2026-09-04T04:33:02Z,mlb-oak-sea-2026-09-03,Athletics vs. Seattle Mariners,Seattle Mariners,2026-09-04T01:40:00Z,NO,0.18,55.56,10.0,0.41,0.2735,,0.0935,void,,0.0,2026-09-07T04:39:44Z
 2026-09-04T04:33:02Z,mlb-stl-lad-2026-09-03,St. Louis Cardinals vs. Los Angeles Dodgers,Los Angeles Dodgers,2026-09-04T02:10:01Z,NO,0.34,29.41,10.0,0.33,0.3935,,0.0535,void,,0.0,2026-09-07T04:39:44Z
 2026-09-07T04:39:44Z,mlb-wsh-lad-2026-09-06,Washington Nationals vs. Los Angeles Dodgers,Los Angeles Dodgers,2026-09-07T02:11:00Z,NO,0.36,27.78,10.0,0.32,0.4661,,0.1061,open,,,
+2026-09-07T17:48:25Z,mlb-cle-bal-2026-09-07,Cleveland Guardians vs. Baltimore Orioles,Cleveland Guardians,2026-09-07T17:36:00Z,YES,0.34,29.41,10.0,0.33,0.4397,,0.0997,open,,,
+2026-09-07T17:48:25Z,mlb-laa-bos-2026-09-07,Los Angeles Angels vs. Boston Red Sox,Los Angeles Angels,2026-09-07T17:36:00Z,YES,0.3,33.33,10.0,0.35,0.3816,,0.0816,open,,,
+2026-09-07T17:48:25Z,mlb-atl-phi-2026-09-07,Atlanta Braves vs. Philadelphia Phillies,Philadelphia Phillies,2026-09-07T17:06:00Z,NO,0.63,15.87,10.0,0.185,0.6956,,0.0656,open,,,
