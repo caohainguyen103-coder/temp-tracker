@@ -729,8 +729,8 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-09-07T04:39:44Z,highest-temperature-in-taipei-on-september-7-2026,taipei,2026-09-07,0,YES,31°C,0.89,11.24,10.0,0.055,79.0,31°C,won,11.24,1.19,2026-09-08T04:34:57Z
 2026-09-07T04:39:44Z,highest-temperature-in-busan-on-september-7-2026,busan,2026-09-07,0,YES,29°C,0.76,13.16,10.0,0.12,73.0,29°C,won,13.16,3.04,2026-09-08T04:34:57Z
 2026-09-07T04:39:44Z,highest-temperature-in-kuala-lumpur-on-september-7-2026,kuala-lumpur,2026-09-07,0,YES,34°C,0.65,15.38,10.0,0.1749,62.5,34°C,won,15.38,5.21,2026-09-08T04:34:57Z
-2026-09-07T04:39:44Z,highest-temperature-in-dallas-on-september-7-2026,dallas,2026-09-07,1,YES,100-101°F,0.67,14.93,10.0,0.1651,66.0,100-101°F,open,,,
-2026-09-07T04:39:44Z,highest-temperature-in-miami-on-september-7-2026,miami,2026-09-07,0,YES,90-91°F,0.64,15.62,10.0,0.1799,63.0,90-91°F,open,,,
+2026-09-07T04:39:44Z,highest-temperature-in-dallas-on-september-7-2026,dallas,2026-09-07,1,YES,100-101°F,0.67,14.93,10.0,0.1651,66.0,100-101°F,won,14.93,4.76,2026-09-08T16:39:14Z
+2026-09-07T04:39:44Z,highest-temperature-in-miami-on-september-7-2026,miami,2026-09-07,0,YES,90-91°F,0.64,15.62,10.0,0.1799,63.0,90-91°F,won,15.62,5.44,2026-09-08T16:39:14Z
 2026-09-07T04:39:44Z,highest-temperature-in-toronto-on-september-7-2026,toronto,2026-09-07,0,YES,25°C,0.63,15.87,10.0,0.185,62.0,25°C,won,15.87,5.68,2026-09-08T04:34:57Z
 2026-09-07T04:39:44Z,highest-temperature-in-ankara-on-september-8-2026,ankara,2026-09-08,1,YES,24°C,0.67,14.93,10.0,0.1651,65.5,24°C,open,,,
 2026-09-07T04:39:44Z,highest-temperature-in-wellington-on-september-8-2026,wellington,2026-09-08,1,YES,13°C,0.7,14.29,10.0,0.15,69.5,13°C,open,,,
@@ -749,3 +749,5 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-09-08T04:34:57Z,highest-temperature-in-jinan-on-september-8-2026,jinan,2026-09-08,0,YES,23°C,0.81,12.35,10.0,0.095,69.0,23°C,open,,,
 2026-09-08T04:34:57Z,highest-temperature-in-wellington-on-september-9-2026,wellington,2026-09-09,1,YES,14°C,0.62,16.13,10.0,0.19,61.5,14°C,open,,,
 2026-09-08T04:34:57Z,highest-temperature-in-istanbul-on-september-9-2026,istanbul,2026-09-09,1,YES,25°C,0.62,16.13,10.0,0.19,61.5,25°C,open,,,
+2026-09-08T16:39:14Z,highest-temperature-in-tel-aviv-on-september-10-2026,tel-aviv,2026-09-10,2,YES,32°C,0.65,15.38,10.0,0.1749,64.0,32°C,open,,,
+2026-09-08T16:39:14Z,highest-temperature-in-houston-on-september-10-2026,houston,2026-09-10,2,YES,90-91°F,0.65,15.38,10.0,0.1749,46.5,90-91°F,open,,,
