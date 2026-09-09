@@ -15,4 +15,5 @@ entry_utc,event_slug,end_date,sets,cost_per_set,total_cost,payout_per_set,locked
 2026-08-26T07:23:25Z,lec-leo-rsl-2026-08-25,2026-08-26T02:30:00Z,1,0.9515,0.95,1.0,0.05,settled,2026-08-26T08:07:49Z
 2026-08-26T10:04:17Z,when-will-the-first-hurricane-form-in-the-atlantic-in-2026-20260812150457428,2026-09-01T03:59:00Z,1,0.9889,0.99,1.0,0.01,settled,2026-09-01T05:23:38Z
 2026-09-01T10:20:52Z,poprad-mayoral-election-winner-2026,2026-10-24T23:59:00Z,1,0.7126,0.71,1.0,0.29,open,
-2026-09-06T09:33:04Z,what-will-be-the-2-global-netflix-movie-this-week-20260908,2026-09-08T23:59:00Z,1,0.2547,0.25,1.0,0.75,open,
+2026-09-06T09:33:04Z,what-will-be-the-2-global-netflix-movie-this-week-20260908,2026-09-08T23:59:00Z,1,0.2547,0.25,1.0,0.75,settled,2026-09-09T00:23:35Z
+2026-09-09T00:23:35Z,bundesliga-most-clean-sheets-2026-27,2027-05-31T23:59:00Z,1,0.6958,0.7,1.0,0.3,open,
