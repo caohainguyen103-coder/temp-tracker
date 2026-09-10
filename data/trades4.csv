@@ -789,7 +789,7 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-09-07T17:48:24Z,highest-temperature-in-taipei-on-september-9-2026,taipei,2026-09-09,1,NO,30°C,0.71,14.08,10.0,0.145,30.0,31°C,won,14.08,3.94,2026-09-10T04:48:01Z,mo_rong
 2026-09-07T17:48:24Z,highest-temperature-in-busan-on-september-9-2026,busan,2026-09-09,1,NO,26°C,0.7,14.29,10.0,0.15,25.5,27°C,lost,0.0,-10.15,2026-09-10T04:48:01Z,mo_rong
 2026-09-07T17:48:24Z,highest-temperature-in-moscow-on-september-9-2026,moscow,2026-09-09,2,NO,20°C,0.64,15.62,10.0,0.1799,19.9,21°C,won,15.62,5.44,2026-09-10T04:48:01Z,mo_rong
-2026-09-07T17:48:24Z,highest-temperature-in-san-francisco-on-september-9-2026,san-francisco,2026-09-09,2,NO,88-89°F,0.54,18.52,10.0,0.23,31.0,86-87°F,open,,,,mo_rong
+2026-09-07T17:48:24Z,highest-temperature-in-san-francisco-on-september-9-2026,san-francisco,2026-09-09,2,NO,88-89°F,0.54,18.52,10.0,0.23,31.0,86-87°F,won,18.52,8.29,2026-09-10T16:25:18Z,mo_rong
 2026-09-08T04:34:56Z,highest-temperature-in-beijing-on-september-9-2026,beijing,2026-09-09,1,NO,25°C,0.74,13.51,10.0,0.13,25.2,26°C,won,13.51,3.38,2026-09-10T04:48:01Z,goc
 2026-09-08T04:34:56Z,highest-temperature-in-guangzhou-on-september-9-2026,guangzhou,2026-09-09,1,NO,34°C,0.74,13.51,10.0,0.13,34.0,35°C,won,13.51,3.38,2026-09-10T04:48:01Z,goc
 2026-09-08T04:34:56Z,highest-temperature-in-jeddah-on-september-9-2026,jeddah,2026-09-09,1,NO,37°C,0.74,13.51,10.0,0.13,37.2,38°C,won,13.51,3.38,2026-09-10T04:48:01Z,goc
@@ -814,7 +814,7 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-09-09T04:48:34Z,highest-temperature-in-warsaw-on-september-10-2026,warsaw,2026-09-10,1,NO,20°C,0.68,14.71,10.0,0.16,19.6,19°C,open,,,,mo_rong
 2026-09-09T04:48:34Z,highest-temperature-in-london-on-september-10-2026,london,2026-09-10,1,NO,20°C,0.65,15.38,10.0,0.1749,20.5,21°C,open,,,,mo_rong
 2026-09-09T04:48:34Z,highest-temperature-in-qingdao-on-september-10-2026,qingdao,2026-09-10,1,NO,28°C,0.66,15.15,10.0,0.17,27.8,27°C,open,,,,mo_rong
-2026-09-09T04:48:34Z,highest-temperature-in-dallas-on-september-9-2026,dallas,2026-09-09,1,NO,100-101°F,0.59,16.95,10.0,0.205,37.5,98-99°F,open,,,,mo_rong
+2026-09-09T04:48:34Z,highest-temperature-in-dallas-on-september-9-2026,dallas,2026-09-09,1,NO,100-101°F,0.59,16.95,10.0,0.205,37.5,98-99°F,lost,0.0,-10.21,2026-09-10T16:25:18Z,mo_rong
 2026-09-09T16:39:57Z,highest-temperature-in-madrid-on-september-11-2026,madrid,2026-09-11,2,NO,30°C,0.72,13.89,10.0,0.14,29.9,31°C,open,,,,mo_rong
 2026-09-09T16:39:57Z,highest-temperature-in-toronto-on-september-11-2026,toronto,2026-09-11,2,NO,24°C,0.7,14.29,10.0,0.15,23.8,23°C,open,,,,mo_rong
 2026-09-09T16:39:57Z,highest-temperature-in-singapore-on-september-11-2026,singapore,2026-09-11,1,NO,31°C,0.67,14.93,10.0,0.1651,30.8,32°C,open,,,,mo_rong
@@ -827,3 +827,9 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-09-10T04:48:01Z,highest-temperature-in-london-on-september-11-2026,london,2026-09-11,1,NO,22°C,0.65,15.38,10.0,0.1749,22.3,23°C,open,,,,mo_rong
 2026-09-10T04:48:01Z,highest-temperature-in-shenzhen-on-september-11-2026,shenzhen,2026-09-11,1,NO,31°C,0.65,15.38,10.0,0.1749,31.2,32°C,open,,,,mo_rong
 2026-09-10T04:48:01Z,highest-temperature-in-chicago-on-september-11-2026,chicago,2026-09-11,2,NO,78-79°F,0.6,16.67,10.0,0.2,26.1,80-81°F,open,,,,mo_rong
+2026-09-10T16:25:18Z,highest-temperature-in-kuala-lumpur-on-september-12-2026,kuala-lumpur,2026-09-12,1,NO,31°C,0.73,13.7,10.0,0.135,31.4,32°C,open,,,,goc
+2026-09-10T16:25:18Z,highest-temperature-in-wuhan-on-september-12-2026,wuhan,2026-09-12,1,NO,30°C,0.71,14.08,10.0,0.145,30.5,31°C,open,,,,mo_rong
+2026-09-10T16:25:18Z,highest-temperature-in-amsterdam-on-september-12-2026,amsterdam,2026-09-12,2,NO,21°C,0.68,14.71,10.0,0.16,20.8,22°C,open,,,,mo_rong
+2026-09-10T16:25:18Z,highest-temperature-in-madrid-on-september-12-2026,madrid,2026-09-12,2,NO,31°C,0.67,14.93,10.0,0.1651,31.0,32°C,open,,,,mo_rong
+2026-09-10T16:25:18Z,highest-temperature-in-ankara-on-september-12-2026,ankara,2026-09-12,2,NO,31°C,0.69,14.49,10.0,0.155,31.3,32°C,open,,,,mo_rong
+2026-09-10T16:25:18Z,highest-temperature-in-milan-on-september-12-2026,milan,2026-09-12,2,NO,25°C,0.61,16.39,10.0,0.195,25.4,26°C,open,,,,mo_rong

@@ -60,3 +60,4 @@ entry_utc,market_slug,match,side_team,commence_utc,side,ask,shares,stake,fee,pin
 2026-09-07T17:48:25Z,mlb-laa-bos-2026-09-07,Los Angeles Angels vs. Boston Red Sox,Los Angeles Angels,2026-09-07T17:36:00Z,YES,0.3,33.33,10.0,0.35,0.3816,,0.0816,open,,,
 2026-09-07T17:48:25Z,mlb-atl-phi-2026-09-07,Atlanta Braves vs. Philadelphia Phillies,Philadelphia Phillies,2026-09-07T17:06:00Z,NO,0.63,15.87,10.0,0.185,0.6956,,0.0656,open,,,
 2026-09-08T04:34:57Z,mlb-tor-oak-2026-09-07,Toronto Blue Jays vs. Athletics,Toronto Blue Jays,2026-09-08T02:06:00Z,YES,0.2,50.0,10.0,0.4,0.2729,,0.0729,open,,,
+2026-09-10T16:25:19Z,mlb-tb-atl-2026-09-10,Tampa Bay Rays vs. Atlanta Braves,Tampa Bay Rays,2026-09-10T16:16:28Z,YES,0.41,24.39,10.0,0.295,0.4633,,0.0533,open,,,
