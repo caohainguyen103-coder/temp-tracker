@@ -3,12 +3,12 @@ entry_utc,event_slug,end_date,sets,cost_per_set,total_cost,payout_per_set,locked
 2026-07-10T07:00:44Z,clacton-by-election-nigel-farage-vote-20260708151424120,2027-06-30T23:59:00Z,25,0.891,22.27,1.0,2.73,open,
 2026-07-10T07:00:44Z,where-will-the-next-next-round-of-us-iran-peace-talks-beptptpt-20260623023740663,2026-09-30T23:59:00Z,25,0.952,23.8,1.0,1.2,open,
 2026-07-10T21:44:56Z,clacton-by-election-count-binface-vote-20260708142507718,2027-06-30T23:59:00Z,25,0.9186,22.96,1.0,2.04,open,
-2026-07-11T06:32:39Z,emmys-2026-outstanding-supporting-actress-in-a-drama-series,2026-09-14T20:00:00Z,25,0.9581,23.95,1.0,1.05,open,
+2026-07-11T06:32:39Z,emmys-2026-outstanding-supporting-actress-in-a-drama-series,2026-09-14T20:00:00Z,25,0.9581,23.95,1.0,1.05,settled,2026-09-14T23:14:57Z
 2026-07-11T10:47:09Z,what-will-the-median-home-value-in-the-los-angeles-metro-area-be-on-september-30-20260630173100174,2026-09-30T04:00:00Z,25,0.9632,24.08,1.0,0.92,open,
 2026-07-12T07:16:33Z,openai-ipo-closing-market-cap,2026-12-31T23:55:00Z,25,0.9861,24.65,1.0,0.35,open,
 2026-07-12T11:42:35Z,peoples-bank-of-china-rate-change-by-september-30-20260630000252021,2026-09-30T23:59:00Z,25,0.9528,23.82,1.0,1.18,open,
-2026-07-12T23:36:22Z,emmys-2026-outstanding-guest-actor-in-a-comedy-series,2026-09-14T20:00:00Z,25,0.9651,24.13,1.0,0.87,open,
-2026-07-12T23:36:22Z,emmys-2026-outstanding-variety-series,2026-09-14T20:00:00Z,11,0.967,10.64,1.0,0.36,open,
+2026-07-12T23:36:22Z,emmys-2026-outstanding-guest-actor-in-a-comedy-series,2026-09-14T20:00:00Z,25,0.9651,24.13,1.0,0.87,settled,2026-09-14T23:14:57Z
+2026-07-12T23:36:22Z,emmys-2026-outstanding-variety-series,2026-09-14T20:00:00Z,11,0.967,10.64,1.0,0.36,settled,2026-09-14T23:14:57Z
 2026-08-16T20:44:30Z,what-will-be-the-2-us-netflix-movie-this-week-20260812183618499,2026-08-18T23:59:00Z,2,0.2136,0.43,1.0,1.57,settled,2026-08-19T01:58:13Z
 2026-08-20T04:07:27Z,huancayo-mayoral-election-winner-20260811165718694,2026-10-04T23:59:00Z,2,0.8483,1.7,1.0,0.3,open,
 2026-08-22T23:42:35Z,what-will-be-the-2-us-netflix-movie-this-week-20260825,2026-08-25T23:59:00Z,1,0.3381,0.34,1.0,0.66,settled,2026-08-26T02:06:55Z
@@ -17,3 +17,5 @@ entry_utc,event_slug,end_date,sets,cost_per_set,total_cost,payout_per_set,locked
 2026-09-01T10:20:52Z,poprad-mayoral-election-winner-2026,2026-10-24T23:59:00Z,1,0.7126,0.71,1.0,0.29,open,
 2026-09-06T09:33:04Z,what-will-be-the-2-global-netflix-movie-this-week-20260908,2026-09-08T23:59:00Z,1,0.2547,0.25,1.0,0.75,settled,2026-09-09T00:23:35Z
 2026-09-09T00:23:35Z,bundesliga-most-clean-sheets-2026-27,2027-05-31T23:59:00Z,1,0.6958,0.7,1.0,0.3,open,
+2026-09-14T23:14:57Z,hitpoint-masters-2026-summer-winner,,25,0.4748,11.87,1.0,13.13,open,
+2026-09-14T23:14:57Z,uk-annual-inflation-in-2026,2027-01-20T00:00:00Z,25,0.764,19.1,1.0,5.9,open,
