@@ -1861,10 +1861,12 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-09-14T04:58:48Z,highest-temperature-in-ankara-on-september-14-2026,ankara,2026-09-14,0,NO,26°C,0.52,19.23,10.0,0.24,50.0,26°C,lost,0.0,-10.24,2026-09-15T05:01:06Z
 2026-09-14T04:58:48Z,highest-temperature-in-lucknow-on-september-14-2026,lucknow,2026-09-14,0,NO,32°C,0.43,23.26,10.0,0.2851,58.0,32°C,lost,0.0,-10.29,2026-09-15T05:01:06Z
 2026-09-14T04:58:48Z,highest-temperature-in-munich-on-september-14-2026,munich,2026-09-14,0,NO,21°C,0.56,17.86,10.0,0.22,44.5,21°C,won,17.86,7.64,2026-09-15T05:01:06Z
-2026-09-14T04:58:48Z,highest-temperature-in-hong-kong-on-september-14-2026,hong-kong,2026-09-14,0,NO,30°C,0.42,23.81,10.0,0.29,59.0,30°C,open,,,
+2026-09-14T04:58:48Z,highest-temperature-in-hong-kong-on-september-14-2026,hong-kong,2026-09-14,0,NO,30°C,0.42,23.81,10.0,0.29,59.0,30°C,won,23.81,13.52,2026-09-15T17:01:49Z
 2026-09-14T04:58:48Z,highest-temperature-in-shanghai-on-september-14-2026,shanghai,2026-09-14,0,NO,29°C,0.48,20.83,10.0,0.26,54.0,29°C,lost,0.0,-10.26,2026-09-15T05:01:06Z
 2026-09-15T05:01:06Z,highest-temperature-in-london-on-september-15-2026,london,2026-09-15,0,NO,23°C,0.42,23.81,10.0,0.29,60.5,23°C,open,,,
 2026-09-15T05:01:06Z,highest-temperature-in-paris-on-september-15-2026,paris,2026-09-15,0,NO,32°C,0.55,18.18,10.0,0.225,46.5,32°C,open,,,
 2026-09-15T05:01:06Z,highest-temperature-in-sao-paulo-on-september-15-2026,sao-paulo,2026-09-15,0,NO,20°C,0.67,14.93,10.0,0.1651,35.0,20°C,open,,,
 2026-09-15T05:01:06Z,highest-temperature-in-buenos-aires-on-september-15-2026,buenos-aires,2026-09-15,0,NO,19°C,0.55,18.18,10.0,0.225,46.0,19°C,open,,,
 2026-09-15T05:01:06Z,highest-temperature-in-toronto-on-september-15-2026,toronto,2026-09-15,0,NO,23°C,0.61,16.39,10.0,0.195,39.5,23°C,open,,,
+2026-09-15T17:01:49Z,highest-temperature-in-seattle-on-september-15-2026,seattle,2026-09-15,1,NO,66-67°F,0.63,15.87,10.0,0.185,37.5,66-67°F,open,,,
+2026-09-15T17:01:49Z,highest-temperature-in-nyc-on-september-15-2026,nyc,2026-09-15,0,NO,72-73°F,0.31,32.26,10.0,0.345,69.5,72-73°F,open,,,
