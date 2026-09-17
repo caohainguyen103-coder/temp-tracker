@@ -1870,5 +1870,5 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-09-15T05:01:06Z,highest-temperature-in-toronto-on-september-15-2026,toronto,2026-09-15,0,NO,23°C,0.61,16.39,10.0,0.195,39.5,23°C,lost,0.0,-10.2,2026-09-16T04:53:17Z
 2026-09-15T17:01:49Z,highest-temperature-in-seattle-on-september-15-2026,seattle,2026-09-15,1,NO,66-67°F,0.63,15.87,10.0,0.185,37.5,66-67°F,lost,0.0,-10.19,2026-09-16T16:55:21Z
 2026-09-15T17:01:49Z,highest-temperature-in-nyc-on-september-15-2026,nyc,2026-09-15,0,NO,72-73°F,0.31,32.26,10.0,0.345,69.5,72-73°F,lost,0.0,-10.35,2026-09-16T16:55:21Z
-2026-09-16T04:53:17Z,highest-temperature-in-london-on-september-16-2026,london,2026-09-16,0,NO,20°C,0.4,25.0,10.0,0.3,61.5,20°C,open,,,
-2026-09-16T04:53:17Z,highest-temperature-in-paris-on-september-16-2026,paris,2026-09-16,0,NO,23°C,0.53,18.87,10.0,0.235,47.5,23°C,open,,,
+2026-09-16T04:53:17Z,highest-temperature-in-london-on-september-16-2026,london,2026-09-16,0,NO,20°C,0.4,25.0,10.0,0.3,61.5,20°C,lost,0.0,-10.3,2026-09-17T05:01:34Z
+2026-09-16T04:53:17Z,highest-temperature-in-paris-on-september-16-2026,paris,2026-09-16,0,NO,23°C,0.53,18.87,10.0,0.235,47.5,23°C,lost,0.0,-10.23,2026-09-17T05:01:34Z
