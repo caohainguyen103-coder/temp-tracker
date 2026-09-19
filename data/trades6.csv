@@ -946,10 +946,10 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-09-18T04:49:04Z,highest-temperature-in-guangzhou-on-september-18-2026,guangzhou,2026-09-18,0,YES,36°C,0.77,12.99,10.0,0.115,64.0,36°C,won,12.99,2.88,2026-09-19T04:38:41Z
 2026-09-18T04:49:04Z,highest-temperature-in-qingdao-on-september-18-2026,qingdao,2026-09-18,0,YES,28°C,0.8,12.5,10.0,0.1,67.0,28°C,won,12.5,2.4,2026-09-19T04:38:41Z
 2026-09-18T04:49:04Z,highest-temperature-in-manila-on-september-18-2026,manila,2026-09-18,0,YES,33°C,0.71,14.08,10.0,0.145,66.0,33°C,won,14.08,3.94,2026-09-19T04:38:41Z
-2026-09-18T04:49:04Z,highest-temperature-in-atlanta-on-september-18-2026,atlanta,2026-09-18,0,YES,94-95°F,0.66,15.15,10.0,0.17,65.0,94-95°F,open,,,
-2026-09-18T04:49:04Z,highest-temperature-in-dallas-on-september-18-2026,dallas,2026-09-18,1,YES,96-97°F,0.64,15.62,10.0,0.1799,61.5,96-97°F,open,,,
-2026-09-18T04:49:04Z,highest-temperature-in-houston-on-september-18-2026,houston,2026-09-18,1,YES,92-93°F,0.69,14.49,10.0,0.155,67.5,92-93°F,open,,,
-2026-09-18T04:49:04Z,highest-temperature-in-los-angeles-on-september-18-2026,los-angeles,2026-09-18,1,YES,76-77°F,0.73,13.7,10.0,0.135,70.0,76-77°F,open,,,
+2026-09-18T04:49:04Z,highest-temperature-in-atlanta-on-september-18-2026,atlanta,2026-09-18,0,YES,94-95°F,0.66,15.15,10.0,0.17,65.0,94-95°F,lost,0.0,-10.17,2026-09-19T15:55:37Z
+2026-09-18T04:49:04Z,highest-temperature-in-dallas-on-september-18-2026,dallas,2026-09-18,1,YES,96-97°F,0.64,15.62,10.0,0.1799,61.5,96-97°F,won,15.62,5.44,2026-09-19T15:55:37Z
+2026-09-18T04:49:04Z,highest-temperature-in-houston-on-september-18-2026,houston,2026-09-18,1,YES,92-93°F,0.69,14.49,10.0,0.155,67.5,92-93°F,won,14.49,4.33,2026-09-19T15:55:37Z
+2026-09-18T04:49:04Z,highest-temperature-in-los-angeles-on-september-18-2026,los-angeles,2026-09-18,1,YES,76-77°F,0.73,13.7,10.0,0.135,70.0,76-77°F,won,13.7,3.56,2026-09-19T15:55:37Z
 2026-09-18T04:49:04Z,highest-temperature-in-paris-on-september-19-2026,paris,2026-09-19,1,YES,25°C,0.64,15.62,10.0,0.1799,63.0,25°C,open,,,
 2026-09-18T04:49:04Z,highest-temperature-in-tel-aviv-on-september-19-2026,tel-aviv,2026-09-19,1,YES,30°C,0.68,14.71,10.0,0.16,67.0,30°C,open,,,
 2026-09-18T04:49:04Z,highest-temperature-in-milan-on-september-19-2026,milan,2026-09-19,1,YES,26°C,0.65,15.38,10.0,0.1749,63.5,26°C,open,,,
@@ -980,3 +980,4 @@ entry_utc,event_slug,city,target_date,lead_days,side,bucket,ask,shares,stake,fee
 2026-09-19T04:38:41Z,highest-temperature-in-madrid-on-september-20-2026,madrid,2026-09-20,1,YES,31°C,0.62,16.13,10.0,0.19,60.5,31°C,open,,,
 2026-09-19T04:38:41Z,highest-temperature-in-istanbul-on-september-20-2026,istanbul,2026-09-20,1,YES,24°C,0.63,15.87,10.0,0.185,62.0,24°C,open,,,
 2026-09-19T04:38:41Z,highest-temperature-in-helsinki-on-september-20-2026,helsinki,2026-09-20,1,YES,17°C,0.66,15.15,10.0,0.17,65.5,17°C,open,,,
+2026-09-19T15:55:37Z,highest-temperature-in-zhengzhou-on-september-20-2026,zhengzhou,2026-09-20,1,YES,<=22°C,0.85,11.76,10.0,0.075,44.5,<=22°C,open,,,
